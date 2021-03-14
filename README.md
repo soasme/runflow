@@ -1,6 +1,6 @@
 # Jetflow
 
-Jetflow is a Python (3.6, 3.7, 3.8, 3.9) framework for building real-time data pipeline. The main audiences are data scientists and engineers.
+Jetflow is a Python (3.6, 3.7, 3.8, 3.9) framework for building real-time data pipelines. The main audiences are data scientists and engineers.
 It provides building blocks for data schemes, task definitions, workflows, job schedules, visualization, failure recovering, command-line interfaces, etc.
 
 ## Goals
@@ -52,7 +52,7 @@ class TimeTask:
 Run the scheduler:
 
 ```bash
-$ jetflow run --module example
+$ jetflow worker --module example
 ```
 
 Want to see more usages? Please read the [documentation](https://jetflow.readthedocs.io/en/stable/) hosted on readthedocs.
