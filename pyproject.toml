@@ -12,6 +12,7 @@ uvicorn = "^0.13.4"
 APScheduler = "^3.7.0"
 
 [tool.poetry.dev-dependencies]
+Sphinx = "^3.5.2"
 
 [tool.poetry.scripts]
 jetflow = 'jetflow.cli:entry'
