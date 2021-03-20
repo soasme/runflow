@@ -6,22 +6,26 @@ Terraform
 Shell Command as Job
 --------------------
 
+Block `shell` defines how to run a command.
+
 .. code-block::
 
     resource "jetflow_job" "my_shell_job" {
         schedule = "*/1 * * * *"
         shell {
             command = "echo `date` > /tmp/hello.txt"
+            env = "PATH=/usr/bin"
         }
     }
 
-Block `shell` supports `env`.
 
 The executable must be available on the machine where Jetflow worker runs. 
 The shell command will run in a separate process.
 
 Python Module as Job
 --------------------
+
+Block `module` guides how to construct a Task.
 
 .. code-block::
 
@@ -35,10 +39,11 @@ Python Module as Job
         }
     }
 
-Block `module` guides how to construct a Task.
 
 Docker Container as Job
 -----------------------
+
+Block `container` defines necessary options for `podman run`.
 
 .. code-block::
 
@@ -50,10 +55,11 @@ Docker Container as Job
         }
     }
 
-Block `container` defines necessary options for `podman run`.
 
 ECS Task as Job
 ---------------
+
+Block `ecs_task` provides the AWS ECS task spec.
 
 .. code-block::
 
@@ -66,4 +72,31 @@ ECS Task as Job
         }
     }
 
-Block `ecs_task` provides the AWS ECS task spec.
+
+Lambda Function as Job
+-----------------------
+
+Block `lambda_function` provides the AWS Lambda Function spec.
+
+.. code-block::
+
+    resource "jetflow_job" "my_ecs_job"
+        schedule = "*/1 * * * *"
+        lambda_function {
+        }
+    }
+
+
+Vercel Function as Job
+-----------------------
+
+Block `lambda_function` provides the AWS Lambda Function spec.
+
+.. code-block::
+
+    resource "jetflow_job" "my_ecs_job"
+        schedule = "*/1 * * * *"
+        lambda_function {
+        }
+    }
+
