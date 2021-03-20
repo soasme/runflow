@@ -11,6 +11,7 @@ Welcome to Jetflow's documentation!
    :caption: Contents:
 
    getting_started
+   concepts
    terraform
    internal
 
