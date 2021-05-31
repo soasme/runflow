@@ -1,61 +1,101 @@
-# Jetflow
+# Runflow
 
-Jetflow is a Python (3.6, 3.7, 3.8, 3.9) framework for building real-time data pipelines. The main audiences are data scientists and engineers.
-It provides building blocks for data schemes, task definitions, workflows, job schedules, visualization, failure recovering, command-line interfaces, etc.
+## What Runflow is?
+
+Runflow is a tool to define and run workflows.
+It provides building blocks for task definitions, workflows, job schedules, failure recovering, command-line interfaces, etc.
+
+Define your workflows in HCL2 syntax.
+Run your workflows using a simple command `runflow run`.
+
+You can choose whatever technology stack you’re familiar with and glue them using Runflow.
+
+(Screenshots)
+
+Runflow supports Python (3.6, 3.7, 3.8, 3.9). 
+The main audiences are data scientists and engineers.
+
+Alternatives: Airflow, Prefect, Oozie, Azkaban.
+
+## What Runflow is Not?
+
+Runflow is not for data streaming. Runflow manages computation orchestrations, not data. However, you may constantly trigger Runflow jobs in a mini-batch manner to achieve some kind of streaming.
 
 ## Goals
 
-* **Simple**: We want you feel simple when developing and running Jetflow pipelines. No hazzle.
-* **Stable**: We want it stable when the data plumbing happens. The failures may happen but the tasks can either be remediated or acknowledged by the maintainers 
-* **Scalable**: We want Jetflow can schedule and run many tasks.
+* **Simple**: We want you feel simple when developing and running workflows. No hazzle.
+* **Stable**: We want it stable when the data plumbing happens. The failures may happen but the tasks can either be remediated or acknowledged by the maintainers.
+* **Flexible**: We want it integrate to many existing solutions to broaden its use cases.
 
 ## Getting Started
 
-Run `pip install jetflow` to install the latest version from [PyPI](https://pypi.python.org/pypi/jetflow).
+### Setup Python Environment
 
-To install the HEAD, run `pip install git+https://github.com/enqueuezero/jetflow.git`.
+First, prepare a Python environment:
 
-## Usage
-
-### One-Off Job
-
-Write a Task: `example.py`:
-
-```python
-import time
-
-class TimeTask:
-    def run(self):
-        print(time.time())
+```
+$ python3 -mvenv env
+$ source venv/bin/activate
 ```
 
-Run an one-off job:
+Run `pip install runflow` to install the latest version from [PyPI](https://pypi.python.org/pypi/jetflow).
 
-```bash
-$ jetflow build example:TimeTask
+```
+$ pip install runflow
 ```
 
-### Periodic Job
+To install the HEAD, run `pip install git+https://github.com/soasme/runflow.git`.
 
-To run it periodically, add a trigger decorator for the task: `example.py`.
+### Write a Job Spec
 
-```python
-import time
-import jetflow
+Next, write a job spec. Let’s create a file "example.rf":
 
-@jetflow.interval('1s')
-class TimeTask:
-    def run(self):
-        print(time.time())
+```
+$ mkdir myrunflow
+$ cd myrunflow
+$ vi example.rf
 ```
 
-Run the scheduler:
-
-```bash
-$ jetflow worker --module example
+```
+# Content of example.rf
+job "example" {
+  variable "content" {
+    default = "Hello World!"
+  }
+  task "command" "echo" {
+    command = ["echo", var.content]
+  }
+}
 ```
 
-Want to see more usages? Please read the [documentation](https://jetflow.readthedocs.io/en/stable/) hosted on readthedocs.
+### Run the Flow
+
+At last, let’s run it.
+
+```
+$ runflow run
+Hello World!
+
+$ runflow run -var="content=Hello Runflow!"
+Hello Runflow!
+
+$ echo 'content = "Hello Runflow!' > input.vars
+$ runflow run -var-file="input.vars"
+Hello Runflow!
+
+$ runflow run --verbose
+[…] Job "example" is started.
+[…] Job "example" task "echo" is started.
+Hello World!
+[…] Job "example" task "echo" is complete.
+[…] Job "example" is complete.
+```
+
+### What’s Next? 
+
+From this point, you have run a minimal example using Runflow. You can head to the Tutorial section for further examples or the How-to guides section for some common tasks in using and configuring Runflow.
+
+Please read the full [documentation](https://docs.runflow.org/en/stable/) hosted on readthedocs.
 
 ## Test
 
@@ -63,4 +103,4 @@ To run all test cases, please run: `pytest tests/`.
 
 ## Get in Touch
 
-Please report an issue at: <https://github.com/enqueuezero/metaflow>.
+Please report an issue at: <https://github.com/soasme/runflow>.
