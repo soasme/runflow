@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 @click.group()
 @click.option('--log-level', '-l', default='INFO')
 def entry(log_level):
-    """jetflow - a framework for building real-time data pipelines."""
+    """runflow - a tool to define and run workflows."""
     logging.basicConfig(level=log_level)
 
 @entry.command()
