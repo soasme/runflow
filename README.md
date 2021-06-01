@@ -2,20 +2,10 @@
 
 ## What Runflow is?
 
-Runflow is a tool to define and run workflows.
-It provides building blocks for task definitions, workflows, job schedules, failure recovering, command-line interfaces, etc.
-
-Define your workflows in HCL2 syntax.
-Run your workflows using a simple command `runflow run`.
-
-You can choose whatever technology stack you’re familiar with and glue them using Runflow.
-
-(Screenshots)
+Runflow is a tool to define and run workflows. To find out more about Flow, check out [runflow.org](https://runflow.org).
 
 Runflow supports Python (3.6, 3.7, 3.8, 3.9). 
 The main audiences are data scientists and engineers.
-
-Alternatives: Airflow, Prefect, Oozie, Azkaban.
 
 ## What Runflow is Not?
 
@@ -26,6 +16,21 @@ Runflow is not for data streaming. Runflow manages computation orchestrations, n
 * **Simple**: We want you feel simple when developing and running workflows. No hazzle.
 * **Stable**: We want it stable when the data plumbing happens. The failures may happen but the tasks can either be remediated or acknowledged by the maintainers.
 * **Flexible**: We want it integrate to many existing solutions to broaden its use cases.
+
+## How You Will Use Runflow?
+
+Runflow provides building blocks for task definitions, workflows, job schedules, failure recovering, command-line interfaces, etc. 
+
+Typically, you will
+
+* Define your workflows in HCL2 syntax.
+* Run your workflows using a simple command `runflow run`.
+
+You can choose whatever technology stack you’re familiar with and glue them using Runflow.
+
+(Screenshots)
+
+Alternatives: Airflow, Prefect, Oozie, Azkaban.
 
 ## Getting Started
 
