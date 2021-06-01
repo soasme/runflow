@@ -46,9 +46,9 @@ $ pip install runflow
 
 To install the HEAD, run `pip install git+https://github.com/soasme/runflow.git`.
 
-### Write a Job Spec
+### Write a Flow Spec
 
-Next, write a job spec. Let’s create a file "example.rf":
+Next, write a flow spec. Let’s create a file "example.rf":
 
 ```
 $ mkdir myrunflow
@@ -58,7 +58,7 @@ $ vi example.rf
 
 ```
 # Content of example.rf
-job "example" {
+flow "example" {
   variable "content" {
     default = "Hello World!"
   }
