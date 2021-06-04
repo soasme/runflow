@@ -12,7 +12,7 @@ flow "hello-world" {
 }
     """)
 
-    cli(['--var', f'out={out}', str(flow)])
+    cli(['run', '--var', f'out={out}', str(flow)])
 
     assert out.read() == 'hello world\n'
 
