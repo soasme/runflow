@@ -1,38 +1,27 @@
-import logging
+from .core import run
 
-import click
+def parse_cli_var(var):
+    key, value = var.split('=')
+    return key.strip(), value.strip()
 
-logger = logging.getLogger(__name__)
+def cli():
+    parser = argparse.ArgumentParser(description='Runflow - a lightweight workflow engine.')
+    parser.add_argument('specfile', help='Path to a Runflow spec file')
+    parser.add_argument('--var', dest='vars', action='append',
+                        help='Provide variables for a Runflow job run')
+    parser.add_argument('--log-level', choices=['DEBUG', 'INFO', 'WARNING', 'CRITICAL'],
+                        default='INFO', help='Logging level')
+    args = parser.parse_args()
 
-@click.group()
-@click.option('--log-level', '-l', default='INFO')
-def entry(log_level):
-    """runflow - a tool to define and run workflows."""
-    logging.basicConfig(level=log_level)
+    logging_format = '[%(asctime)-15s] %(message)s'
+    logging.basicConfig(level=args.log_level, format=logging_format)
 
-@entry.command()
-@click.argument('module')
-def build(module):
-    logger.info(f'building task - {module}')
-    from .utils import import_string
-    module = import_string(module)
+    vars = []
+    for var in args.vars or []:
+        try:
+            vars.append(parse_cli_var(var))
+        except ValueError:
+            print(f"Invalid --var option: {var}", file=sys.stderr)
+            exit(1)
 
-    if not callable(module):
-        click.echo('build task failed - not runnable', err=True)
-        click.abort(1)
-
-    instance = module()
-
-    if hasattr(instance, 'run'):
-        instance.run()
-        return
-
-    if hasattr(instance, '__call__'):
-        instance()
-        return
-
-
-
-@entry.command()
-def worker():
-    logger.info(f'worker started.')
+    run(args.specfile, dict(vars))

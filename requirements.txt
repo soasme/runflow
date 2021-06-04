@@ -1,1 +1,3 @@
 python-hcl2
+networkx
+jinja2
