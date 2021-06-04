@@ -71,6 +71,7 @@ class Task:
                 self.payload['command'],
                 variable_start_string="${",
                 variable_end_string="}",
+                undefined=jinja2.StrictUndefined,
             )
             try:
                 command = Command(command_tpl.render(context))

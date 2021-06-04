@@ -1,17 +1,20 @@
-from .core import run
+import sys
+import logging
+import argparse
+
+parser = argparse.ArgumentParser(description='Runflow - a lightweight workflow engine.')
+parser.add_argument('specfile', help='Path to a Runflow spec file')
+parser.add_argument('--var', dest='vars', action='append',
+                    help='Provide variables for a Runflow job run')
+parser.add_argument('--log-level', choices=['DEBUG', 'INFO', 'WARNING', 'CRITICAL'],
+                    default='INFO', help='Logging level')
 
 def parse_cli_var(var):
     key, value = var.split('=')
     return key.strip(), value.strip()
 
-def cli():
-    parser = argparse.ArgumentParser(description='Runflow - a lightweight workflow engine.')
-    parser.add_argument('specfile', help='Path to a Runflow spec file')
-    parser.add_argument('--var', dest='vars', action='append',
-                        help='Provide variables for a Runflow job run')
-    parser.add_argument('--log-level', choices=['DEBUG', 'INFO', 'WARNING', 'CRITICAL'],
-                        default='INFO', help='Logging level')
-    args = parser.parse_args()
+def cli(argv=None):
+    args = parser.parse_args(argv)
 
     logging_format = '[%(asctime)-15s] %(message)s'
     logging.basicConfig(level=args.log_level, format=logging_format)
@@ -24,4 +27,5 @@ def cli():
             print(f"Invalid --var option: {var}", file=sys.stderr)
             exit(1)
 
+    from .core import run
     run(args.specfile, dict(vars))
