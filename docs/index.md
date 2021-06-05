@@ -4,7 +4,7 @@ Welcome to Runflow's documentation.
 
 ## Links
 
-* Get started with [Installation].
+* Get started with [Installation](installation.md).
 * Get an overview with the [Quick Start].
 * Walk through a small but complete workflow example with the [Tutorial].
 * See the common patterns with [How-to]s.
