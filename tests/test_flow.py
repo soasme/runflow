@@ -194,3 +194,19 @@ flow "hello-world" {
     runflow.runflow(flow, {'content': 'hello\nworld'})
     out, err = capsys.readouterr()
     print('out', out,  'err', err)
+
+def test_default_variable(tmpdir):
+    flow = tmpdir / "test.rf"
+    out = tmpdir / "out.txt"
+    flow.write("""
+flow "hello-world" {
+  variable "content" { default = 42 }
+  task "command" "echo" {
+    command = "echo ${var.content} > ${ var.out }"
+  }
+}
+    """)
+
+    runflow.runflow(flow, {'out': str(out)})
+
+    assert out.read() == '42\n'

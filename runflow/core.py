@@ -74,6 +74,7 @@ class Task:
             return await command.run(context)
         raise ValueError(f"Invalid task type `{self.type}`")
 
+
 class SequentialRunner:
 
     def __init__(self, flow):
@@ -91,6 +92,7 @@ class Flow:
         self.name = name
         self.G = networkx.DiGraph()
         self.runner = (runner_cls or SequentialRunner)(self)
+        self.vars = {}
 
     def __iter__(self):
         return reversed(list(networkx.topological_sort(self.G)))
@@ -112,8 +114,11 @@ class Flow:
     def set_dependency(self, task, depends_on):
         self.G.add_edge(task, depends_on)
 
+    def set_default_var(self, name, value):
+        self.vars[name] = value
+
     def make_run_context(self, variables=None):
-        context = { 'var': variables or {}, 'task': {}}
+        context = { 'var': dict(self.vars, **dict(variables or {})), 'task': {}}
         for task in self:
             context['task'].setdefault(task.type, {})
             context['task'][task.type][task.name] = task.payload

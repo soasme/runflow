@@ -38,6 +38,13 @@ def load_flow_tasks_dependencies(flow):
                 )
             flow.set_dependency(task, task_dependency)
 
+def load_flow_default_vars(flow, vars_spec):
+    for var_spec in vars_spec:
+        var_name = next(iter(var_spec.keys()))
+        var_value_spec = next(iter(var_spec.values()))
+        var_value = var_value_spec['default'][0]
+        flow.set_default_var(var_name, var_value)
+
 def loads(spec):
     from .core import Flow
 
@@ -57,5 +64,6 @@ def loads(spec):
         flow.add_task(task)
 
     load_flow_tasks_dependencies(flow)
-    # TBD: load variables
+    load_flow_default_vars(flow, flow_spec.get('variable', []))
+
     return flow
