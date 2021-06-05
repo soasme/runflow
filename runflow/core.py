@@ -80,11 +80,26 @@ class Task:
             return await command.run(context)
         raise ValueError(f"Invalid task type `{self.type}`")
 
+class SequentialRunner:
+
+    def __init__(self, flow):
+        self.flow = flow
+
+    async def run(self, context):
+        for task in self.flow:
+            result = await task.run(context)
+            for result_key, result_value in result.items():
+                context['task'][task.type][task.name][result_key] = result_value
+
 class Flow:
 
-    def __init__(self, name):
+    def __init__(self, name, runner_cls=None):
         self.name = name
         self.G = networkx.DiGraph()
+        self.runner = (runner_cls or SequentialRunner)(self)
+
+    def __iter__(self):
+        return reversed(list(networkx.topological_sort(self.G)))
 
     def add_task(self, task):
         self.G.add_node(task)
@@ -92,20 +107,16 @@ class Flow:
     def set_dependency(self, task, depends_on):
         self.G.add_edge(task, depends_on)
 
-    def __iter__(self):
-        return reversed(list(networkx.topological_sort(self.G)))
-
-    async def run(self, variables=None):
+    def make_run_context(self, variables=None):
         context = { 'var': variables or {}, 'task': {}}
         for task in self:
             context['task'].setdefault(task.type, {})
             context['task'][task.type][task.name] = task.payload
+        return context
 
-        for task in self:
-            # TBD: use asyncio.create_task: so they can run concurrently.
-            result = await task.run(context)
-            for result_key, result_value in result.items():
-                context['task'][task.type][task.name][result_key] = result_value
+    async def run(self, variables=None):
+        context = self.make_run_context(variables)
+        return await self.runner.run(context)
 
 
 def load_flow_tasks_from_spec(tasks_spec):
