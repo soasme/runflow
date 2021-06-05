@@ -3,16 +3,50 @@ import re
 import sys
 import logging
 import asyncio
+import enum
 
 import lark
 import hcl2
 import jinja2
 import networkx
 
-from .errors import RunflowReferenceError
+from .errors import RunflowReferenceError, RunflowTaskError
 
 logger = logging.getLogger(__name__)
 
+class TaskStatus(enum.Enum):
+    PENDING = enum.auto()
+    SUCCESS = enum.auto()
+    FAILED = enum.auto()
+
+class TaskResult:
+
+    def __init__(self, status):
+        self.status = status
+        self._result = None
+        self._exception = None
+
+    @property
+    def result(self):
+        if self._exception:
+            raise ValueError('Task has no result due to a failed run.')
+        return self._result
+
+    @result.setter
+    def result(self, _result):
+        self.status = TaskStatus.SUCCESS
+        self._result = _result
+
+    @property
+    def exception(self):
+        if self._result:
+            raise ValueError('Task has no exception due to a successful run.')
+        return self._exception
+
+    @exception.setter
+    def exception(self, _exception):
+        self.status = TaskStatus.FAILED
+        self._exception = _exception
 
 class Command:
 
@@ -33,15 +67,19 @@ class Command:
 
         if proc.returncode == 0:
             logger.info(f"Runflow command is successful: {self.command}")
+            return dict(
+                returncode=proc.returncode,
+                stdout=stdout,
+                stderr=stderr,
+            )
         else:
             logger.error(f"Runflow command is failed: {self.command}\n{stderr}")
+            raise RunflowTaskError(dict(
+                returncode=proc.returncode,
+                stdout=stdout,
+                stderr=stderr,
+            ))
 
-        # TBD: return a response, indicating task run status and result.
-        return dict(
-            returncode=proc.returncode,
-            stdout=stdout,
-            stderr=stderr,
-        )
 
 class Task:
 
@@ -71,7 +109,12 @@ class Task:
                 command = Command(command_tpl.render(context))
             except jinja2.exceptions.UndefinedError as e:
                 raise RunflowReferenceError(str(e).replace("'dict object'", f"{self}"))
-            return await command.run(context)
+            task_result = TaskResult(TaskStatus.PENDING)
+            try:
+                task_result.result = await command.run(context)
+            except Exception as e:
+                task_result.exception = e
+            return task_result
         raise ValueError(f"Invalid task type `{self.type}`")
 
 
@@ -81,9 +124,18 @@ class SequentialRunner:
         self.flow = flow
 
     async def run(self, context):
+        runnable = True
         for task in self.flow:
-            result = await task.run(context)
-            for result_key, result_value in result.items():
+            if not runnable:
+                logger.info('Task {task.name} is canceled due to previous task failed run.')
+                continue
+
+            task_result = await task.run(context)
+            if task_result.status == TaskStatus.FAILED:
+                runnable = False
+                continue
+
+            for result_key, result_value in task_result.result.items():
                 context['task'][task.type][task.name][result_key] = result_value
 
 class Flow:

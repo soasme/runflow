@@ -183,17 +183,56 @@ flow "hello-world" {
 def test_command_failed(tmpdir, capsys):
     flow = tmpdir / "test.rf"
     out = tmpdir / "out.txt"
+    out.write('definitely not hello world')
     flow.write("""
 flow "hello-world" {
+  variable "out" { default = "" }
   task "command" "echo" {
-    command = "/__path__/to/echo hello world"
+    command = "/__path__/to/echo hello world && echo hello world > ${var.out}"
   }
 }
     """)
 
-    runflow.runflow(flow, {'content': 'hello\nworld'})
-    out, err = capsys.readouterr()
-    print('out', out,  'err', err)
+    runflow.runflow(flow, {'out': str(out)})
+    assert out.read() == 'definitely not hello world'
+
+def test_command_passed_and_then_run_the_next_task(tmpdir, capsys):
+    flow = tmpdir / "test.rf"
+    out = tmpdir / "out.txt"
+    out.write('definitely not hello world')
+    flow.write("""
+flow "hello-world" {
+  variable "out" { default = "" }
+  task "command" "echo" {
+    command = "echo hello world"
+  }
+  task "command" "echo2" {
+    command = "echo hello world > ${var.out}"
+  }
+}
+    """)
+
+    runflow.runflow(flow, {'out': str(out)})
+    assert out.read() == 'hello world\n'
+
+def test_command_failed_canceling_the_next_task(tmpdir, capsys):
+    flow = tmpdir / "test.rf"
+    out = tmpdir / "out.txt"
+    out.write('definitely not hello world')
+    flow.write("""
+flow "hello-world" {
+  variable "out" { default = "" }
+  task "command" "echo" {
+    command = "/__path__/to/echo hello world"
+  }
+  task "command" "echo2" {
+    command = "echo hello world > ${var.out}"
+  }
+}
+    """)
+
+    runflow.runflow(flow, {'out': str(out)})
+    assert out.read() == 'definitely not hello world'
 
 def test_default_variable(tmpdir):
     flow = tmpdir / "test.rf"

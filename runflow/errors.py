@@ -6,3 +6,6 @@ class RunflowSyntaxError(RunflowError):
 
 class RunflowReferenceError(RunflowError):
     pass
+
+class RunflowTaskError(RunflowError):
+    pass
