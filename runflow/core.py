@@ -54,7 +54,6 @@ class Command:
         self.command = command
 
     async def run(self, context):
-        logger.info(f"Runflow command is started: {self.command}")
         proc = await asyncio.create_subprocess_shell(
             self.command,
             stdout=asyncio.subprocess.PIPE,
@@ -65,15 +64,15 @@ class Command:
         stdout = stdout.decode('utf-8').strip()
         stderr = stderr.decode('utf-8').strip()
 
+        print(stdout)
+
         if proc.returncode == 0:
-            logger.info(f"Runflow command is successful: {self.command}")
             return dict(
                 returncode=proc.returncode,
                 stdout=stdout,
                 stderr=stderr,
             )
         else:
-            logger.error(f"Runflow command is failed: {self.command}\n{stderr}")
             raise RunflowTaskError(dict(
                 returncode=proc.returncode,
                 stdout=stdout,
@@ -111,9 +110,12 @@ class Task:
                 raise RunflowReferenceError(str(e).replace("'dict object'", f"{self}"))
             task_result = TaskResult(TaskStatus.PENDING)
             try:
+                logger.info(f'Task "{self.name}" is started.')
                 task_result.result = await command.run(context)
+                logger.info(f'Task "{self.name}" is successful.')
             except Exception as e:
                 task_result.exception = e
+                logger.info(f'Task "{self.name}" is failed.')
             return task_result
         raise ValueError(f"Invalid task type `{self.type}`")
 

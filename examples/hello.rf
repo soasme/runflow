@@ -1,0 +1,6 @@
+# File: hello.rf
+flow "hello-world" {
+  task "command" "echo" {
+    command = "echo 'hello world'"
+  }
+}
