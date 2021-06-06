@@ -44,7 +44,7 @@ $ python3 -mvenv env
 $ source venv/bin/activate
 ```
 
-Run `pip install runflow` to install the latest version from [PyPI](https://pypi.python.org/pypi/jetflow).
+Run `pip install runflow` to install the latest version from [PyPI](https://pypi.org/project/runflow/).
 
 ```
 $ pip install runflow
