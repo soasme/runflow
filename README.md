@@ -29,8 +29,6 @@ Typically, you will
 
 You can choose whatever technology stack you’re familiar with and glue them using Runflow.
 
-(Screenshots)
-
 Alternatives: Airflow, Prefect, Oozie, Azkaban.
 
 ## Getting Started
@@ -85,17 +83,6 @@ Hello World!
 
 $ runflow run -var="content=Hello Runflow!"
 Hello Runflow!
-
-$ echo 'content = "Hello Runflow!' > input.vars
-$ runflow run -var-file="input.vars"
-Hello Runflow!
-
-$ runflow run --verbose
-[…] Job "example" is started.
-[…] Job "example" task "echo" is started.
-Hello World!
-[…] Job "example" task "echo" is successful.
-[…] Job "example" is successful.
 ```
 
 ### What’s Next? 
