@@ -117,3 +117,27 @@ hello aff8e7f9b236ef1f436c9f5ce4b9d532
 ```
 
 As your can see in the output above, despite of `greeter` being declared beneath `echo` block, it gets executed first.
+
+## Concepts
+
+Cool, we have walk through some examples and have first-hand experience on how Runflow is used.
+
+Let's take a break and refresh some concepts.
+
+### Flow
+
+A flow is a series of tasks that are performed in order.
+
+Runflow has a dependency graph of your flow and guarantees the tasks are run when the dependent tasks runs are successful.
+
+### Task
+
+A task is actual work.
+
+In general, each task is performing a logical step in your flow.
+
+### Variable
+
+A variable is a configurable value.
+
+A flow may accept some variables.
