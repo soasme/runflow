@@ -1,0 +1,11 @@
+{
+    "name": "runflow-docs",
+    "scripts": {
+        "dev": "vuepress dev docs",
+        "build": "vuepress build docs"
+    },
+    "devDependencies": {
+        "@vuepress/theme-blog": "^2.1.0",
+        "vuepress": "^1.3.0"
+    }
+}

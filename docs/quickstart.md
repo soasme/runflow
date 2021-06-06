@@ -7,7 +7,7 @@ installed Runflow.
 
 A minimal flow looks something like this:
 
-```hcl2
+```
 # File: hello.rf
 flow "hello-world" {
   task "command" "echo" {
@@ -37,7 +37,7 @@ hello world
 
 The flow can accept some dynamic variables:
 
-```hcl2
+```
 # File: hello-vars.rf
 flow "hello-world" {
   variable "greeter" {
