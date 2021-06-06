@@ -1,0 +1,9 @@
+# File: hello-vars.rf
+flow "hello-world" {
+  variable "greeter" {
+    default = "world"
+  }
+  task "command" "echo" {
+    command = "echo 'hello ${var.greeter}'"
+  }
+}
