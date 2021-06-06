@@ -9,3 +9,6 @@ class RunflowReferenceError(RunflowError):
 
 class RunflowTaskError(RunflowError):
     pass
+
+class RunflowAcyclicTasksError(RunflowError):
+    pass
