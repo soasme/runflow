@@ -76,5 +76,4 @@ Runflow is now installed.
 
 Next:
 
-* [Quick Start].
-* [Tutorial].
+* [Quick Start](quickstart.md).
