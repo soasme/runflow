@@ -1,8 +1,23 @@
 # ROAD MAP
 
-- [ ] Unregister worker when the lease expires.
-- [ ] Send heartbeat to backend database for workers.
-- [ ] Register worker to the backend database when started.
-- [ ] Support sqlite as the backend.
-- [ ] Start starlette and apscheduler.
-- [x] Can build a task via CLI.
+- [ ] docs: tutorial.
+- [ ] docs: internal - technical overview.
+- [ ] docs: integrate with celery.
+- [ ] docs: integrate with python-rq.
+- [ ] docs: integrate with pex.
+- [ ] docs: a flow app following 12-factor principle.
+- [ ] ecosys: implement editor highlight.
+- [ ] cli: support `runflow visualize xxx.rf`.
+- [ ] cli: support `runflow run --var-file`.
+- [ ] spec: variable type constraints.
+- [ ] task: command: integrate pexpect.
+- [ ] task: command: support sending stdin.
+- [ ] task: command: support env, cap_stdout, cap_stderr.
+- [ ] core: foreach map tasks.
+- [ ] core: conditional (braching) tasks.
+- [ ] core: implicit task dependency.
+- [x] core: acyclic task dependency detection. v0.1.1.
+- [x] core: cli entry point. v0.1.1.
+- [x] core: explicit task dependency. v0.1.0.
+- [x] core: initial command task implementation. v0.1.0.
+- [x] core: initial flow spec implementation. v0.1.0.
