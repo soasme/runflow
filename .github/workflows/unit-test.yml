@@ -1,0 +1,40 @@
+name: Unit Testing
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths-ignore:
+      - "**.md"
+      - "**.rst"
+      - LICENSE
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "**.rst"
+      - LICENSE
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.6', '3.7', '3.8', '3.9']
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python3 -mpip install -r requirements-dev.txt
+        python3 -mpip install -e .
+
+    - name: Build Package
+      run: |
+        pytest --cov=runflow --cov-report=term --cov-report=html tests
