@@ -4,7 +4,7 @@
 
 Runflow is a tool to define and run workflows. To find out more about Runflow, check out [runflow.org](https://runflow.org).
 
-Runflow supports Python (3.6, 3.7, 3.8, 3.9). 
+Runflow supports Python (3.7, 3.8, 3.9). 
 The main audiences are devops, data scientists and hackers.
 
 ## What Runflow is Not?
