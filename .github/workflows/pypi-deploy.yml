@@ -1,0 +1,31 @@
+name: Build and Publish Python Package
+on:
+  push:
+    tags:
+    - '*'
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+        architecture: 'x64'
+
+    - name: Install dependencies
+      run: |
+        python3 -mpip install -r requirements.txt
+        python3 -mpip install -r requirements-dev.txt
+
+    - name: Build Package
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run: |
+        rm -rf dist/
+        python3 -mbuild
+        python3 -mtwine upload dist/*
