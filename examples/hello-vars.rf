@@ -1,5 +1,5 @@
 # File: hello-vars.rf
-flow "hello-world" {
+flow "hello-vars" {
   variable "greeter" {
     default = "world"
   }

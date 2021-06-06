@@ -1,5 +1,5 @@
 # File: hello-deps.rf
-flow "hello-world" {
+flow "hello-deps" {
   task "command" "echo" {
     command = "echo 'hello ${task.command.greeter.stdout}'"
     depends_on = [

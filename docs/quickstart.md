@@ -39,7 +39,7 @@ The flow can accept some dynamic variables:
 
 ```
 # File: hello-vars.rf
-flow "hello-world" {
+flow "hello-vars" {
   variable "greeter" {
     default = "world"
   }
@@ -83,7 +83,7 @@ The flow can have multiple tasks, each may depending on another.
 
 ```
 # File: hello-deps.rf
-flow "hello-world" {
+flow "hello-deps" {
   task "command" "echo" {
     command = "echo 'hello ${task.command.greeter.stdout}'"
     depends_on = [
