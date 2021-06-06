@@ -7,6 +7,8 @@ Runflow is a tool to define and run workflows. To find out more about Runflow, c
 Runflow supports Python (3.6, 3.7, 3.8, 3.9). 
 The main audiences are devops, data scientists and hackers.
 
+Caveat: Runflow is in early development. Use at your own risk.
+
 ## What Runflow is Not?
 
 Runflow is not job scheduler. It does not schedule the job runs for you. However, you can combine Runflow with some existing scheduling solutions to run your job periodically, such as APScheduler, crontab, etc.
