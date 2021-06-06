@@ -91,7 +91,7 @@ Hello Runflow!
 
 From this point, you have run a minimal example using Runflow. You can head to the Tutorial section for further examples or the How-to guides section for some common tasks in using and configuring Runflow.
 
-Please read the full [documentation](https://docs.runflow.org/en/stable/) hosted on readthedocs.
+Please read the full [documentation](https://runflow.org).
 
 ## Test
 
