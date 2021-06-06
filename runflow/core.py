@@ -10,7 +10,10 @@ import hcl2
 import jinja2
 import networkx
 
-from .errors import RunflowReferenceError, RunflowTaskError
+from .errors import (
+    RunflowReferenceError, RunflowTaskError,
+    RunflowAcyclicTasksError,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -149,7 +152,10 @@ class Flow:
         self.vars = {}
 
     def __iter__(self):
-        return reversed(list(networkx.topological_sort(self.G)))
+        try:
+            return reversed(list(networkx.topological_sort(self.G)))
+        except networkx.exception.NetworkXUnfeasible as e:
+            raise RunflowAcyclicTasksError(str(e))
 
     @classmethod
     def from_spec(cls, string):

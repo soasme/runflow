@@ -249,3 +249,22 @@ flow "hello-world" {
     runflow.runflow(flow, {'out': str(out)})
 
     assert out.read() == '42\n'
+
+def test_acyclic_deps(tmpdir):
+    flow = tmpdir / "test.rf"
+    out = tmpdir / "out.txt"
+    flow.write("""
+flow "hello-world" {
+  task "command" "echo1" {
+    command = "echo ${ task.command.echo2.stdout }"
+    depends_on = [task.command.echo2]
+  }
+  task "command" "echo2" {
+    command = "echo ${ task.command.echo1.stdout }"
+    depends_on = [task.command.echo1]
+  }
+}
+    """)
+
+    with pytest.raises(runflow.RunflowAcyclicTasksError):
+        runflow.runflow(flow, {'out': str(out)})
