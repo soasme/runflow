@@ -76,3 +76,44 @@ $ runflow run hello-vars.rf --var greeter=runflow
 hello runflow
 [2021-06-06 11:59:23,540] Task "echo" is successful.
 ```
+
+## Task Dependencies
+
+The flow can have multiple tasks, each may depending on another.
+
+```
+# File: hello-deps.rf
+flow "hello-world" {
+  task "command" "echo" {
+    command = "echo 'hello ${task.command.greeter.stdout}'"
+    depends_on = [
+      task.command.greeter
+    ]
+  }
+
+  task "command" "greeter" {
+    command = "xxd -l16 -ps /dev/urandom"
+  }
+}
+```
+
+Save it as `hello-deps.rf` or something similar.
+
+Comparing it to `hello-vars.rf`:
+
+1. First we replace `greeter` to a task with command `xxd -l16 -ps /dev/urandom`. If you're curious what this would do, try it on your console - it will display some random alphabet digits.
+2. Next we replace `${var.greeter}` to `${task.command.greeter.stdout}`. It chains the greeter command's stdout to the `echo` command.
+3. At last we add a `depends_on` parameter, which explicitly declares the `echo` command depends on `task.command.greeter`. It makes sure `echo` command only run after `greeter` is successfully run.
+
+Let's run it with `runflow run`:
+
+```bash
+[2021-06-06 15:31:06,080] Task "greeter" is started.
+aff8e7f9b236ef1f436c9f5ce4b9d532
+[2021-06-06 15:31:06,090] Task "greeter" is successful.
+[2021-06-06 15:31:06,092] Task "echo" is started.
+hello aff8e7f9b236ef1f436c9f5ce4b9d532
+[2021-06-06 15:31:06,098] Task "echo" is successful.
+```
+
+As your can see in the output above, despite of `greeter` being declared beneath `echo` block, it gets executed first.
