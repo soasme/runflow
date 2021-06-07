@@ -77,6 +77,24 @@ flow "hello-world" {
 
     assert out.read() == 'hello world\n'
 
+def test_command_env3(tmpdir):
+    flow = tmpdir / "test.rf"
+    out = tmpdir / "out.txt"
+    flow.write(r"""
+flow "hello-id-env" {
+  task "command" "id" {
+    command = "xxd -l $LENGTH -ps /dev/urandom > ${var.out}"
+    env = {
+      LENGTH = 16 # LENGTH value is an integer.
+    }
+  }
+}
+    """)
+
+    runflow.runflow(flow, {'out': out})
+
+    assert len(out.read().strip()) == 32
+
 def test_multiple_hello_world(tmpdir):
     flow = tmpdir / "test.rf"
     out1 = tmpdir / "out1.txt"

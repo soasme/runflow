@@ -1,3 +1,4 @@
+import traceback
 import argparse
 import re
 import sys
@@ -56,7 +57,7 @@ class Command:
 
     def __init__(self, command, env):
         self.command = command
-        self.env = env
+        self.env = {k: str(v) for k, v in env.items()}
 
     async def run(self, context):
         proc = await asyncio.create_subprocess_shell(
@@ -119,6 +120,7 @@ class Task:
             except Exception as e:
                 task_result.exception = e
                 logger.info(f'Task "{self.name}" is failed.')
+                traceback.print_exc()
             return task_result
         raise ValueError(f"Invalid task type `{self.type}`")
 
