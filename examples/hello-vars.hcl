@@ -1,4 +1,4 @@
-# File: hello-vars.rf
+# File: hello-vars.hcl
 flow "hello-vars" {
   variable "greeter" {
     default = "world"

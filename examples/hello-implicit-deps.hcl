@@ -1,3 +1,4 @@
+# File: hello-implicit-deps.hcl
 flow "hello-implicit-deps" {
   task "command" "echo" {
     command = "echo 'hello ${task.command.greeter.stdout}'"

@@ -54,16 +54,16 @@ To install the HEAD, run `pip install git+https://github.com/soasme/runflow.git`
 
 ### Write a Flow Spec
 
-Next, write a flow spec. Let’s create a file "example.rf":
+Next, write a flow spec. Let’s create a file "example.hcl":
 
 ```
 $ mkdir myrunflow
 $ cd myrunflow
-$ vi example.rf
+$ vi example.hcl
 ```
 
 ```
-# Content of example.rf
+# File: example.hcl
 flow "example" {
   variable "content" {
     default = "Hello World!"

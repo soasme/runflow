@@ -7,16 +7,9 @@ installed Runflow.
 
 A minimal flow looks something like this:
 
-```
-# File: hello.rf
-flow "hello-world" {
-  task "command" "echo" {
-    command = "echo 'hello world'"
-  }
-}
-```
+<<< @/examples/hello.hcl
 
-Save it as `hello.rf` or something similar.
+Save it as `hello.hcl` or something similar.
 
 Let's break down the code.
 
@@ -27,7 +20,7 @@ Let's break down the code.
 To run the flow, use the `runflow` command or `python3 -m runflow`.
 
 ```bash
-$ runflow run hello.rf
+$ runflow run hello.hcl
 [2021-06-06 11:51:04,151] Task "echo" is started.
 hello world
 [2021-06-06 11:51:04,158] Task "echo" is successful.
@@ -37,21 +30,11 @@ hello world
 
 The flow can accept some dynamic variables:
 
-```
-# File: hello-vars.rf
-flow "hello-vars" {
-  variable "greeter" {
-    default = "world"
-  }
-  task "command" "echo" {
-    command = "echo 'hello ${var.greeter}'"
-  }
-}
-```
+<<< @/examples/hello-vars.hcl
 
-Save it as `hello-vars.rf` or something similar.
+Save it as `hello-vars.hcl` or something similar.
 
-Comparing to `hello.rf`:
+Comparing to `hello.hcl`:
 
 1. First we introduced a `variable` block with the name `greeter`.
 2. Next we say the variable has a default value `"world"`.
@@ -62,7 +45,7 @@ Comparing to `hello.rf`:
 To run the flow with the default variables:
 
 ```bash
-$ runflow run hello-vars.rf
+$ runflow run hello-vars.hcl
 [2021-06-06 11:58:14,355] Task "echo" is started.
 hello world
 [2021-06-06 11:58:14,362] Task "echo" is successful.
@@ -71,7 +54,7 @@ hello world
 To provide the task run with a different variable, use `--var`:
 
 ```bash
-$ runflow run hello-vars.rf --var greeter=runflow
+$ runflow run hello-vars.hcl --var greeter=runflow
 [2021-06-06 11:59:23,533] Task "echo" is started.
 hello runflow
 [2021-06-06 11:59:23,540] Task "echo" is successful.
@@ -81,25 +64,11 @@ hello runflow
 
 The flow can have multiple tasks, each may depending on another.
 
-```
-# File: hello-deps.rf
-flow "hello-deps" {
-  task "command" "echo" {
-    command = "echo 'hello ${task.command.greeter.stdout}'"
-    depends_on = [
-      task.command.greeter
-    ]
-  }
+<<< @/examples/hello-deps.hcl
 
-  task "command" "greeter" {
-    command = "xxd -l16 -ps /dev/urandom"
-  }
-}
-```
+Save it as `hello-deps.hcl` or something similar.
 
-Save it as `hello-deps.rf` or something similar.
-
-Comparing it to `hello-vars.rf`:
+Comparing it to `hello-vars.hcl`:
 
 1. First we replace `greeter` to a task with command `xxd -l16 -ps /dev/urandom`. If you're curious what this would do, try it on your console - it will display some random alphabet digits.
 2. Next we replace `${var.greeter}` to `${task.command.greeter.stdout}`. It chains the greeter command's stdout to the `echo` command.
@@ -122,21 +91,9 @@ As your can see in the output above, despite of `greeter` being declared beneath
 
 To make your life easier, Runflow is smart enough to detect the implicit task dependencies if task references are used in other tasks.
 
-For example, `hello-deps.rf` does not need `depends_on` block at all, because the template variable `${task.command.greeter.stdout}` makes it very clear that task "echo" relies on task "greeter".
+For example, `hello-deps.hcl` does not need `depends_on` block at all, because the template variable `${task.command.greeter.stdout}` makes it very clear that task "echo" relies on task "greeter".
 
-
-```
-# File: hello-implicit-deps.rf
-flow "hello-implicit-deps" {
-  task "command" "echo" {
-    command = "echo 'hello ${task.command.greeter.stdout}'"
-  }
-
-  task "command" "greeter" {
-    command = "xxd -l16 -ps /dev/urandom"
-  }
-}
-```
+<<< @/examples/hello-implicit-deps.hcl
 
 Let's run it with `runflow run`:
 

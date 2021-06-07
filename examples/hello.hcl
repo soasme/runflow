@@ -1,4 +1,4 @@
-# File: hello.rf
+# File: hello.hcl
 flow "hello-world" {
   task "command" "echo" {
     command = "echo 'hello world'"
