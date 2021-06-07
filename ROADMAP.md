@@ -10,9 +10,14 @@
 - [ ] cli: support `runflow visualize xxx.rf`.
 - [ ] cli: support `runflow run --var-file`.
 - [ ] spec: variable type constraints.
+- [ ] task: docker: eval python code.
+- [ ] task: python: eval python code.
 - [ ] task: command: integrate pexpect.
 - [ ] task: command: support sending stdin.
 - [ ] task: command: cap_stdout, cap_stderr.
+- [ ] core: retry running failed tasks.
+- [ ] core: cache flow results locally in a file ".state".
+- [ ] core: conditions: all_passed, all_failed, all_done, any_passed, any_failed, any_done.
 - [ ] core: foreach map tasks.
 - [ ] core: conditional (braching) tasks.
 - [x] task: command: support env. v0.2.0.
