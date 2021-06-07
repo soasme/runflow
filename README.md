@@ -13,7 +13,7 @@ Caveat: Runflow is in early development. Use at your own risk.
 
 Runflow is not job scheduler. It does not schedule the job runs for you. However, you can combine Runflow with some existing scheduling solutions to run your job periodically, such as APScheduler, crontab, etc.
 
-Runflow is not a job worker. It does not watching workloads from somewhere such as job queue. When the job run is complete, the program exits. Nonetheless, it's quite easy to integrate Runflow with some existing worker solutions, such as Celery, Python-RQ, etc.
+Runflow is not a job worker. It does not watch workloads from somewhere such as job queue. When the job run is complete, the program exits. Nonetheless, it's quite easy to integrate Runflow with some existing worker solutions, such as Celery, Python-RQ, etc.
 
 ## Goals
 
