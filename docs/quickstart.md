@@ -77,7 +77,7 @@ hello runflow
 [2021-06-06 11:59:23,540] Task "echo" is successful.
 ```
 
-## Task Dependencies
+## Task Dependency
 
 The flow can have multiple tasks, each may depending on another.
 
@@ -117,6 +117,37 @@ hello aff8e7f9b236ef1f436c9f5ce4b9d532
 ```
 
 As your can see in the output above, despite of `greeter` being declared beneath `echo` block, it gets executed first.
+
+## Implicit Task Dependency
+
+To make your life easier, Runflow is smart enough to detect the implicit task dependencies if task references are used in other tasks.
+
+For example, `hello-deps.rf` does not need `depends_on` block at all, because the template variable `${task.command.greeter.stdout}` makes it very clear that task "echo" relies on task "greeter".
+
+
+```
+# File: hello-implicit-deps.rf
+flow "hello-implicit-deps" {
+  task "command" "echo" {
+    command = "echo 'hello ${task.command.greeter.stdout}'"
+  }
+
+  task "command" "greeter" {
+    command = "xxd -l16 -ps /dev/urandom"
+  }
+}
+```
+
+Let's run it with `runflow run`:
+
+```bash
+[2021-06-07 16:11:56,782] Task "greeter" is started.
+bbd43baa501af05103cdd1ea2e6d9ffa
+[2021-06-07 16:11:56,798] Task "greeter" is successful.
+[2021-06-07 16:11:56,800] Task "echo" is started.
+hello bbd43baa501af05103cdd1ea2e6d9ffa
+[2021-06-07 16:11:56,806] Task "echo" is successful.
+```
 
 ## Concepts
 
