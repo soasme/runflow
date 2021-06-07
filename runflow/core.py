@@ -1,3 +1,4 @@
+import traceback
 import argparse
 import re
 import sys
@@ -14,6 +15,7 @@ from .errors import (
     RunflowReferenceError, RunflowTaskError,
     RunflowAcyclicTasksError,
 )
+from . import utils
 
 logger = logging.getLogger(__name__)
 
@@ -53,14 +55,16 @@ class TaskResult:
 
 class Command:
 
-    def __init__(self, command):
+    def __init__(self, command, env):
         self.command = command
+        self.env = {k: str(v) for k, v in env.items()}
 
     async def run(self, context):
         proc = await asyncio.create_subprocess_shell(
             self.command,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            env=self.env,
         )
 
         stdout, stderr = await proc.communicate()
@@ -101,14 +105,11 @@ class Task:
 
     async def run(self, context):
         if self.type == 'command':
-            command_tpl = jinja2.Template(
-                self.payload['command'],
-                variable_start_string="${",
-                variable_end_string="}",
-                undefined=jinja2.StrictUndefined,
-            )
             try:
-                command = Command(command_tpl.render(context))
+                command = Command(
+                    utils.render(self.payload['command'], context),
+                    utils.render(self.payload.get('env', {}), context),
+                )
             except jinja2.exceptions.UndefinedError as e:
                 raise RunflowReferenceError(str(e).replace("'dict object'", f"{self}"))
             task_result = TaskResult(TaskStatus.PENDING)
@@ -119,6 +120,7 @@ class Task:
             except Exception as e:
                 task_result.exception = e
                 logger.info(f'Task "{self.name}" is failed.')
+                traceback.print_exc()
             return task_result
         raise ValueError(f"Invalid task type `{self.type}`")
 
