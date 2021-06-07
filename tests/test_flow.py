@@ -82,6 +82,24 @@ flow "hello-world" {
     assert out1.read() == 'hello world2\n'
     assert out2.read() == 'hello world2\n'
 
+def test_implicit_depends_on(tmpdir):
+    flow = tmpdir / "test.rf"
+    out = tmpdir / "out.txt"
+    flow.write("""
+flow "hello-world" {
+  task "command" "out1" {
+    command = "echo ${task.command.out2.stdout} > ${var.out}"
+  }
+  task "command" "out2" {
+    command = "echo hello world2"
+  }
+}
+    """)
+
+    runflow.runflow(flow, {'out': out})
+
+    assert out.read() == 'hello world2\n'
+
 def test_depends_on_must_be_a_task(tmpdir):
     flow = tmpdir / "test.rf"
     out1 = tmpdir / "out1.txt"

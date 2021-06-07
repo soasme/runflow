@@ -16,26 +16,75 @@ def load_flow_tasks_from_spec(tasks_spec):
 
         yield Task(task_type, task_name, task_payload)
 
+def load_task_by_task_reference(flow, depends_on):
+    m = re.match(r"\${([^}]+)}", depends_on)
+    if not m:
+        raise RunflowSyntaxError(
+            f"Task parameter \"depends_on\" should "
+            f"refer to a valid task: {depends_on}"
+        )
+
+    task_key = m.group(1).strip()
+    task_key = task_key.split('.')
+    if task_key[0] != 'task':
+        raise RunflowSyntaxError(
+            f"Task parameter \"depends_on\" should refer to a valid task: {depends_on}"
+        )
+
+    task_dependency = next(t for t in flow.G.nodes if t.name == task_key[2])
+    if task_dependency.type != task_key[1]:
+        raise RunflowSyntaxError(
+            f'Task parameter "depends_on" {depends_on}, '
+            f'but task {task_key[2]} is of type {task_key[1]}'
+        )
+
+    return task_dependency
+
+def load_flow_explicit_tasks_dependencies(flow, task):
+    for depends_on in task.payload.get('depends_on', []):
+        yield load_task_by_task_reference(flow, depends_on)
+
+def _load_flow_implicit_tasks_dependencies(deps_set, value):
+    if isinstance(value, str):
+        task_keys = re.findall(r"\${([^}]+)}", value)
+        if not task_keys:
+            return
+        for task_key in task_keys:
+            if not task_key.startswith('task.'):
+                continue
+            deps_set.add(task_key)
+
+    elif isinstance(value, list):
+        for _value in value:
+            _load_flow_implicit_tasks_dependencies(deps_set, _value)
+
+    elif isinstance(value, dict):
+        for _value in value.values():
+            _load_flow_implicit_tasks_dependencies(deps_set, _value)
+
+def load_flow_implicit_tasks_dependencies(flow, task):
+    deps_set = set()
+    for key, value in task.payload.items():
+        if key == 'depends_on':
+            continue
+        _load_flow_implicit_tasks_dependencies(deps_set, value)
+    for task_key in deps_set:
+        task_key = task_key.split('.')
+        task_dependency = next(t for t in flow.G.nodes if t.name == task_key[2])
+        if task_dependency.type != task_key[1]:
+            raise RunflowSyntaxError(
+                f'Task parameter "depends_on" {depends_on}, '
+                f'but task {task_key[2]} is of type {task_key[1]}'
+            )
+
+        yield task_dependency
+
 def load_flow_tasks_dependencies(flow):
     for task in flow.G.nodes:
-        for depends_on in task.payload.get('depends_on', []):
-            m = re.match(r"\${([^}]+)}", depends_on)
-            if not m:
-                raise RunflowSyntaxError(
-                    f"Task parameter \"depends_on\" should refer to a valid task: {depends_on}"
-                )
-            task_key = m.group(1).strip()
-            task_key = task_key.split('.')
-            if task_key[0] != 'task':
-                raise RunflowSyntaxError(
-                    f"Task parameter \"depends_on\" should refer to a valid task: {depends_on}"
-                )
-            task_dependency = next(t for t in flow.G.nodes if t.name == task_key[2])
-            if task_dependency.type != task_key[1]:
-                raise RunflowSyntaxError(
-                    f'Task parameter "depends_on" {depends_on}, '
-                    f'but task {task_key[2]} is of type {task_key[1]}'
-                )
+        for task_dependency in load_flow_explicit_tasks_dependencies(flow, task):
+            flow.set_dependency(task, task_dependency)
+
+        for task_dependency in load_flow_implicit_tasks_dependencies(flow, task):
             flow.set_dependency(task, task_dependency)
 
 def load_flow_default_vars(flow, vars_spec):
