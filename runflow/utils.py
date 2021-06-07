@@ -10,9 +10,9 @@ def render(source, context):
         )
         return tpl.render(context)
     elif isinstance(source, list):
-        return [render(s) for s in source]
+        return [render(s, context) for s in source]
     elif isinstance(source, dict):
-        return {k: render(v) for k, v in source.items()}
+        return {k: render(v, context) for k, v in source.items()}
     elif isinstance(source, int):
         return source
     else:

@@ -107,7 +107,7 @@ class Task:
             try:
                 command = Command(
                     utils.render(self.payload['command'], context),
-                    self.payload.get('env', {}),
+                    utils.render(self.payload.get('env', {}), context),
                 )
             except jinja2.exceptions.UndefinedError as e:
                 raise RunflowReferenceError(str(e).replace("'dict object'", f"{self}"))
