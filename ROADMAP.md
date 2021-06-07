@@ -12,12 +12,13 @@
 - [ ] spec: variable type constraints.
 - [ ] task: command: integrate pexpect.
 - [ ] task: command: support sending stdin.
-- [ ] task: command: support env, cap_stdout, cap_stderr.
+- [ ] task: command: cap_stdout, cap_stderr.
 - [ ] core: foreach map tasks.
 - [ ] core: conditional (braching) tasks.
-- [ ] core: implicit task dependency.
-- [x] core: acyclic task dependency detection. v0.1.1.
-- [x] core: cli entry point. v0.1.1.
+- [x] task: command: support env. v0.2.0.
+- [x] core: implicit task dependency. v0.2.0.
+- [x] core: acyclic task dependency detection. v0.2.0.
+- [x] core: cli entry point. v0.2.0.
 - [x] core: explicit task dependency. v0.1.0.
 - [x] core: initial command task implementation. v0.1.0.
 - [x] core: initial flow spec implementation. v0.1.0.

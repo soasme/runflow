@@ -14,6 +14,7 @@ from .errors import (
     RunflowReferenceError, RunflowTaskError,
     RunflowAcyclicTasksError,
 )
+from . import utils
 
 logger = logging.getLogger(__name__)
 
@@ -53,14 +54,16 @@ class TaskResult:
 
 class Command:
 
-    def __init__(self, command):
+    def __init__(self, command, env):
         self.command = command
+        self.env = env
 
     async def run(self, context):
         proc = await asyncio.create_subprocess_shell(
             self.command,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
+            env=self.env,
         )
 
         stdout, stderr = await proc.communicate()
@@ -101,14 +104,11 @@ class Task:
 
     async def run(self, context):
         if self.type == 'command':
-            command_tpl = jinja2.Template(
-                self.payload['command'],
-                variable_start_string="${",
-                variable_end_string="}",
-                undefined=jinja2.StrictUndefined,
-            )
             try:
-                command = Command(command_tpl.render(context))
+                command = Command(
+                    utils.render(self.payload['command'], context),
+                    self.payload.get('env', {}),
+                )
             except jinja2.exceptions.UndefinedError as e:
                 raise RunflowReferenceError(str(e).replace("'dict object'", f"{self}"))
             task_result = TaskResult(TaskStatus.PENDING)

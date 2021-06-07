@@ -41,6 +41,42 @@ flow "hello-world" {
 
     assert out.read() == 'hello world\n'
 
+def test_command_env(tmpdir):
+    flow = tmpdir / "test.rf"
+    out = tmpdir / "out.txt"
+    flow.write(r"""
+flow "hello-world" {
+  task "command" "echo" {
+    command = "echo hello $GREETER > ${var.out}"
+    env = {
+        GREETER = "world"
+    }
+  }
+}
+    """)
+
+    runflow.runflow(flow, {'out': out})
+
+    assert out.read() == 'hello world\n'
+
+def test_command_env2(tmpdir):
+    flow = tmpdir / "test.rf"
+    out = tmpdir / "out.txt"
+    flow.write(r"""
+flow "hello-world" {
+  task "command" "echo" {
+    command = "echo hello $GREETER > ${var.out}"
+    env = {
+        "GREETER" = "world"
+    }
+  }
+}
+    """)
+
+    runflow.runflow(flow, {'out': out})
+
+    assert out.read() == 'hello world\n'
+
 def test_multiple_hello_world(tmpdir):
     flow = tmpdir / "test.rf"
     out1 = tmpdir / "out1.txt"
