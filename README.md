@@ -1,5 +1,26 @@
 # Runflow
 
+<p align="center">
+  <a href="https://github.com/soasme/runflow/releases">
+    <img alt="GitHub release (latest by semver)" src="https://img.shields.io/github/v/release/soasme/runflow?color=%2360be86&label=Latest%20release&style=for-the-badge&sort=semver">
+  </a>
+  <a href="LICENSE">
+    <img alt="GitHub" src="https://img.shields.io/github/license/soasme/runflow?color=%2360be86&style=for-the-badge">
+  </a>
+  <a href="https://github.com/soasme/runflow/actions">
+    <img alt="GitHub branch checks state" src="https://img.shields.io/github/checks-status/soasme/runflow/main?color=%2360be86&style=for-the-badge">
+  </a>
+    
+</p>
+<p align="center">
+  <a href="https://github.com/soasme/runflow/graphs/contributors">
+    <img alt="GitHub contributors" src="https://img.shields.io/github/contributors-anon/soasme/runflow?color=%2360be86&style=for-the-badge">
+  </a> 
+  <a href="https://github.com/soasme/runflow/stargazers">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/soasme/runflow?color=%2360be86&label=github%20stars&style=for-the-badge">
+  </a>
+</p>
+
 ## What Runflow is?
 
 Runflow is a tool to define and run workflows. To find out more about Runflow, check out [runflow.org](https://runflow.org).
