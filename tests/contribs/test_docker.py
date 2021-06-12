@@ -1,4 +1,5 @@
 import pytest
+import docker
 import runflow
 
 def test_docker_hello_world(tmpdir):
@@ -76,3 +77,22 @@ flow "docker-entrypoint" {
     runflow.runflow(flow, {'out': out})
 
     assert out.read() == 'runflow is awesome\n'
+
+def test_docker_container_failed_run(tmpdir, capsys):
+    flow = tmpdir / "test.rf"
+    flow.write("""
+flow "docker-entrypoint" {
+  variable "out" {
+    default = ""
+  }
+
+  task "docker_run" "exit" {
+    image       = "ubuntu:latest"
+    command     = "/bin/bash -c 'exit 1'"
+  }
+}
+    """)
+
+    runflow.runflow(flow, {})
+    out, err = capsys.readouterr()
+    assert 'docker.errors.ContainerError' in err

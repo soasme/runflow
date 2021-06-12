@@ -63,3 +63,22 @@ $ runflow run docker-entrypoint.hcl --var out=/tmp/out.txt
 $ cat /tmp/out.txt
 runflow is awesome
 ```
+
+## Failed Execution
+
+When the docker container exits with non-zero code, the task run is marked as failed.
+
+<<< @/examples/docker-failed-run.hcl
+
+Run:
+
+```
+$ runflow run examples/docker-failed-run.hcl
+[2021-06-12 15:41:02,979] Task "exit" is started.
+[2021-06-12 15:41:03,496] Task "exit" is failed.
+Traceback (most recent call last):
+... (truncated)
+docker.errors.ContainerError: Command '/bin/bash -c 'exit 1'' in image 'ubuntu:latest' returned non-zero exit status 1: b''
+```
+
+If you want the task to keep running, please wrap up your script to recover the error.
