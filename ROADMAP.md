@@ -15,6 +15,7 @@
 - [ ] task: call another local flow.
 - [ ] task: python: eval python code.
 - [ ] task: http
+- [ ] task: file_write: b64_content for binary data.
 - [ ] task: command: integrate pexpect.
 - [ ] task: command: support sending stdin.
 - [ ] task: command: cap_stdout, cap_stderr.
