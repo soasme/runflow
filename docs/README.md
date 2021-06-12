@@ -11,5 +11,7 @@ Welcome to Runflow's documentation.
 * Tutorial: Run [File Write](tasks/file-write.md) Tasks.
 * Tutorial: Run [File Read](tasks/file-read.md) Tasks.
 * Tutorial: Run [Http Request](tasks/http-request.md) Tasks.
+* Tutorial: Run [Sqlite3 Exec](tasks/sqlite3-exec.md) Tasks.
+* Tutorial: Run [Sqlite3 Row](tasks/sqlite3-row.md) Tasks.
 * Tutorial: Run [Template](tasks/template.md) Tasks.
 * Advanced Usage: Use [Python API](python-api.md).
