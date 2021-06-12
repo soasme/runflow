@@ -122,6 +122,27 @@ class Task:
                 logger.info(f'Task "{self.name}" is failed.')
                 traceback.print_exc()
             return task_result
+        elif self.type == 'docker_run':
+            from runflow.contribs.docker import DockerContainerTask
+            payload = dict(self.payload)
+            try:
+                task = DockerContainerTask(
+                    image=utils.render(payload.pop('image'), context),
+                    command=utils.render(payload.pop('command', None), context),
+                    **utils.render(payload, context)
+                )
+            except jinja2.exceptions.UndefinedError as e:
+                raise RunflowReferenceError(str(e).replace("'dict object'", f"{self}"))
+            task_result = TaskResult(TaskStatus.PENDING)
+            try:
+                logger.info(f'Task "{self.name}" is started.')
+                task_result.result = await task.run(context)
+                logger.info(f'Task "{self.name}" is successful.')
+            except Exception as e:
+                task_result.exception = e
+                logger.info(f'Task "{self.name}" is failed.')
+                traceback.print_exc()
+            return task_result
         raise ValueError(f"Invalid task type `{self.type}`")
 
 
@@ -134,7 +155,7 @@ class SequentialRunner:
         runnable = True
         for task in self.flow:
             if not runnable:
-                logger.info('Task {task.name} is canceled due to previous task failed run.')
+                logger.info(f'Task {task.name} is canceled due to previous task failed run.')
                 continue
 
             task_result = await task.run(context)
