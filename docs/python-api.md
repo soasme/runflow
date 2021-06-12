@@ -33,6 +33,6 @@ Run this flow:
 
 ```python
 >>> import asyncio
->>> asyncio.run(flow.run(variables={}))
+>>> asyncio.run(flow.run(vars={}))
 hello world
 ```
