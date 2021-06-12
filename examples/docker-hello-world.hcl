@@ -9,7 +9,8 @@ flow "docker-hello-world" {
     command = "echo hello world"
   }
 
-  task "command" "save" {
-    command = "echo '${task.docker_run.echo.stdout}' > ${var.out}"
+  task "file_write" "hello-world" {
+    filename = var.out
+    content = task.docker_run.echo.stdout
   }
 }

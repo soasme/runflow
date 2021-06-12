@@ -80,9 +80,18 @@ class Task:
         if self.type == 'command':
             from runflow.contribs.command import CommandTask
             task = CommandTask(payload['command'], payload.get('env', {}))
+
         elif self.type == 'docker_run':
             from runflow.contribs.docker import DockerRunTask
             task = DockerRunTask(**payload)
+
+        elif self.type == 'file_read':
+            from runflow.contribs.local_file import LocalFileReadTask
+            task = LocalFileReadTask(payload['filename'])
+
+        elif self.type == 'file_write':
+            from runflow.contribs.local_file import LocalFileWriteTask
+            task = LocalFileWriteTask(payload['filename'], payload['content'])
         else:
             raise ValueError(f"Invalid task type `{self.type}`")
 
@@ -114,8 +123,7 @@ class SequentialRunner:
                 runnable = False
                 continue
 
-            for result_key, result_value in task_result.result.items():
-                context['task'][task.type][task.name][result_key] = result_value
+            context['task'][task.type][task.name] = task_result.result
 
 class Flow:
 
