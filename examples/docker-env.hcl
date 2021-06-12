@@ -4,7 +4,7 @@ flow "docker-env" {
     default = ""
   }
 
-  task "docker_run" "echo" {
+  task "docker_run" "this" {
     image   = "ubuntu:latest"
     command = "env"
     environment = {
@@ -12,8 +12,8 @@ flow "docker-env" {
     }
   }
 
-  task "command" "save" {
-    command = "echo '${task.docker_run.echo.stdout}' > ${var.out}"
+  task "file_write" "this" {
+    filename = var.out
+    content = task.docker_run.this.stdout
   }
 }
-
