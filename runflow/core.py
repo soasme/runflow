@@ -53,40 +53,6 @@ class TaskResult:
         self.status = TaskStatus.FAILED
         self._exception = _exception
 
-class Command:
-
-    def __init__(self, command, env):
-        self.command = command
-        self.env = {k: str(v) for k, v in env.items()}
-
-    async def run(self, context):
-        proc = await asyncio.create_subprocess_shell(
-            self.command,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-            env=self.env,
-        )
-
-        stdout, stderr = await proc.communicate()
-        stdout = stdout.decode('utf-8').strip()
-        stderr = stderr.decode('utf-8').strip()
-
-        if stdout: print(stdout)
-
-        if proc.returncode == 0:
-            return dict(
-                returncode=proc.returncode,
-                stdout=stdout,
-                stderr=stderr,
-            )
-        else:
-            raise RunflowTaskError(dict(
-                returncode=proc.returncode,
-                stdout=stdout,
-                stderr=stderr,
-            ))
-
-
 class Task:
 
     def __init__(self, type, name, payload):
@@ -112,10 +78,11 @@ class Task:
         task_result = TaskResult(TaskStatus.PENDING)
 
         if self.type == 'command':
-            task = Command(payload['command'], payload.get('env', {}))
+            from runflow.contribs.command import CommandTask
+            task = CommandTask(payload['command'], payload.get('env', {}))
         elif self.type == 'docker_run':
-            from runflow.contribs.docker import DockerContainerTask
-            task = DockerContainerTask(**payload)
+            from runflow.contribs.docker import DockerRunTask
+            task = DockerRunTask(**payload)
         else:
             raise ValueError(f"Invalid task type `{self.type}`")
 

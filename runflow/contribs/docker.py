@@ -6,7 +6,7 @@ except ImportError:
     print("Please install Python package `docker` to use task of type `docker`.")
     docker = None
 
-class DockerContainerTask:
+class DockerRunTask:
 
     def __init__(self, image, command=None, **kwargs):
         self.image = image
