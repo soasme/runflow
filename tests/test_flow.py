@@ -340,3 +340,11 @@ flow "hello-world" {
 
     with pytest.raises(runflow.RunflowAcyclicTasksError):
         runflow.runflow(flow, {'out': str(out)})
+
+def test_render_template(tmpdir):
+    flow = tmpdir / "test.rf"
+    out = tmpdir / "out.txt"
+    with open('examples/template.hcl') as f:
+        flow.write(f.read())
+    runflow.runflow(flow, {'out': str(out)})
+    assert out.read() == f'42\n42\n{out}'
