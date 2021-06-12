@@ -14,6 +14,16 @@
 - [ ] task: call another remote flow (using http link).
 - [ ] task: call another local flow.
 - [ ] task: datetime.
+- [ ] task: dynamodb.
+- [ ] task: cloudwatch.
+- [ ] task: s3.
+- [ ] task: redis.
+- [ ] task: prometheus.
+- [ ] task: influxdb.
+- [ ] task: elasticsearch.
+- [ ] task: mysql.
+- [ ] task: postgres.
+- [ ] task: papermill.
 - [ ] task: python: eval python code.
 - [ ] task: file_write: b64_content for binary data.
 - [ ] task: command: integrate pexpect.
