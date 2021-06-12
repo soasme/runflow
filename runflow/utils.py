@@ -1,3 +1,6 @@
+import sys
+import asyncio
+
 import jinja2
 
 def render(source, context):
@@ -17,3 +20,10 @@ def render(source, context):
         return source
     else:
         raise ValueError(f"Invalid template source: {source}")
+
+async def to_thread(f, *args, **kwargs):
+    if sys.version_info[0] == 3 and sys.version_info[1] < 9:
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(None, lambda: f(*args, **kwargs))
+    else:
+        return await asyncio.to_thread(f, *args, **kwargs)
