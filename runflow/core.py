@@ -105,6 +105,14 @@ class Task:
             from runflow.contribs.http import HttpRequestTask
             task = HttpRequestTask(**payload)
 
+        elif self.type == 'sqlite3_exec':
+            from runflow.contribs.sqlite3 import Sqlite3ExecTask
+            task = Sqlite3ExecTask(**payload)
+
+        elif self.type == 'sqlite3_row':
+            from runflow.contribs.sqlite3 import Sqlite3RowTask
+            task = Sqlite3RowTask(**payload)
+
         else:
             raise ValueError(f"Invalid task type `{self.type}`")
 
