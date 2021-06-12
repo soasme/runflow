@@ -13,6 +13,7 @@
 - [ ] task: call another remote flow (using python module).
 - [ ] task: call another remote flow (using http link).
 - [ ] task: call another local flow.
+- [ ] task: datetime.
 - [ ] task: python: eval python code.
 - [ ] task: http
 - [ ] task: file_write: b64_content for binary data.
@@ -20,12 +21,12 @@
 - [ ] task: command: support sending stdin.
 - [ ] task: command: cap_stdout, cap_stderr.
 - [ ] spec: output
-- [ ] core: unify variables,vars.
 - [ ] core: retry running failed tasks.
 - [ ] core: cache flow results locally in a file ".state".
 - [ ] core: conditions: all_passed, all_failed, all_done, any_passed, any_failed, any_done.
 - [ ] core: foreach map tasks.
 - [ ] core: conditional (braching) tasks.
+- [x] core: unify variables,vars. v0.3.0
 - [x] task: template. v0.3.0.
 - [x] task: file_read. v0.3.0.
 - [x] task: file_write. v0.3.0.
