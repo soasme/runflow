@@ -6,6 +6,6 @@ Welcome to Runflow's documentation.
 
 * Get started with [Installation](installation.md).
 * Get an overview with the [Quick Start](quickstart.md).
-* Tasks - [Command](tasks/command.md).
-* Tasks - [Docker Run](tasks/docker-run.md).
-* Advanced Usage: use [Python API](python-api.md).
+* Tutorial: Run [Command](tasks/command.md) Tasks.
+* Tutorial: Run [Docker Container](tasks/docker-run.md) Tasks.
+* Advanced Usage: Use [Python API](python-api.md).
