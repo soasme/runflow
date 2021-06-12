@@ -26,6 +26,8 @@
 - [ ] core: conditions: all_passed, all_failed, all_done, any_passed, any_failed, any_done.
 - [ ] core: foreach map tasks.
 - [ ] core: conditional (braching) tasks.
+- [x] task: sqlite3_row. v0.4.0.
+- [x] task: sqlite3_exec. v0.4.0.
 - [x] task: http. v0.4.0.
 - [x] core: unify variables,vars. v0.3.0
 - [x] task: template. v0.3.0.
