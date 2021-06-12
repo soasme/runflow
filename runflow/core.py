@@ -96,12 +96,12 @@ class Task:
             raise ValueError(f"Invalid task type `{self.type}`")
 
         try:
-            logger.info(f'Task "{self.name}" is started.')
+            logger.info(f'"task.{self.type}.{self.name}" is started.')
             task_result.result = await task.run(context)
-            logger.info(f'Task "{self.name}" is successful.')
+            logger.info(f'"task.{self.type}.{self.name}" is successful.')
         except Exception as e:
             task_result.exception = e
-            logger.info(f'Task "{self.name}" is failed.')
+            logger.info(f'"task.{self.type}.{self.name}" is failed.')
             traceback.print_exc()
         return task_result
 
@@ -115,7 +115,7 @@ class SequentialRunner:
         runnable = True
         for task in self.flow:
             if not runnable:
-                logger.info(f'Task {task.name} is canceled due to previous task failed run.')
+                logger.info(f'"task.{task.type}.{task.name}" is canceled due to previous task failed run.')
                 continue
 
             task_result = await task.run(context)
