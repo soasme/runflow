@@ -70,11 +70,11 @@ def load_flow_implicit_tasks_dependencies(flow, task):
         _load_flow_implicit_tasks_dependencies(deps_set, value)
     for task_key in deps_set:
         task_key = task_key.split('.')
-        task_dependency = next(t for t in flow.G.nodes if t.name == task_key[2])
-        if task_dependency.type != task_key[1]:
+        task_dependency = next((t for t in flow.G.nodes if t.name == task_key[2] and t.type == task_key[1]), None)
+        if not task_dependency:
             raise RunflowSyntaxError(
-                f'Task parameter "depends_on" {depends_on}, '
-                f'but task {task_key[2]} is of type {task_key[1]}'
+                f'Task depends_on {depends_on} '
+                f'but the dependent task does not exist'
             )
 
         yield task_dependency

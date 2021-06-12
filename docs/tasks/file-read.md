@@ -2,6 +2,8 @@
 
 File Read task enables reading content from a file.
 
+Added in v0.3.0.
+
 ## Example Usage
 
 One can use `task.file_read.YOUR_TASK_NAME.content` in another task.
