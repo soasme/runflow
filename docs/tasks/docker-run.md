@@ -82,3 +82,7 @@ docker.errors.ContainerError: Command '/bin/bash -c 'exit 1'' in image 'ubuntu:l
 ```
 
 If you want the task to keep running, please wrap up your script to recover the error.
+
+## Full Arguments
+
+Please refer to [docker.run parameters](https://docker-py.readthedocs.io/en/stable/containers.html#docker.models.containers.ContainerCollection.run).
