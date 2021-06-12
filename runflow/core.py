@@ -71,7 +71,7 @@ class Command:
         stdout = stdout.decode('utf-8').strip()
         stderr = stderr.decode('utf-8').strip()
 
-        print(stdout)
+        if stdout: print(stdout)
 
         if proc.returncode == 0:
             return dict(

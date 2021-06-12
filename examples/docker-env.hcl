@@ -1,15 +1,19 @@
-# File: docker-hello-world.hcl
-flow "docker-hello-world" {
+# File: docker-env.hcl
+flow "docker-env" {
   variable "out" {
     default = ""
   }
 
   task "docker_run" "echo" {
     image   = "ubuntu:latest"
-    command = "echo hello world"
+    command = "env"
+    environment = {
+      "greeter": "world"
+    }
   }
 
   task "command" "save" {
     command = "echo '${task.docker_run.echo.stdout}' > ${var.out}"
   }
 }
+
