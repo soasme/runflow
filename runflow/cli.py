@@ -31,15 +31,15 @@ def cli_parser_var(var):
     return key.strip(), value.strip()
 
 def cli_subcommand_run(args):
-    variables = []
+    vars = []
     for var in args.vars or []:
         try:
-            variables.append(cli_parser_var(var))
+            vars.append(cli_parser_var(var))
         except ValueError:
             cli_abort(f"Invalid --var option: {var}")
 
     from .core import run
-    run(args.specfile, dict(variables))
+    run(args.specfile, dict(vars))
 
 def cli(argv=None):
     parser = cli_parser()

@@ -168,15 +168,15 @@ class Flow:
     def set_default_var(self, name, value):
         self.vars[name] = value
 
-    def make_run_context(self, variables=None):
-        context = { 'var': dict(self.vars, **dict(variables or {})), 'task': {}}
+    def make_run_context(self, vars=None):
+        context = { 'var': dict(self.vars, **dict(vars or {})), 'task': {}}
         for task in self:
             context['task'].setdefault(task.type, {})
             context['task'][task.type][task.name] = task.payload
         return context
 
-    async def run(self, variables=None):
-        context = self.make_run_context(variables)
+    async def run(self, vars=None):
+        context = self.make_run_context(vars)
         return await self.runner.run(context)
 
 
