@@ -104,46 +104,30 @@ class Task:
         return self.type == o.type and self.name == o.name
 
     async def run(self, context):
+        try:
+            payload = utils.render(self.payload, context)
+        except jinja2.exceptions.UndefinedError as e:
+            raise RunflowReferenceError(str(e).replace("'dict object'", f"{self}"))
+
+        task_result = TaskResult(TaskStatus.PENDING)
+
         if self.type == 'command':
-            try:
-                command = Command(
-                    utils.render(self.payload['command'], context),
-                    utils.render(self.payload.get('env', {}), context),
-                )
-            except jinja2.exceptions.UndefinedError as e:
-                raise RunflowReferenceError(str(e).replace("'dict object'", f"{self}"))
-            task_result = TaskResult(TaskStatus.PENDING)
-            try:
-                logger.info(f'Task "{self.name}" is started.')
-                task_result.result = await command.run(context)
-                logger.info(f'Task "{self.name}" is successful.')
-            except Exception as e:
-                task_result.exception = e
-                logger.info(f'Task "{self.name}" is failed.')
-                traceback.print_exc()
-            return task_result
+            task = Command(payload['command'], payload.get('env', {}))
         elif self.type == 'docker_run':
             from runflow.contribs.docker import DockerContainerTask
-            payload = dict(self.payload)
-            try:
-                task = DockerContainerTask(
-                    image=utils.render(payload.pop('image'), context),
-                    command=utils.render(payload.pop('command', None), context),
-                    **utils.render(payload, context)
-                )
-            except jinja2.exceptions.UndefinedError as e:
-                raise RunflowReferenceError(str(e).replace("'dict object'", f"{self}"))
-            task_result = TaskResult(TaskStatus.PENDING)
-            try:
-                logger.info(f'Task "{self.name}" is started.')
-                task_result.result = await task.run(context)
-                logger.info(f'Task "{self.name}" is successful.')
-            except Exception as e:
-                task_result.exception = e
-                logger.info(f'Task "{self.name}" is failed.')
-                traceback.print_exc()
-            return task_result
-        raise ValueError(f"Invalid task type `{self.type}`")
+            task = DockerContainerTask(**payload)
+        else:
+            raise ValueError(f"Invalid task type `{self.type}`")
+
+        try:
+            logger.info(f'Task "{self.name}" is started.')
+            task_result.result = await task.run(context)
+            logger.info(f'Task "{self.name}" is successful.')
+        except Exception as e:
+            task_result.exception = e
+            logger.info(f'Task "{self.name}" is failed.')
+            traceback.print_exc()
+        return task_result
 
 
 class SequentialRunner:
