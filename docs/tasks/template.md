@@ -2,6 +2,8 @@
 
 Template task enables rendering source with given context.
 
+Added in v0.3.0.
+
 ## Example Usage
 
 <<< @/examples/template.hcl

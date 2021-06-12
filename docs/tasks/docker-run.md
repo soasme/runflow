@@ -8,6 +8,8 @@ This feature requires `runflow[docker]`.
 $ pip install runflow[docker]
 ```
 
+Added in v0.3.0.
+
 ## Example Usage
 
 * Set task type to "docker_run".
