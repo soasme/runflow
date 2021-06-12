@@ -1,3 +1,4 @@
+import sys
 import asyncio
 
 try:
@@ -15,14 +16,24 @@ class DockerRunTask:
         self.client = docker.from_env()
 
     async def run(self, context):
-        stdout = await asyncio.to_thread(
-            self.client.containers.run,
-            image=self.image,
-            command=self.command,
-            detach=False,
-            remove=True,
-            **self.args
-        )
+        if sys.version_info[0] == 3 and sys.version_info[1] < 9:
+            loop = asyncio.get_running_loop()
+            stdout = await loop.run_in_executor(None, lambda: self.client.containers.run(
+                image=self.image,
+                command=self.command,
+                detach=False,
+                remove=True,
+                **self.args
+            ))
+        else:
+            stdout = await asyncio.to_thread(
+                self.client.containers.run,
+                image=self.image,
+                command=self.command,
+                detach=False,
+                remove=True,
+                **self.args
+            )
         return {
             'stdout': stdout.decode('utf-8').strip(),
         }
