@@ -15,17 +15,18 @@
 - [ ] task: call another local flow.
 - [ ] task: datetime.
 - [ ] task: python: eval python code.
-- [ ] task: http
 - [ ] task: file_write: b64_content for binary data.
 - [ ] task: command: integrate pexpect.
 - [ ] task: command: support sending stdin.
 - [ ] task: command: cap_stdout, cap_stderr.
 - [ ] spec: output
+- [ ] core: jinja2 "${ xx.yy.zz }" should return xx.yy.zz instead of rendering it.
 - [ ] core: retry running failed tasks.
 - [ ] core: cache flow results locally in a file ".state".
 - [ ] core: conditions: all_passed, all_failed, all_done, any_passed, any_failed, any_done.
 - [ ] core: foreach map tasks.
 - [ ] core: conditional (braching) tasks.
+- [x] task: http. v0.4.0.
 - [x] core: unify variables,vars. v0.3.0
 - [x] task: template. v0.3.0.
 - [x] task: file_read. v0.3.0.
