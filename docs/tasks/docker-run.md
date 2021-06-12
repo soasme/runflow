@@ -4,6 +4,10 @@ Run a Docker container.
 
 ## Example Usage
 
+* Set task type to "docker_run".
+* Set docker image.
+* Set the command.
+
 <<< @/examples/docker-hello-world.hcl
 
 Run:
@@ -21,6 +25,8 @@ hello world
 
 ## Set Environment Variables
 
+* Set argument `environment` to key-value pairs.
+
 <<< @/examples/docker-env.hcl
 
 Run:
@@ -37,4 +43,23 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=9389736c56f1
 greeter=world
 HOME=/root
+```
+
+## Set Entrypoint
+
+* Set argument `entrypoint` to a list of strings.
+
+<<< @/examples/docker-entrypoint.hcl
+
+Run:
+
+```
+$ runflow run docker-entrypoint.hcl --var out=/tmp/out.txt
+[2021-06-12 15:37:25,390] Task "setup" is started.
+[2021-06-12 15:37:25,903] Task "setup" is successful.
+[2021-06-12 15:37:25,906] Task "save" is started.
+[2021-06-12 15:37:25,921] Task "save" is successful.
+
+$ cat /tmp/out.txt
+runflow is awesome
 ```

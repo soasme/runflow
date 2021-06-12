@@ -51,3 +51,28 @@ flow "docker-env" {
     runflow.runflow(flow, {'out': out})
 
     assert 'greeter=world' in out.read()
+
+def test_docker_entrypoint(tmpdir):
+    flow = tmpdir / "test.rf"
+    out = tmpdir / "out.txt"
+    flow.write("""
+flow "docker-entrypoint" {
+  variable "out" {
+    default = ""
+  }
+
+  task "docker_run" "setup" {
+    image       = "ubuntu:latest"
+    entrypoint  = ["/bin/echo"]
+    command     = "runflow is awesome"
+  }
+
+  task "command" "save" {
+    command = "echo '${task.docker_run.setup.stdout}' > ${var.out}"
+  }
+}
+    """)
+
+    runflow.runflow(flow, {'out': out})
+
+    assert out.read() == 'runflow is awesome\n'
