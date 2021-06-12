@@ -101,6 +101,10 @@ class Task:
             from runflow.contribs.template import TemplateTask
             task = TemplateTask(payload['source'])
 
+        elif self.type == 'http_request':
+            from runflow.contribs.http import HttpRequestTask
+            task = HttpRequestTask(**payload)
+
         else:
             raise ValueError(f"Invalid task type `{self.type}`")
 
