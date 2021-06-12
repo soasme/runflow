@@ -4,6 +4,8 @@ File Read task enables reading content from a file.
 
 ## Example Usage
 
+One can use `task.file_read.YOUR_TASK_NAME.content` in another task.
+
 <<< @/examples/file_read.hcl
 
 Run:
@@ -25,7 +27,11 @@ build-backend = \"setuptools.build_meta\"
 
 ## File Not Found
 
+If `filename` is not a file or not found, an error occurs.
+
 <<< @/examples/file_read_failed.hcl
+
+Run:
 
 ```
 $ runflow run file_read_failed.hcl
