@@ -80,9 +80,15 @@ class Task:
         if self.type == 'command':
             from runflow.contribs.command import CommandTask
             task = CommandTask(payload['command'], payload.get('env', {}))
+
         elif self.type == 'docker_run':
             from runflow.contribs.docker import DockerRunTask
             task = DockerRunTask(**payload)
+
+        elif self.type == 'file_read':
+            from runflow.contribs.local_file import LocalFileReadTask
+            task = LocalFileReadTask(payload['filename'])
+
         elif self.type == 'file_write':
             from runflow.contribs.local_file import LocalFileWriteTask
             task = LocalFileWriteTask(payload['filename'], payload['content'])
