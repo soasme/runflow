@@ -25,8 +25,9 @@
 - [ ] core: conditions: all_passed, all_failed, all_done, any_passed, any_failed, any_done.
 - [ ] core: foreach map tasks.
 - [ ] core: conditional (braching) tasks.
-- [x] task: local_write. v0.3.0.
-- [x] task: docker: eval python code. v0.3.0.
+- [x] task: file_read. v0.3.0.
+- [x] task: file_write. v0.3.0.
+- [x] task: docker_run. v0.3.0.
 - [x] core: autoloader. v0.3.0.
 - [x] task: command: support env. v0.2.0.
 - [x] core: implicit task dependency. v0.2.0.
