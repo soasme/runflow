@@ -2,6 +2,12 @@
 
 Run a Docker container.
 
+This feature requires `runflow[docker]`.
+
+```
+$ pip install runflow[docker]
+```
+
 ## Example Usage
 
 * Set task type to "docker_run".
