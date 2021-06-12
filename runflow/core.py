@@ -53,40 +53,6 @@ class TaskResult:
         self.status = TaskStatus.FAILED
         self._exception = _exception
 
-class Command:
-
-    def __init__(self, command, env):
-        self.command = command
-        self.env = {k: str(v) for k, v in env.items()}
-
-    async def run(self, context):
-        proc = await asyncio.create_subprocess_shell(
-            self.command,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-            env=self.env,
-        )
-
-        stdout, stderr = await proc.communicate()
-        stdout = stdout.decode('utf-8').strip()
-        stderr = stderr.decode('utf-8').strip()
-
-        print(stdout)
-
-        if proc.returncode == 0:
-            return dict(
-                returncode=proc.returncode,
-                stdout=stdout,
-                stderr=stderr,
-            )
-        else:
-            raise RunflowTaskError(dict(
-                returncode=proc.returncode,
-                stdout=stdout,
-                stderr=stderr,
-            ))
-
-
 class Task:
 
     def __init__(self, type, name, payload):
@@ -104,25 +70,31 @@ class Task:
         return self.type == o.type and self.name == o.name
 
     async def run(self, context):
+        try:
+            payload = utils.render(self.payload, context)
+        except jinja2.exceptions.UndefinedError as e:
+            raise RunflowReferenceError(str(e).replace("'dict object'", f"{self}"))
+
+        task_result = TaskResult(TaskStatus.PENDING)
+
         if self.type == 'command':
-            try:
-                command = Command(
-                    utils.render(self.payload['command'], context),
-                    utils.render(self.payload.get('env', {}), context),
-                )
-            except jinja2.exceptions.UndefinedError as e:
-                raise RunflowReferenceError(str(e).replace("'dict object'", f"{self}"))
-            task_result = TaskResult(TaskStatus.PENDING)
-            try:
-                logger.info(f'Task "{self.name}" is started.')
-                task_result.result = await command.run(context)
-                logger.info(f'Task "{self.name}" is successful.')
-            except Exception as e:
-                task_result.exception = e
-                logger.info(f'Task "{self.name}" is failed.')
-                traceback.print_exc()
-            return task_result
-        raise ValueError(f"Invalid task type `{self.type}`")
+            from runflow.contribs.command import CommandTask
+            task = CommandTask(payload['command'], payload.get('env', {}))
+        elif self.type == 'docker_run':
+            from runflow.contribs.docker import DockerRunTask
+            task = DockerRunTask(**payload)
+        else:
+            raise ValueError(f"Invalid task type `{self.type}`")
+
+        try:
+            logger.info(f'Task "{self.name}" is started.')
+            task_result.result = await task.run(context)
+            logger.info(f'Task "{self.name}" is successful.')
+        except Exception as e:
+            task_result.exception = e
+            logger.info(f'Task "{self.name}" is failed.')
+            traceback.print_exc()
+        return task_result
 
 
 class SequentialRunner:
@@ -134,7 +106,7 @@ class SequentialRunner:
         runnable = True
         for task in self.flow:
             if not runnable:
-                logger.info('Task {task.name} is canceled due to previous task failed run.')
+                logger.info(f'Task {task.name} is canceled due to previous task failed run.')
                 continue
 
             task_result = await task.run(context)

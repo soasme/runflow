@@ -33,8 +33,8 @@ jobs:
     - name: Install dependencies
       run: |
         python3 -mpip install -r requirements-dev.txt
-        python3 -mpip install -e .
+        python3 -mpip install -e .[docker]
 
-    - name: Build Package
+    - name: Run tests
       run: |
         pytest --cov=runflow --cov-report=term --cov-report=html tests

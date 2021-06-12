@@ -19,6 +19,7 @@
 - [ ] task: command: integrate pexpect.
 - [ ] task: command: support sending stdin.
 - [ ] task: command: cap_stdout, cap_stderr.
+- [ ] spec: output
 - [ ] core: unify variables,vars.
 - [ ] core: retry running failed tasks.
 - [ ] core: cache flow results locally in a file ".state".
