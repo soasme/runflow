@@ -70,6 +70,10 @@ class Task:
         return self.type == o.type and self.name == o.name
 
     async def run(self, context):
+        if self.type == "template":
+            template_context = utils.render(self.payload.get('context', {}), context)
+            context = dict(context, **template_context)
+
         try:
             payload = utils.render(self.payload, context)
         except jinja2.exceptions.UndefinedError as e:
@@ -92,6 +96,11 @@ class Task:
         elif self.type == 'file_write':
             from runflow.contribs.local_file import LocalFileWriteTask
             task = LocalFileWriteTask(payload['filename'], payload['content'])
+
+        elif self.type == 'template':
+            from runflow.contribs.template import TemplateTask
+            task = TemplateTask(payload['source'])
+
         else:
             raise ValueError(f"Invalid task type `{self.type}`")
 
