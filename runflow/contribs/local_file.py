@@ -1,7 +1,7 @@
 from aiofile import async_open
 
 
-class LocalFileWriteTask:
+class FileWriteTask:
 
     def __init__(self, filename, content):
         self.filename = filename
@@ -12,7 +12,7 @@ class LocalFileWriteTask:
             await f.write(self.content)
 
 
-class LocalFileReadTask:
+class FileReadTask:
 
     def __init__(self, filename):
         self.filename = filename

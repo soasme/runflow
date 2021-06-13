@@ -4,8 +4,9 @@ from runflow.errors import RunflowTaskError
 
 class CommandTask:
 
-    def __init__(self, command, env):
+    def __init__(self, command, env=None):
         self.command = command
+        env = env or {}
         self.env = {k: str(v) for k, v in env.items()}
 
     async def run(self, context):

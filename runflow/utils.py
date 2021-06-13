@@ -1,5 +1,7 @@
+import inspect
 import sys
 import asyncio
+import importlib
 
 import jinja2
 
@@ -27,3 +29,21 @@ async def to_thread(f, *args, **kwargs):
         return await loop.run_in_executor(None, lambda: f(*args, **kwargs))
     else:
         return await asyncio.to_thread(f, *args, **kwargs)
+
+def import_module(path):
+    module_name = '.'.join(path.split('.')[:-1])
+    package = importlib.import_module(module_name)
+    clazz_name = path.split('.')[-1]
+    clazz = getattr(package, clazz_name)
+    return clazz
+
+def split_camelcase(str):
+    words = [[str[0]]]
+
+    for c in str[1:]:
+        if not words[-1][-1].isupper() and c.isupper():
+            words.append(list(c))
+        else:
+            words[-1].append(c)
+
+    return [''.join(word) for word in words]

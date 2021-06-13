@@ -55,8 +55,9 @@ class TaskResult:
 
 class Task:
 
-    def __init__(self, type, name, payload):
+    def __init__(self, type, runner, name, payload):
         self.type = type
+        self.runner = runner
         self.name = name
         self.payload = payload
 
@@ -81,40 +82,10 @@ class Task:
 
         task_result = TaskResult(TaskStatus.PENDING)
 
-        if self.type == 'command':
-            from runflow.contribs.command import CommandTask
-            task = CommandTask(payload['command'], payload.get('env', {}))
+        _payload = dict(payload)
+        _payload.pop('depends_on', None) # this is handled by runflow, not by runner.
 
-        elif self.type == 'docker_run':
-            from runflow.contribs.docker import DockerRunTask
-            task = DockerRunTask(**payload)
-
-        elif self.type == 'file_read':
-            from runflow.contribs.local_file import LocalFileReadTask
-            task = LocalFileReadTask(payload['filename'])
-
-        elif self.type == 'file_write':
-            from runflow.contribs.local_file import LocalFileWriteTask
-            task = LocalFileWriteTask(payload['filename'], payload['content'])
-
-        elif self.type == 'template':
-            from runflow.contribs.template import TemplateTask
-            task = TemplateTask(payload['source'])
-
-        elif self.type == 'http_request':
-            from runflow.contribs.http import HttpRequestTask
-            task = HttpRequestTask(**payload)
-
-        elif self.type == 'sqlite3_exec':
-            from runflow.contribs.sqlite3 import Sqlite3ExecTask
-            task = Sqlite3ExecTask(**payload)
-
-        elif self.type == 'sqlite3_row':
-            from runflow.contribs.sqlite3 import Sqlite3RowTask
-            task = Sqlite3RowTask(**payload)
-
-        else:
-            raise ValueError(f"Invalid task type `{self.type}`")
+        task = self.runner(**_payload)
 
         try:
             logger.info(f'"task.{self.type}.{self.name}" is started.')
@@ -148,11 +119,25 @@ class SequentialRunner:
 
 class Flow:
 
+    default_extensions = {
+        'runflow.contribs.command.CommandTask',
+        'runflow.contribs.docker.DockerRunTask',
+        'runflow.contribs.local_file.FileReadTask',
+        'runflow.contribs.local_file.FileWriteTask',
+        'runflow.contribs.template.TemplateTask',
+        'runflow.contribs.http.HttpRequestTask',
+        'runflow.contribs.sqlite3.Sqlite3ExecTask',
+        'runflow.contribs.sqlite3.Sqlite3RowTask',
+    }
+
     def __init__(self, name, runner_cls=None):
         self.name = name
         self.G = networkx.DiGraph()
         self.runner = (runner_cls or SequentialRunner)(self)
         self.vars = {}
+
+        self.exts = {}
+        self.load_default_extensions()
 
     def __iter__(self):
         try:
@@ -179,6 +164,19 @@ class Flow:
 
     def set_default_var(self, name, value):
         self.vars[name] = value
+
+    def load_extension(self, import_string):
+        task_class = utils.import_module(import_string)
+        task_class_name = task_class.__name__
+        assert task_class_name != 'Task' and task_class_name.endswith('Task')
+        task_type_chunks = utils.split_camelcase(task_class_name)
+        assert task_type_chunks[-1] == 'Task'
+        task_type = '_'.join(task_type_chunks[:-1]).lower()
+        self.exts[task_type] = task_class
+
+    def load_default_extensions(self):
+        for mod in self.default_extensions:
+            self.load_extension(mod)
 
     def make_run_context(self, vars=None):
         context = { 'var': dict(self.vars, **dict(vars or {})), 'task': {}}

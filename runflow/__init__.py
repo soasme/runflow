@@ -2,7 +2,7 @@ from .core import Flow, Task, run as runflow
 from .cli import cli
 from .errors import (
     RunflowError, RunflowSyntaxError, RunflowReferenceError,
-    RunflowAcyclicTasksError,
+    RunflowTaskTypeError, RunflowTaskError, RunflowAcyclicTasksError,
 )
 
 if __name__ == '__main__':
