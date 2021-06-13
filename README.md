@@ -10,9 +10,6 @@
   <a href="https://github.com/soasme/runflow/actions">
     <img alt="Unit Testing Status" src="https://img.shields.io/github/workflow/status/soasme/runflow/Unit%20Testing?color=%2360be86&label=UNIT%20TEST&style=for-the-badge">
   </a>
-
-</p>
-<p align="center">
   <a href="https://github.com/soasme/runflow/graphs/contributors">
     <img alt="GitHub contributors" src="https://img.shields.io/github/contributors-anon/soasme/runflow?color=%2360be86&style=for-the-badge">
   </a> 
