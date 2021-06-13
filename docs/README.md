@@ -15,3 +15,4 @@ Welcome to Runflow's documentation.
 * Tutorial: Run [Sqlite3 Row](tasks/sqlite3-row.md) Tasks.
 * Tutorial: Run [Template](tasks/template.md) Tasks.
 * Advanced Usage: Use [Python API](python-api.md).
+* Advanced Usage: [Develop your own Task](customize-task.md).

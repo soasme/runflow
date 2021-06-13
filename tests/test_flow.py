@@ -372,3 +372,14 @@ flow "hello-world" {
     runflow.runflow(flow, {})
 
     assert out.read() == 'hello world\n'
+
+def test_load_extension(tmpdir):
+    flow = tmpdir / "test.rf"
+    out = tmpdir / "out.txt"
+
+    with open('examples/custom_task_type.hcl') as f:
+        flow.write(f.read())
+
+    runflow.runflow(flow, {'out': str(out)})
+
+    assert out.read() == "bingo, it is vanilla"
