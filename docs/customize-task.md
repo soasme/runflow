@@ -37,3 +37,6 @@ Tips:
 
 * If the code in `run` is non-async, please run it with `asyncio.to_thread` or
   `loop.run_in_executor()`.
+* The Python code for the task must be in sys.path. Ideally, the code should
+  be packaged. Learn how to package a Python project:
+  [link](https://packaging.python.org/tutorials/packaging-projects/).
