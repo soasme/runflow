@@ -14,7 +14,7 @@ Save it as `hello.hcl` or something similar.
 Let's break down the code.
 
 1. First we define a `flow` block with the name `"hello-world"`.
-2. Next we define a task with the run type `"command"` and the name `"echo"`.
+2. Next we define a task with the run type `"bash_run"` and the name `"echo"`.
 3. We then let the task `"echo"` do the actual work: `echo 'hello world'`.
 
 To run the flow, use the `runflow` command or `python3 -m runflow`.
@@ -46,18 +46,18 @@ To run the flow with the default variables:
 
 ```bash
 $ runflow run hello-vars.hcl
-[2021-06-13 14:36:10,486] "task.command.echo" is started.
+[2021-06-13 14:36:10,486] "task.bash_run.echo" is started.
 hello world
-[2021-06-13 14:36:10,496] "task.command.echo" is successful.
+[2021-06-13 14:36:10,496] "task.bash_run.echo" is successful.
 ```
 
 To provide the task run with a different variable, use `--var`:
 
 ```bash
 $ runflow run hello-vars.hcl --var greeter=runflow
-[2021-06-13 14:36:27,477] "task.command.echo" is started.
+[2021-06-13 14:36:27,477] "task.bash_run.echo" is started.
 hello runflow2
-[2021-06-13 14:36:27,489] "task.command.echo" is successful.
+[2021-06-13 14:36:27,489] "task.bash_run.echo" is successful.
 ```
 
 Runflow variables can be managed using Environment Variables. The naming convention is `RUNFLOW_VAR_{varname}`.
@@ -66,9 +66,9 @@ In this case:
 ```bash
 $ export RUNFLOW_VAR_greeter=runflow
 $ runflow run hello-vars.hcl
-[2021-06-13 14:35:54,076] "task.command.echo" is started.
+[2021-06-13 14:35:54,076] "task.bash_run.echo" is started.
 hello runflow
-[2021-06-13 14:35:54,086] "task.command.echo" is successful.
+[2021-06-13 14:35:54,086] "task.bash_run.echo" is successful.
 ```
 
 If both Environment Variables and `--var` are provided, `--var` takes precedence.
@@ -84,8 +84,8 @@ Save it as `hello-deps.hcl` or something similar.
 Comparing it to `hello-vars.hcl`:
 
 1. First we replace `greeter` to a task with command `xxd -l16 -ps /dev/urandom`. If you're curious what this would do, try it on your console - it will display some random alphabet digits.
-2. Next we replace `${var.greeter}` to `${task.command.greeter.stdout}`. It chains the greeter command's stdout to the `echo` command.
-3. At last we add a `depends_on` parameter, which explicitly declares the `echo` command depends on `task.command.greeter`. It makes sure `echo` command only run after `greeter` is successfully run.
+2. Next we replace `${var.greeter}` to `${task.bash_run.greeter.stdout}`. It chains the greeter command's stdout to the `echo` command.
+3. At last we add a `depends_on` parameter, which explicitly declares the `echo` command depends on `task.bash_run.greeter`. It makes sure `echo` command only run after `greeter` is successfully run.
 
 Let's run it with `runflow run`:
 
@@ -104,7 +104,7 @@ As your can see in the output above, despite of `greeter` being declared beneath
 
 To make your life easier, Runflow is smart enough to detect the implicit task dependencies if task references are used in other tasks.
 
-For example, `hello-deps.hcl` does not need `depends_on` block at all, because the template variable `${task.command.greeter.stdout}` makes it very clear that task "echo" relies on task "greeter".
+For example, `hello-deps.hcl` does not need `depends_on` block at all, because the template variable `${task.bash_run.greeter.stdout}` makes it very clear that task "echo" relies on task "greeter".
 
 <<< @/examples/hello-implicit-deps.hcl
 

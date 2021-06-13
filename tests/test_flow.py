@@ -33,7 +33,7 @@ def test_hello_world(tmpdir):
     out = tmpdir / "out.txt"
     flow.write("""
 flow "hello-world" {
-  task "command" "echo" {
+  task "bash_run" "echo" {
     command = "echo hello world > ${var.out}"
   }
 }
@@ -48,7 +48,7 @@ def test_command_env(tmpdir):
     out = tmpdir / "out.txt"
     flow.write(r"""
 flow "hello-world" {
-  task "command" "echo" {
+  task "bash_run" "echo" {
     command = "echo hello $GREETER > ${var.out}"
     env = {
         GREETER = "world"
@@ -66,7 +66,7 @@ def test_command_env2(tmpdir):
     out = tmpdir / "out.txt"
     flow.write(r"""
 flow "hello-world" {
-  task "command" "echo" {
+  task "bash_run" "echo" {
     command = "echo hello $GREETER > ${var.out}"
     env = {
         "GREETER" = "world"
@@ -84,7 +84,7 @@ def test_command_env3(tmpdir):
     out = tmpdir / "out.txt"
     flow.write(r"""
 flow "hello-id-env" {
-  task "command" "id" {
+  task "bash_run" "id" {
     command = "xxd -l $LENGTH -ps /dev/urandom > ${var.out}"
     env = {
       LENGTH = 16 # LENGTH value is an integer.
@@ -103,10 +103,10 @@ def test_multiple_hello_world(tmpdir):
     out2 = tmpdir / "out2.txt"
     flow.write("""
 flow "hello-world" {
-  task "command" "out1" {
+  task "bash_run" "out1" {
     command = "echo hello world1 > ${var.out1}"
   }
-  task "command" "out2" {
+  task "bash_run" "out2" {
     command = "echo hello world2 > ${var.out2}"
   }
 }
@@ -123,11 +123,11 @@ def test_explicit_depends_on(tmpdir):
     out2 = tmpdir / "out2.txt"
     flow.write("""
 flow "hello-world" {
-  task "command" "out1" {
+  task "bash_run" "out1" {
     command = "cat ${var.out2} > ${var.out1}"
-    depends_on = [task.command.out2]
+    depends_on = [task.bash_run.out2]
   }
-  task "command" "out2" {
+  task "bash_run" "out2" {
     command = "echo hello world2 > ${var.out2}"
   }
 }
@@ -143,10 +143,10 @@ def test_implicit_depends_on(tmpdir):
     out = tmpdir / "out.txt"
     flow.write("""
 flow "hello-world" {
-  task "command" "out1" {
-    command = "echo ${task.command.out2.stdout} > ${var.out}"
+  task "bash_run" "out1" {
+    command = "echo ${task.bash_run.out2.stdout} > ${var.out}"
   }
-  task "command" "out2" {
+  task "bash_run" "out2" {
     command = "echo hello world2"
   }
 }
@@ -162,11 +162,11 @@ def test_depends_on_must_be_a_task(tmpdir):
     out2 = tmpdir / "out2.txt"
     flow.write("""
 flow "hello-world" {
-  task "command" "out1" {
+  task "bash_run" "out1" {
     command = "cat ${var.out2} > ${var.out1}"
     depends_on = [var.out2]
   }
-  task "command" "out2" {
+  task "bash_run" "out2" {
     command = "echo hello world2 > ${var.out2}"
   }
 }
@@ -181,11 +181,11 @@ def test_depends_on_must_be_a_reference(tmpdir):
     out2 = tmpdir / "out2.txt"
     flow.write("""
 flow "hello-world" {
-  task "command" "out1" {
+  task "bash_run" "out1" {
     command = "cat ${var.out2} > ${var.out1}"
-    depends_on = ["/path/to/${task.command.out2}"]
+    depends_on = ["/path/to/${task.bash_run.out2}"]
   }
-  task "command" "out2" {
+  task "bash_run" "out2" {
     command = "echo hello world2 > ${var.out2}"
   }
 }
@@ -200,11 +200,11 @@ def test_depends_on_task_type_must_match(tmpdir):
     out2 = tmpdir / "out2.txt"
     flow.write("""
 flow "hello-world" {
-  task "command" "out1" {
+  task "bash_run" "out1" {
     command = "cat ${var.out2} > ${var.out1}"
     depends_on = ["${task.container.out2}"]
   }
-  task "command" "out2" {
+  task "bash_run" "out2" {
     command = "echo hello world2 > ${var.out2}"
   }
 }
@@ -231,7 +231,7 @@ def test_jinja_replacement(tmpdir):
     out = tmpdir / "out.txt"
     flow.write("""
 flow "hello-world" {
-  task "command" "echo" {
+  task "bash_run" "echo" {
     command = "echo '${var.content}' > ${var.out}"
   }
 }
@@ -245,7 +245,7 @@ def test_invalid_reference_in_command(tmpdir):
     out = tmpdir / "out.txt"
     flow.write("""
 flow "hello-world" {
-  task "command" "echo" {
+  task "bash_run" "echo" {
     command = "echo hello world > ${var.out}"
   }
 }
@@ -261,7 +261,7 @@ def test_command_failed(tmpdir, capsys):
     flow.write("""
 flow "hello-world" {
   variable "out" { default = "" }
-  task "command" "echo" {
+  task "bash_run" "echo" {
     command = "/__path__/to/echo hello world && echo hello world > ${var.out}"
   }
 }
@@ -277,10 +277,10 @@ def test_command_passed_and_then_run_the_next_task(tmpdir, capsys):
     flow.write("""
 flow "hello-world" {
   variable "out" { default = "" }
-  task "command" "echo" {
+  task "bash_run" "echo" {
     command = "echo hello world"
   }
-  task "command" "echo2" {
+  task "bash_run" "echo2" {
     command = "echo hello world > ${var.out}"
   }
 }
@@ -296,10 +296,10 @@ def test_command_failed_canceling_the_next_task(tmpdir, capsys):
     flow.write("""
 flow "hello-world" {
   variable "out" { default = "" }
-  task "command" "echo" {
+  task "bash_run" "echo" {
     command = "/__path__/to/echo hello world"
   }
-  task "command" "echo2" {
+  task "bash_run" "echo2" {
     command = "echo hello world > ${var.out}"
   }
 }
@@ -314,7 +314,7 @@ def test_default_variable(tmpdir):
     flow.write("""
 flow "hello-world" {
   variable "content" { default = 42 }
-  task "command" "echo" {
+  task "bash_run" "echo" {
     command = "echo ${var.content} > ${ var.out }"
   }
 }
@@ -329,13 +329,13 @@ def test_acyclic_deps(tmpdir):
     out = tmpdir / "out.txt"
     flow.write("""
 flow "hello-world" {
-  task "command" "echo1" {
-    command = "echo ${ task.command.echo2.stdout }"
-    depends_on = [task.command.echo2]
+  task "bash_run" "echo1" {
+    command = "echo ${ task.bash_run.echo2.stdout }"
+    depends_on = [task.bash_run.echo2]
   }
-  task "command" "echo2" {
-    command = "echo ${ task.command.echo1.stdout }"
-    depends_on = [task.command.echo1]
+  task "bash_run" "echo2" {
+    command = "echo ${ task.bash_run.echo1.stdout }"
+    depends_on = [task.bash_run.echo1]
   }
 }
     """)
@@ -363,7 +363,7 @@ def test_default_env(tmpdir, request):
     flow.write("""
 flow "hello-world" {
   variable "out" {}
-  task "command" "echo" {
+  task "bash_run" "echo" {
     command = "echo hello world > ${var.out}"
   }
 }
