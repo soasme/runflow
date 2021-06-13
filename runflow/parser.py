@@ -4,10 +4,10 @@ import hcl2
 import lark
 from decouple import config
 
-from .errors import RunflowSyntaxError
+from .errors import RunflowSyntaxError, RunflowTaskTypeError
 
 
-def load_flow_tasks_from_spec(tasks_spec):
+def load_flow_tasks_from_spec(flow, tasks_spec):
     from .core import Task
 
     for task_spec in tasks_spec:
@@ -15,7 +15,12 @@ def load_flow_tasks_from_spec(tasks_spec):
         task_name, _task_spec = next(iter(_task_spec.items()))
         task_payload = {k: (v[0] if len(v) == 1 else v) for k, v in _task_spec.items()}
 
-        yield Task(task_type, task_name, task_payload)
+        if task_type not in flow.exts:
+            raise RunflowTaskTypeError(f'unknown task type {task_type}')
+
+        task_class = flow.exts[task_type]
+
+        yield Task(task_type, task_class, task_name, task_payload)
 
 def load_task_by_task_reference(flow, depends_on):
     m = re.match(r"\${([^}]+)}", depends_on)
@@ -117,7 +122,7 @@ def loads(spec):
     flow_name, flow_spec = next(iter(flow.items()))
 
     flow = Flow(name=flow_name)
-    for task in load_flow_tasks_from_spec(flow_spec.get('task', [])):
+    for task in load_flow_tasks_from_spec(flow, flow_spec.get('task', [])):
         flow.add_task(task)
 
     load_flow_tasks_dependencies(flow)
