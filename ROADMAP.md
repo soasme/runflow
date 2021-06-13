@@ -1,6 +1,5 @@
 # ROAD MAP
 
-- [ ] docs: tutorial.
 - [ ] docs: internal - technical overview.
 - [ ] docs: integrate with celery.
 - [ ] docs: integrate with python-rq.
@@ -30,12 +29,15 @@
 - [ ] task: command: support sending stdin.
 - [ ] task: command: cap_stdout, cap_stderr.
 - [ ] spec: output
-- [ ] core: jinja2 "${ xx.yy.zz }" should return xx.yy.zz instead of rendering it.
-- [ ] core: retry running failed tasks.
 - [ ] core: cache flow results locally in a file ".state".
 - [ ] core: conditions: all_passed, all_failed, all_done, any_passed, any_failed, any_done.
 - [ ] core: foreach map tasks.
 - [ ] core: conditional (braching) tasks.
+- [ ] core: support default variable types.
+- [ ] core: support envvar types.
+- [ ] core: jinja2 "${ xx.yy.zz }" should return xx.yy.zz instead of rendering it.
+- [ ] core: retry running failed tasks.
+- [x] core: support envvar. v0.4.0.
 - [x] task: sqlite3_row. v0.4.0.
 - [x] task: sqlite3_exec. v0.4.0.
 - [x] task: http. v0.4.0.

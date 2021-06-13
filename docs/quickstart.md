@@ -46,19 +46,32 @@ To run the flow with the default variables:
 
 ```bash
 $ runflow run hello-vars.hcl
-[2021-06-06 11:58:14,355] Task "echo" is started.
+[2021-06-13 14:36:10,486] "task.command.echo" is started.
 hello world
-[2021-06-06 11:58:14,362] Task "echo" is successful.
+[2021-06-13 14:36:10,496] "task.command.echo" is successful.
 ```
 
 To provide the task run with a different variable, use `--var`:
 
 ```bash
 $ runflow run hello-vars.hcl --var greeter=runflow
-[2021-06-06 11:59:23,533] Task "echo" is started.
-hello runflow
-[2021-06-06 11:59:23,540] Task "echo" is successful.
+[2021-06-13 14:36:27,477] "task.command.echo" is started.
+hello runflow2
+[2021-06-13 14:36:27,489] "task.command.echo" is successful.
 ```
+
+Runflow variables can be managed using Environment Variables. The naming convention is `RUNFLOW_VAR_{varname}`.
+In this case:
+
+```bash
+$ export RUNFLOW_VAR_greeter=runflow
+$ runflow run hello-vars.hcl
+[2021-06-13 14:35:54,076] "task.command.echo" is started.
+hello runflow
+[2021-06-13 14:35:54,086] "task.command.echo" is successful.
+```
+
+If both Environment Variables and `--var` are provided, `--var` takes precedence.
 
 ## Task Dependency
 
