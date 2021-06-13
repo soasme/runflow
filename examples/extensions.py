@@ -1,3 +1,5 @@
+from aiofile import async_open
+
 class GuessIceCreamTask:
 
     def __init__(self, name, output):
@@ -5,5 +7,5 @@ class GuessIceCreamTask:
         self.output = output
 
     async def run(self, context):
-        with open(self.output, 'w') as f:
-            f.write(f"bingo, it is {self.name}")
+        async with async_open(self.output, 'w+') as f:
+            await f.write(f"bingo, it is {self.name}")
