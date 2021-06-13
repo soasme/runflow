@@ -2,15 +2,15 @@
 
 <p align="center">
   <a href="https://github.com/soasme/runflow/releases">
-    <img alt="GitHub release (latest by semver)" src="https://img.shields.io/github/v/release/soasme/runflow?color=%2360be86&label=Latest%20release&style=for-the-badge&sort=semver">
+    <img alt="GitHub release (latest by semver)" src="https://img.shields.io/pypi/v/runflow?color=%2360be86&style=for-the-badge">
   </a>
   <a href="LICENSE">
-    <img alt="GitHub" src="https://img.shields.io/github/license/soasme/runflow?color=%2360be86&style=for-the-badge">
+    <img alt="License" src="https://img.shields.io/github/license/soasme/runflow?color=%2360be86&style=for-the-badge">
   </a>
   <a href="https://github.com/soasme/runflow/actions">
-    <img alt="GitHub branch checks state" src="https://img.shields.io/github/checks-status/soasme/runflow/main?color=%2360be86&style=for-the-badge">
+    <img alt="Unit Testing Status" src="https://img.shields.io/github/workflow/status/soasme/runflow/Unit%20Testing?color=%2360be86&label=UNIT%20TEST&style=for-the-badge">
   </a>
-    
+
 </p>
 <p align="center">
   <a href="https://github.com/soasme/runflow/graphs/contributors">
