@@ -12,3 +12,5 @@ Command task supports optional environment variables through argument `env`.
 
 <<< @/examples/hello-id-env.hcl
 
+Whenever possible, instead of templating variables in the command, pass variables into the command using `env`.
+(Bash is quite tricky in some circumstances).
