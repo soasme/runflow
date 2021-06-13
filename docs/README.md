@@ -6,13 +6,13 @@ Welcome to Runflow's documentation.
 
 * Get started with [Installation](installation.md).
 * Get an overview with the [Quick Start](quickstart.md).
-* Tutorial: Run [Command](tasks/command.md) Tasks.
-* Tutorial: Run [Docker Container](tasks/docker-run.md) Tasks.
-* Tutorial: Run [File Write](tasks/file-write.md) Tasks.
-* Tutorial: Run [File Read](tasks/file-read.md) Tasks.
-* Tutorial: Run [Http Request](tasks/http-request.md) Tasks.
-* Tutorial: Run [Sqlite3 Exec](tasks/sqlite3-exec.md) Tasks.
-* Tutorial: Run [Sqlite3 Row](tasks/sqlite3-row.md) Tasks.
-* Tutorial: Run [Template](tasks/template.md) Tasks.
+* Tutorial: [Bash Run](tasks/bash-run.md) Task.
+* Tutorial: [Docker Run](tasks/docker-run.md) Task.
+* Tutorial: [File Write](tasks/file-write.md) Task.
+* Tutorial: [File Read](tasks/file-read.md) Task.
+* Tutorial: [Http Request](tasks/http-request.md) Task.
+* Tutorial: [Sqlite3 Exec](tasks/sqlite3-exec.md) Task.
+* Tutorial: [Sqlite3 Row](tasks/sqlite3-row.md) Task.
+* Tutorial: [Template](tasks/template.md) Task.
 * Advanced Usage: Use [Python API](python-api.md).
 * Advanced Usage: [Develop your own Task](customize-task.md).

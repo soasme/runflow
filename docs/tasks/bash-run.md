@@ -1,6 +1,6 @@
-# Command Task
+# Bash Run Task
 
-Command task enables running local command in a subprocess.
+Bash Run task enables running local command in a subprocess.
 
 ## Example Usage
 
@@ -11,3 +11,4 @@ Command task enables running local command in a subprocess.
 Command task supports optional environment variables through argument `env`.
 
 <<< @/examples/hello-id-env.hcl
+
