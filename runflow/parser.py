@@ -2,6 +2,7 @@ import re
 
 import hcl2
 import lark
+from decouple import config
 
 from .errors import RunflowSyntaxError
 
@@ -91,7 +92,14 @@ def load_flow_default_vars(flow, vars_spec):
     for var_spec in vars_spec:
         var_name = next(iter(var_spec.keys()))
         var_value_spec = next(iter(var_spec.values()))
-        var_value = var_value_spec['default'][0]
+        var_default_value = var_value_spec.get('default', [])
+        try:
+            var_value = (
+                config(f'RUNFLOW_VAR_{var_name}', default=None)
+                or var_default_value[0]
+            )
+        except IndexError:
+            raise RunflowReferenceError(f"var.{var_name} is not provided.")
         flow.set_default_var(var_name, var_value)
 
 def loads(spec):
