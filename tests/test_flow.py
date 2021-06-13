@@ -1,3 +1,5 @@
+import os
+
 import pytest
 import runflow
 
@@ -348,3 +350,25 @@ def test_render_template(tmpdir):
         flow.write(f.read())
     runflow.runflow(flow, {'out': str(out)})
     assert out.read() == f'42\n42\n{out}'
+
+def test_default_env(tmpdir, request):
+    flow = tmpdir / "test.rf"
+    out = tmpdir / "out.txt"
+
+    os.environ['RUNFLOW_VAR_out'] = str(out)
+    def clean_env():
+        del os.environ['RUNFLOW_VAR_out']
+    request.addfinalizer(clean_env)
+
+    flow.write("""
+flow "hello-world" {
+  variable "out" {}
+  task "command" "echo" {
+    command = "echo hello world > ${var.out}"
+  }
+}
+    """)
+
+    runflow.runflow(flow, {})
+
+    assert out.read() == 'hello world\n'
