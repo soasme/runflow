@@ -1,6 +1,6 @@
 # File: hello.hcl
 flow "hello-world" {
-  task "command" "echo" {
+  task "bash_run" "echo" {
     command = "echo 'hello world'"
   }
 }

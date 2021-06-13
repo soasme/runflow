@@ -3,7 +3,7 @@ flow "hello-vars" {
   variable "greeter" {
     default = "world"
   }
-  task "command" "echo" {
+  task "bash_run" "echo" {
     command = "echo 'hello ${var.greeter}'"
   }
 }

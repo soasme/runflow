@@ -1,6 +1,6 @@
 # File: hello-id.hcl
 flow "hello-id" {
-  task "command" "id" {
+  task "bash_run" "id" {
     command = "xxd -l16 -ps /dev/urandom"
   }
 }

@@ -1,10 +1,10 @@
 # File: hello-implicit-deps.hcl
 flow "hello-implicit-deps" {
-  task "command" "echo" {
-    command = "echo 'hello ${task.command.greeter.stdout}'"
+  task "bash_run" "echo" {
+    command = "echo 'hello ${task.bash_run.greeter.stdout}'"
   }
 
-  task "command" "greeter" {
+  task "bash_run" "greeter" {
     command = "xxd -l16 -ps /dev/urandom"
   }
 }

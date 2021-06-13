@@ -6,7 +6,7 @@ def test_cli(tmpdir):
     out = tmpdir / "out.txt"
     flow.write("""
 flow "hello-world" {
-  task "command" "echo" {
+  task "bash_run" "echo" {
     command = "echo hello world > ${var.out}"
   }
 }
@@ -21,7 +21,7 @@ def test_invalid_cli_option(tmpdir):
     out = tmpdir / "out.txt"
     flow.write("""
 flow "hello-world" {
-  task "command" "echo" {
+  task "bash_run" "echo" {
     command = "echo hello world > ${var.out}"
   }
 }
