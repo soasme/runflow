@@ -37,6 +37,8 @@
 - [ ] core: support envvar types.
 - [ ] core: jinja2 "${ xx.yy.zz }" should return xx.yy.zz instead of rendering it.
 - [ ] core: retry running failed tasks.
+- [x] task: rename command to bash_run. v0.4.0.
+- [x] core: support extensions. v0.4.0.
 - [x] core: support envvar. v0.4.0.
 - [x] task: sqlite3_row. v0.4.0.
 - [x] task: sqlite3_exec. v0.4.0.
