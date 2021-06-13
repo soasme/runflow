@@ -7,6 +7,9 @@ class RunflowSyntaxError(RunflowError):
 class RunflowReferenceError(RunflowError):
     pass
 
+class RunflowTaskTypeError(RunflowError):
+    pass
+
 class RunflowTaskError(RunflowError):
     pass
 
