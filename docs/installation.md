@@ -31,7 +31,7 @@ Runflow package ships with a minimum set of task types. By default, optional dep
 To enable optional dependencies, you can use pip "extras" syntax:
 
 ```bash
-$ pip install runflow[viz]
+$ pip install runflow[docker]
 ```
 
 ## Virtual Environment
