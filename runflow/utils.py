@@ -36,3 +36,14 @@ def import_module(path):
     clazz_name = path.split('.')[-1]
     clazz = getattr(package, clazz_name)
     return clazz
+
+def split_camelcase(str):
+    words = [[str[0]]]
+
+    for c in str[1:]:
+        if not words[-1][-1].isupper() and c.isupper():
+            words.append(list(c))
+        else:
+            words[-1].append(c)
+
+    return [''.join(word) for word in words]

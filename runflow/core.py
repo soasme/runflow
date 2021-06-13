@@ -120,14 +120,14 @@ class SequentialRunner:
 class Flow:
 
     default_extensions = {
-        'command': 'runflow.contribs.command.CommandTask',
-        'docker_run': 'runflow.contribs.docker.DockerRunTask',
-        'file_read': 'runflow.contribs.local_file.LocalFileReadTask',
-        'file_write': 'runflow.contribs.local_file.LocalFileWriteTask',
-        'template': 'runflow.contribs.template.TemplateTask',
-        'http_request': 'runflow.contribs.http.HttpRequestTask',
-        'sqlite3_exec': 'runflow.contribs.sqlite3.Sqlite3ExecTask',
-        'sqlite3_row': 'runflow.contribs.sqlite3.Sqlite3RowTask',
+        'runflow.contribs.command.CommandTask',
+        'runflow.contribs.docker.DockerRunTask',
+        'runflow.contribs.local_file.FileReadTask',
+        'runflow.contribs.local_file.FileWriteTask',
+        'runflow.contribs.template.TemplateTask',
+        'runflow.contribs.http.HttpRequestTask',
+        'runflow.contribs.sqlite3.Sqlite3ExecTask',
+        'runflow.contribs.sqlite3.Sqlite3RowTask',
     }
 
     def __init__(self, name, runner_cls=None):
@@ -165,12 +165,18 @@ class Flow:
     def set_default_var(self, name, value):
         self.vars[name] = value
 
-    def load_extension(self, task_type, import_string):
-        self.exts[task_type] = utils.import_module(import_string)
+    def load_extension(self, import_string):
+        task_class = utils.import_module(import_string)
+        task_class_name = task_class.__name__
+        assert task_class_name != 'Task' and task_class_name.endswith('Task')
+        task_type_chunks = utils.split_camelcase(task_class_name)
+        assert task_type_chunks[-1] == 'Task'
+        task_type = '_'.join(task_type_chunks[:-1]).lower()
+        self.exts[task_type] = task_class
 
     def load_default_extensions(self):
-        for key, mod in self.default_extensions.items():
-            self.load_extension(key, mod)
+        for mod in self.default_extensions:
+            self.load_extension(mod)
 
     def make_run_context(self, vars=None):
         context = { 'var': dict(self.vars, **dict(vars or {})), 'task': {}}
