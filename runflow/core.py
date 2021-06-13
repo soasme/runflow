@@ -120,7 +120,7 @@ class SequentialRunner:
 class Flow:
 
     default_extensions = {
-        'runflow.contribs.command.CommandTask',
+        'runflow.contribs.bash.BashRunTask',
         'runflow.contribs.docker.DockerRunTask',
         'runflow.contribs.local_file.FileReadTask',
         'runflow.contribs.local_file.FileWriteTask',
