@@ -1,6 +1,4 @@
 import re
-import sys
-from typing import List, Dict, Any
 
 import lark
 from decouple import config
