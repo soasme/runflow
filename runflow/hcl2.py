@@ -53,7 +53,7 @@ class DictTransformer(_DictTransformer):
 
 hcl2 = Lark_StandAlone()
 
-def loads(source, context=None):
+def loads(source):
     tree = hcl2.parse(source + "\n")
-    transformer = DictTransformer(context or {})
+    transformer = DictTransformer()
     return transformer.transform(tree)
