@@ -1,11 +1,10 @@
 import re
 
-import hcl2
 import lark
 from decouple import config
 
 from .errors import RunflowSyntaxError, RunflowTaskTypeError
-
+from . import hcl2
 
 def load_flow_tasks_from_spec(flow, tasks_spec):
     from .core import Task
@@ -13,7 +12,7 @@ def load_flow_tasks_from_spec(flow, tasks_spec):
     for task_spec in tasks_spec:
         task_type, _task_spec = next(iter(task_spec.items()))
         task_name, _task_spec = next(iter(_task_spec.items()))
-        task_payload = {k: (v[0] if len(v) == 1 else v) for k, v in _task_spec.items()}
+        task_payload = {k: v for k, v in _task_spec.items()}
 
         if task_type not in flow.exts:
             raise RunflowTaskTypeError(f'unknown task type {task_type}')
@@ -101,7 +100,7 @@ def load_flow_default_vars(flow, vars_spec):
         try:
             var_value = (
                 config(f'RUNFLOW_VAR_{var_name}', default=None)
-                or var_default_value[0]
+                or var_default_value
             )
         except IndexError:
             raise RunflowReferenceError(f"var.{var_name} is not provided.")
@@ -111,7 +110,7 @@ def load_flow_extensions(flow, extensions):
     if not extensions:
         return
 
-    for ext in extensions[0]:
+    for ext in extensions:
         flow.load_extension(ext)
 
 def loads(spec):
