@@ -1,12 +1,6 @@
 """
 This module is a hack for python-hcl2 as it cannot parse hcl2 properly.
 See python-hcl2 #6.
-
-The other reason to customize hcl2 parsing is python-hcl2 DcitTransformer
-convert everything on right-hand side to string.
-
-Patch 1: Define an Attribute Field.
-Patch 2: `def attribute()`: return an Attribute object.
 """
 
 from typing import List, Dict, Any
