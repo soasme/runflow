@@ -98,8 +98,10 @@ def extract_attr_chain(v, rs):
     elif isinstance(v, GetIndex):
         extract_attr_chain(v.expr, rs)
         rs.append(v.index)
-    else:
+    elif isinstance(v, (str, int, )):
         rs.append(v)
+    else:
+        raise ValueError(v)
 
 class GetAttr:
 
@@ -129,9 +131,19 @@ class GetAttr:
 
 class Splat:
 
-    def __init__(self, array, element):
+    def __init__(self, array, elements):
         self.array = array
-        self.element = element
+        self.elements = elements
+
+    def __repr__(self):
+        return '%s.*.%s' % (self.array, '.'.join([str(e) for e in self.elements]))
+
+    def __eq__(self, o):
+        return (
+            isinstance(o, Splat)
+            and self.array == o.array
+            and self.elements == o.elements
+        )
 
 
 class DictTransformer(_DictTransformer):
@@ -158,7 +170,7 @@ class DictTransformer(_DictTransformer):
             if value.startswith('"') and value.endswith('"'):
                 return str(value)[1:-1]
             return Interpolation(value)
-        if isinstance(value, GetAttr) or isinstance(value, GetIndex):
+        if isinstance(value, (GetAttr, GetIndex, Splat, )):
             return Interpolation(value)
         return value
 
@@ -178,8 +190,17 @@ class DictTransformer(_DictTransformer):
     def get_attr_expr_term(self, args: List) -> GetAttr:
         return GetAttr(args[0], args[1])
 
-    def attr_splat_expr_term(self, args: List) -> str:
+    def attr_splat_expr_term(self, args: List) -> Splat:
         return Splat(args[0], args[1])
+
+    def attr_splat(self, args: List):
+        return args
+
+    def full_splat_expr_term(self, args: List) -> Splat:
+        return Splat(args[0], args[1])
+
+    def full_splat(self, args: List):
+        return args
 
 
 hcl2 = Lark_StandAlone()

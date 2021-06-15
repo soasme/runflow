@@ -63,3 +63,19 @@ def test_getindex():
 
 def test_getattr():
     assert hcl2.loads('a = b.key') == {'a': hcl2.Interpolation(hcl2.GetAttr('b', 'key'))}
+
+def test_attr_splat():
+    assert hcl2.loads('a = b.*.c.d') == {'a': hcl2.Interpolation(
+        hcl2.Splat('b', ['c', 'd'])
+    )}
+    assert hcl2.loads('a = b.*.c.d[0]') == {'a': hcl2.Interpolation(
+        hcl2.GetIndex(hcl2.Splat('b', ['c', 'd']), 0)
+    )}
+
+def test_full_splat():
+    assert hcl2.loads('a = b[*].c.d') == {'a': hcl2.Interpolation(
+        hcl2.Splat('b', ['c', 'd'])
+    )}
+    assert hcl2.loads('a = b[*].c.d[0]') == {'a': hcl2.Interpolation(
+        hcl2.Splat('b', ['c', 'd', 0])
+    )}
