@@ -36,6 +36,13 @@ class Block(dict):
                 res[key].append(value)
         return res
 
+class FormatedStr(str):
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return '${%s}' % self.value
+
 class DictTransformer(_DictTransformer):
 
     def attribute(self, args: List) -> Attribute:
@@ -50,6 +57,14 @@ class DictTransformer(_DictTransformer):
         for arg in args:
             result = arg.merge_to(result)
         return result
+
+    def to_string_dollar(self, value: Any) -> Any:
+        if isinstance(value, str):
+            if value.startswith('"') and value.endswith('"'):
+                return str(value)[1:-1]
+            return FormatedStr(value)
+        return value
+
 
 hcl2 = Lark_StandAlone()
 
