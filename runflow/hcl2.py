@@ -145,6 +145,21 @@ class Splat:
             and self.elements == o.elements
         )
 
+class Call:
+
+    def __init__(self, func_name, args):
+        self.func_name = func_name
+        self.args = args
+
+    def __repr__(self):
+        return '%s(%s)' % (self.func_name, ','.join(str(a) for a in self.args))
+
+    def __eq__(self, o):
+        return (
+            isinstance(o, Call)
+            and self.func_name == o.func_name
+            and self.args == o.args
+        )
 
 class DictTransformer(_DictTransformer):
 
@@ -170,7 +185,7 @@ class DictTransformer(_DictTransformer):
             if value.startswith('"') and value.endswith('"'):
                 return str(value)[1:-1]
             return Interpolation(value)
-        if isinstance(value, (GetAttr, GetIndex, Splat, )):
+        if isinstance(value, (GetAttr, GetIndex, Splat, Call, )):
             return Interpolation(value)
         return value
 
@@ -201,6 +216,12 @@ class DictTransformer(_DictTransformer):
 
     def full_splat(self, args: List):
         return args
+
+    def function_call(self, args: List) -> str:
+        args = self.strip_new_line_tokens(args)
+        func_name = str(args[0])
+        func_args = args[1] if len(args) > 1 else []
+        return Call(func_name, func_args)
 
 
 hcl2 = Lark_StandAlone()

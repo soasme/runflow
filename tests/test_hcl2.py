@@ -45,8 +45,6 @@ def test_block(input, output):
 def test_interpolation():
     assert hcl2.loads('message = "Hello, ${name}!"') == {
             'message': "Hello, ${name}!"}
-    assert hcl2.loads('shouty_message = upper(message)') == {
-            'shouty_message': hcl2.Interpolation('upper(message)')}
     assert hcl2.loads('sum = 1 + addend') == {'sum': hcl2.Interpolation('1 + addend')}
     assert hcl2.loads('a = var.b') == {
         'a': hcl2.Interpolation(
@@ -79,3 +77,13 @@ def test_full_splat():
     assert hcl2.loads('a = b[*].c.d[0]') == {'a': hcl2.Interpolation(
         hcl2.Splat('b', ['c', 'd', 0])
     )}
+
+def test_func_call():
+    assert hcl2.loads('a = randint()') == {'a': hcl2.Interpolation(
+        hcl2.Call('randint', [])
+    )}
+    assert hcl2.loads('shouty_message = upper(message)') == {
+        'shouty_message': hcl2.Interpolation(
+            hcl2.Call('upper', [hcl2.Identifier('message')])
+        )
+    }
