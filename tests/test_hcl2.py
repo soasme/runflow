@@ -16,6 +16,9 @@ def test_module():
     ('a = []', {'a': []}),
     ('a = [1,2,3]', {'a': [1,2,3]}),
     ('a = {}', {'a': {}}),
+    ('a = { "k" = 1}', {'a': {'k': 1}}),
+    ('a = { "k" : 1}', {'a': {'k': 1}}),
+    ('a = { k = 1}', {'a': {'k': 1}}),
 ])
 def test_attribute(input, output):
     assert hcl2.loads(input) == output
