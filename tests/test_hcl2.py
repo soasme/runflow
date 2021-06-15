@@ -49,3 +49,8 @@ def test_formated_str():
             'message': "Hello, ${name}!"}
     assert hcl2.loads('shouty_message = upper(message)') == {
             'shouty_message': hcl2.FormatedStr('upper(message)')}
+
+def test_subscript():
+    assert hcl2.loads('a = b[1]') == {'a': hcl2.GetIndex('b', 1)}
+    assert hcl2.loads('a = b[1][2]') == {'a': hcl2.GetIndex(hcl2.GetIndex('b', 1), 2)}
+    assert hcl2.loads('a = b["key"]') == {'a': hcl2.GetIndex('b', 'key')}
