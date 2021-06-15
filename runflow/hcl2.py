@@ -5,6 +5,7 @@ See python-hcl2 #6.
 
 from typing import List, Dict, Any
 
+from lark import Token
 from hcl2.lark_parser import Lark_StandAlone
 from hcl2.transformer import DictTransformer as _DictTransformer
 
@@ -44,7 +45,7 @@ class Block(dict):
                 res[key].append(value)
         return res
 
-class FormatedStr(str):
+class Interpolation(str):
 
     def __init__(self, expr):
         self.expr = expr
@@ -64,10 +65,10 @@ class Identifier(str):
 
 class GetIndex:
 
-    def __init__(self, subscripted, slice):
-        self.subscripted = subscripted
-        self.slice = slice
-        self.value = '%s[%s]' % (self.subscripted, self.slice)
+    def __init__(self, expr, index):
+        self.expr = expr
+        self.index = index
+        self.value = '%s[%s]' % (self.expr, self.index)
 
     def __str__(self):
         return self.value
@@ -78,8 +79,28 @@ class GetIndex:
     def __eq__(self, o):
         return (
             isinstance(o, GetIndex)
-            and self.subscripted == o.subscripted
-            and self.slice == o.slice
+            and self.expr == o.expr
+            and self.index == o.index
+        )
+
+class GetAttr:
+
+    def __init__(self, expr, attr):
+        self.expr = expr
+        self.attr = attr
+        self.value = '%s.%s' % (self.expr, self.attr)
+
+    def __str__(self):
+        return self.value
+
+    def __repr__(self):
+        return self.value
+
+    def __eq__(self, o):
+        return (
+            isinstance(o, GetAttr)
+            and self.expr == o.expr
+            and self.attr == o.attr
         )
 
 class DictTransformer(_DictTransformer):
@@ -94,7 +115,7 @@ class DictTransformer(_DictTransformer):
     def block(self, args: List) -> Block:
         return Block(super().block(args))
 
-    def body(self, args: List) -> Dict[str, List]:
+    def body(self, args: List) -> Module:
         args = self.strip_new_line_tokens(args)
         result: Dict[str, Any] = {}
         for arg in args:
@@ -105,19 +126,26 @@ class DictTransformer(_DictTransformer):
         if isinstance(value, str):
             if value.startswith('"') and value.endswith('"'):
                 return str(value)[1:-1]
-            return FormatedStr(value)
+            return Interpolation(value)
+        if isinstance(value, GetAttr) or isinstance(value, GetIndex):
+            return Interpolation(value)
         return value
 
     def identifier(self, value: Any) -> Identifier:
         return Identifier(str(value[0]))
 
-    def index_expr_term(self, args: List) -> str:
+    def index_expr_term(self, args: List) -> GetIndex:
         args = self.strip_new_line_tokens(args)
         return GetIndex(args[0], args[1])
 
-    def index(self, args: List) -> str:
+    def index(self, args: List) -> Any:
         args = self.strip_new_line_tokens(args)
+        if isinstance(args[0], Token) and args[0].type == 'DECIMAL':
+            return int(str(''.join(args)))
         return self.strip_quotes(args[0])
+
+    def get_attr_expr_term(self, args: List) -> GetAttr:
+        return GetAttr(args[0], args[1])
 
 
 hcl2 = Lark_StandAlone()

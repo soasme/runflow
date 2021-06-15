@@ -42,15 +42,24 @@ def test_attribute(input, output):
 def test_block(input, output):
     assert hcl2.loads(input) == output
 
-def test_formated_str():
-    assert hcl2.loads('a = var.b') == {'a': hcl2.FormatedStr('var.b')}
-    assert hcl2.loads('sum = 1 + addend') == {'sum': hcl2.FormatedStr('1 + addend')}
+def test_interpolation():
     assert hcl2.loads('message = "Hello, ${name}!"') == {
             'message': "Hello, ${name}!"}
     assert hcl2.loads('shouty_message = upper(message)') == {
-            'shouty_message': hcl2.FormatedStr('upper(message)')}
+            'shouty_message': hcl2.Interpolation('upper(message)')}
+    assert hcl2.loads('sum = 1 + addend') == {'sum': hcl2.Interpolation('1 + addend')}
+    assert hcl2.loads('a = var.b') == {
+        'a': hcl2.Interpolation(
+            hcl2.GetAttr(hcl2.Identifier('var'), hcl2.Identifier('b'))
+        )
+    }
 
-def test_subscript():
-    assert hcl2.loads('a = b[1]') == {'a': hcl2.GetIndex('b', 1)}
-    assert hcl2.loads('a = b[1][2]') == {'a': hcl2.GetIndex(hcl2.GetIndex('b', 1), 2)}
-    assert hcl2.loads('a = b["key"]') == {'a': hcl2.GetIndex('b', 'key')}
+def test_getindex():
+    assert hcl2.loads('a = b[1]') == {'a': hcl2.Interpolation(hcl2.GetIndex('b', 1))}
+    assert hcl2.loads('a = b[1][2]') == {'a': hcl2.Interpolation(hcl2.GetIndex(hcl2.GetIndex('b', 1), 2))}
+    assert hcl2.loads('a = b.10') == {'a': hcl2.Interpolation(hcl2.GetIndex('b', 10))}
+    assert hcl2.loads('a = b.1.2') == {'a': hcl2.Interpolation(hcl2.GetIndex(hcl2.GetIndex('b', 1), 2))}
+    assert hcl2.loads('a = b["key"]') == {'a': hcl2.Interpolation(hcl2.GetIndex('b', 'key'))}
+
+def test_getattr():
+    assert hcl2.loads('a = b.key') == {'a': hcl2.Interpolation(hcl2.GetAttr('b', 'key'))}
