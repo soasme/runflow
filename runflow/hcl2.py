@@ -8,6 +8,9 @@ from typing import List, Dict, Any
 from hcl2.lark_parser import Lark_StandAlone
 from hcl2.transformer import DictTransformer as _DictTransformer
 
+class Module(dict):
+    pass
+
 class Attribute(dict):
 
     def merge_to(self, res):
@@ -37,11 +40,22 @@ class Block(dict):
         return res
 
 class FormatedStr(str):
-    def __init__(self, value):
-        self.value = value
+
+    def __init__(self, expr):
+        self.expr = expr
+        self.value = '${%s}' % expr
 
     def __str__(self):
-        return '${%s}' % self.value
+        return self.value
+
+    def __repr__(self):
+        return self.value
+
+    def __eq__(self, o):
+        return self.expr == o.expr
+
+class Identifier(str):
+    pass
 
 class DictTransformer(_DictTransformer):
 
@@ -56,7 +70,7 @@ class DictTransformer(_DictTransformer):
         result: Dict[str, Any] = {}
         for arg in args:
             result = arg.merge_to(result)
-        return result
+        return Module(result)
 
     def to_string_dollar(self, value: Any) -> Any:
         if isinstance(value, str):
@@ -64,6 +78,9 @@ class DictTransformer(_DictTransformer):
                 return str(value)[1:-1]
             return FormatedStr(value)
         return value
+
+    def identifier(self, value: Any) -> Identifier:
+        return Identifier(str(value[0]))
 
 
 hcl2 = Lark_StandAlone()

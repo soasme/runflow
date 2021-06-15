@@ -28,7 +28,7 @@ def load_task_by_task_reference(flow, depends_on):
             f"refer to a valid task: {depends_on}"
         )
 
-    task_key = depends_on.value
+    task_key = depends_on.expr
     task_key = task_key.split('.')
     if task_key[0] != 'task':
         raise RunflowSyntaxError(
