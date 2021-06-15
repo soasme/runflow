@@ -1,6 +1,14 @@
 """
-This module is a hack for python-hcl2 as it cannot parse hcl2 properly.
-See python-hcl2 #6.
+This module is a hack for python-hcl2 as it cannot parse hcl2 attribute/blocks
+properly. See amplify-education/python-hcl2#6.
+
+It cannot parse exp values:
+
+    1e7 => lark.exceptions.UnexpectedToken.
+
+It cannot transform full splat:
+
+    a=b[*].1 => {'a': Tree('full_splat_expr_term', ['b', 1])}
 """
 
 from typing import List, Dict, Any
@@ -83,6 +91,16 @@ class GetIndex:
             and self.index == o.index
         )
 
+def extract_attr_chain(v, rs):
+    if isinstance(v, GetAttr):
+        extract_attr_chain(v.expr, rs)
+        rs.append(v.attr)
+    elif isinstance(v, GetIndex):
+        extract_attr_chain(v.expr, rs)
+        rs.append(v.index)
+    else:
+        rs.append(v)
+
 class GetAttr:
 
     def __init__(self, expr, attr):
@@ -102,6 +120,19 @@ class GetAttr:
             and self.expr == o.expr
             and self.attr == o.attr
         )
+
+    @property
+    def attr_chain(self):
+        rs = []
+        extract_attr_chain(self, rs)
+        return rs
+
+class Splat:
+
+    def __init__(self, array, element):
+        self.array = array
+        self.element = element
+
 
 class DictTransformer(_DictTransformer):
 
@@ -146,6 +177,9 @@ class DictTransformer(_DictTransformer):
 
     def get_attr_expr_term(self, args: List) -> GetAttr:
         return GetAttr(args[0], args[1])
+
+    def attr_splat_expr_term(self, args: List) -> str:
+        return Splat(args[0], args[1])
 
 
 hcl2 = Lark_StandAlone()

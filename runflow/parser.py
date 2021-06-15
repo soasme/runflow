@@ -22,14 +22,13 @@ def load_flow_tasks_from_spec(flow, tasks_spec):
         yield Task(task_type, task_class, task_name, task_payload)
 
 def load_task_by_task_reference(flow, depends_on):
-    if not isinstance(depends_on, hcl2.FormatedStr):
+    if not isinstance(depends_on, hcl2.Interpolation):
         raise RunflowSyntaxError(
             f"Task parameter \"depends_on\" should "
             f"refer to a valid task: {depends_on}"
         )
 
-    task_key = depends_on.expr
-    task_key = task_key.split('.')
+    task_key = depends_on.expr.attr_chain
     if task_key[0] != 'task':
         raise RunflowSyntaxError(
             f"Task parameter \"depends_on\" should refer to a valid task: {depends_on}"
