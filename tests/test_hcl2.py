@@ -87,3 +87,12 @@ def test_func_call():
             hcl2.Call('upper', [hcl2.Identifier('message')])
         )
     }
+
+def test_conditional():
+    assert hcl2.loads('a = b ? 1 : 0') == {'a': hcl2.Interpolation(
+        hcl2.Conditional(
+            hcl2.Identifier('b'),
+            1,
+            0
+        )
+    )}
