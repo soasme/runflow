@@ -11,10 +11,11 @@ It cannot transform full splat:
     a=b[*].1 => {'a': Tree('full_splat_expr_term', ['b', 1])}
 """
 
+import os
+from os.path import dirname
 from typing import List, Dict, Any
 
-from lark import Token
-from hcl2.lark_parser import Lark_StandAlone
+from lark import Token, Lark
 from hcl2.transformer import DictTransformer as _DictTransformer
 
 class Module(dict):
@@ -246,7 +247,9 @@ class DictTransformer(_DictTransformer):
         return Conditional(args[0], args[1], args[2])
 
 
-hcl2 = Lark_StandAlone()
+GRAMMAR_FILE = os.path.join(dirname(__file__), 'hcl2_grammar.lark')
+with open(GRAMMAR_FILE) as f:
+    hcl2 = Lark(f.read(), parser="lalr", lexer="standard")
 
 def loads(source):
     tree = hcl2.parse(source + "\n")
