@@ -138,3 +138,42 @@ def test_arithmetic():
     assert hcl2.loads('a=1+2*3') == {'a': hcl2.Interpolation(
         hcl2.Operation([1, '+', hcl2.Operation([2, '*', 3])])
     )}
+
+def test_unary():
+    assert hcl2.loads('a= (-1)+(-2)') == {'a': hcl2.Interpolation(
+        hcl2.Operation([hcl2.Operation([0, '-', 1]), '+', hcl2.Operation([0, '-', 2])])
+    )}
+    assert hcl2.loads('a= !false') == {'a': hcl2.Interpolation(
+        hcl2.Not(False)
+    )}
+
+def test_list_expr():
+    assert hcl2.loads('a = [for x in xs: x]') == {'a': hcl2.Interpolation(
+        hcl2.ListExpr(hcl2.Identifier('x'), hcl2.Identifier('xs'), hcl2.Identifier('x'), None)
+    )}
+    assert hcl2.loads('a = [for x in xs: x if x]') == {'a': hcl2.Interpolation(
+        hcl2.ListExpr(
+            hcl2.Identifier('x'),
+            hcl2.Identifier('xs'),
+            hcl2.Identifier('x'),
+            hcl2.Identifier('x'),
+        )
+    )}
+
+def test_dict_expr():
+    assert hcl2.loads('a = {for x in xs: x => true}') == {'a': hcl2.Interpolation(
+        hcl2.DictExpr(
+            hcl2.Identifier('x'),
+            hcl2.Identifier('xs'),
+            hcl2.Identifier('x'),
+            True,
+            None)
+    )}
+    assert hcl2.loads('a = {for x in xs: x => true if x}') == {'a': hcl2.Interpolation(
+        hcl2.DictExpr(
+            hcl2.Identifier('x'),
+            hcl2.Identifier('xs'),
+            hcl2.Identifier('x'),
+            True,
+            hcl2.Identifier('x'))
+    )}
