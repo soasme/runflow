@@ -1,14 +1,22 @@
 """
-This module is a hack for python-hcl2 as it cannot parse hcl2 attribute/blocks
-properly. See amplify-education/python-hcl2#6.
+This module is a fork of amplify-education/python-hcl2.
 
-It cannot parse exp values:
+Some reasons not using python-hcl2:
+
+* It cannot parse exp values:
 
     1e7 => lark.exceptions.UnexpectedToken.
 
-It cannot transform full splat:
+* It cannot transform full splat:
 
     a=b[*].1 => {'a': Tree('full_splat_expr_term', ['b', 1])}
+
+* It returns Dict, instead of an AST. For the Runflow's use case, we
+  need to populate some fields in the runtime.
+
+* I want something like `$datetime.datetime(year, month, date)` in HCL2.
+
+Given all these considerations, Runflow has its own implementation of hcl2 parser.
 """
 
 import re
@@ -590,7 +598,7 @@ def eval(ast, env):
     elif isinstance(ast, Call):
         args = eval(ast.args, env)
         func_name = str(ast.func_name)
-        if '.' in func_name:
+        if ':' in func_name:
             func = import_module(func_name)
         elif func_name in __builtins__:
             func = __builtins__[func_name]

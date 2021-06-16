@@ -120,14 +120,14 @@ class SequentialRunner:
 class Flow:
 
     default_extensions = {
-        'runflow.contribs.bash.BashRunTask',
-        'runflow.contribs.docker.DockerRunTask',
-        'runflow.contribs.local_file.FileReadTask',
-        'runflow.contribs.local_file.FileWriteTask',
-        'runflow.contribs.template.TemplateTask',
-        'runflow.contribs.http.HttpRequestTask',
-        'runflow.contribs.sqlite3.Sqlite3ExecTask',
-        'runflow.contribs.sqlite3.Sqlite3RowTask',
+        'runflow.contribs.bash:BashRunTask',
+        'runflow.contribs.docker:DockerRunTask',
+        'runflow.contribs.local_file:FileReadTask',
+        'runflow.contribs.local_file:FileWriteTask',
+        'runflow.contribs.template:TemplateTask',
+        'runflow.contribs.http:HttpRequestTask',
+        'runflow.contribs.sqlite3:Sqlite3ExecTask',
+        'runflow.contribs.sqlite3:Sqlite3RowTask',
     }
 
     def __init__(self, name, runner_cls=None):

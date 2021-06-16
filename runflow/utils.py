@@ -31,11 +31,15 @@ async def to_thread(f, *args, **kwargs):
         return await asyncio.to_thread(f, *args, **kwargs)
 
 def import_module(path):
-    module_name = '.'.join(path.split('.')[:-1])
-    package = importlib.import_module(module_name)
-    clazz_name = path.split('.')[-1]
-    clazz = getattr(package, clazz_name)
-    return clazz
+    try:
+        package_name, module_name = path.split(':')
+        result = importlib.import_module(package_name)
+        getters = module_name.split('.')
+        for getter in getters:
+            result = getattr(result, getter)
+        return result
+    except (AttributeError, ValueError):
+        raise ImportError(path)
 
 def split_camelcase(str):
     words = [[str[0]]]

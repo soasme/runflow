@@ -11,7 +11,7 @@ flow "custom-task-type" {
   }
 
   extensions = [
-    "examples.extensions.GuessIceCreamTask"
+    "examples.extensions:GuessIceCreamTask"
   ]
 }
 
