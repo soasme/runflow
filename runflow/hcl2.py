@@ -11,15 +11,15 @@ It cannot transform full splat:
     a=b[*].1 => {'a': Tree('full_splat_expr_term', ['b', 1])}
 """
 
-import os
 import re
-import textwrap
+import os
 from os.path import dirname
 from typing import List, Dict, Any
 
 from lark import Token, Lark, Discard, Transformer
 
-HEREDOC_PATTERN = re.compile(r'<<-?([a-zA-Z][a-zA-Z0-9._-]+)\n((.|\n)*?)\n\s*\1', re.S)
+HEREDOC_PATTERN = re.compile(r'<<([a-zA-Z][a-zA-Z0-9._-]+)\n((.|\n)*?)\n\s*\1', re.S)
+HEREDOC_TRIM_PATTERN = re.compile(r'<<-([a-zA-Z][a-zA-Z0-9._-]+)\n((.|\n)*?)\n\s*\1', re.S)
 
 class Module(dict):
     pass
@@ -456,10 +456,26 @@ class DictTransformer(Transformer):
         match = HEREDOC_PATTERN.match(str(args[0]))
         if not match:
             raise RuntimeError("Invalid Heredoc token: %s" % args[0])
-        return match.group(2)
+        return '"%s"' % match.group(2)
 
     def heredoc_template_trim(self, args: List) -> str:
-        return textwrap.dedent(self.heredoc_template(args))
+        match = HEREDOC_TRIM_PATTERN.match(str(args[0]))
+        if not match:
+            raise RuntimeError("Invalid Heredoc token: %s" % args[0])
+
+        text = match.group(2)
+        lines = text.split('\n')
+
+        # calculate the min number of leading spaces in each line
+        min_spaces = sys.maxsize
+        for line in lines:
+            leading_spaces = len(line) - len(line.lstrip(' '))
+            min_spaces = min(min_spaces, leading_spaces)
+
+        # trim off that number of leading spaces from each line
+        lines = [line[min_spaces:] for line in lines]
+
+        return '"%s"' % '\n'.join(lines)
 
     def new_line_and_or_comma(self, args: List) -> Discard:
         return Discard()
