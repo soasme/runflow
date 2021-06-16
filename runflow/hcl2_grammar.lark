@@ -1,5 +1,5 @@
-start : new_line_or_comment? body new_line_or_comment?
-start_expression: expression
+module: new_line_or_comment? body new_line_or_comment?
+eval: expression
 body : (attribute | block)*
 attribute : identifier "=" expression (new_line_or_comment)?
 block : identifier (identifier | STRING_LIT)* "{" (new_line_or_comment)? body "}" new_line_or_comment

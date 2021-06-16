@@ -258,9 +258,12 @@ class Not:
 
 class DictTransformer(Transformer):
 
-    def start(self, args: List) -> Dict:
+    def module(self, args: List) -> Dict:
         args = self.strip_new_line_tokens(args)
         return Module(args[0])
+
+    def eval(self, args: List) -> Dict:
+        return args[0]
 
     def float_lit(self, args: List) -> float:
         return float("".join([str(arg) for arg in args]))
@@ -493,9 +496,17 @@ class DictTransformer(Transformer):
 
 GRAMMAR_FILE = os.path.join(dirname(__file__), 'hcl2_grammar.lark')
 with open(GRAMMAR_FILE) as f:
-    hcl2 = Lark(f.read(), parser="lalr", lexer="standard")
+    hcl2 = Lark(
+        f.read(),
+        parser="lalr",
+        lexer="standard",
+        start=['module', 'eval', ],
+    )
 
-def loads(source, start='start'):
-    tree = hcl2.parse(source + "\n", start=start)
+def loads(source, start='module'):
+    if start == 'module':
+        source = source + '\n'
+
+    tree = hcl2.parse(source, start=start)
     transformer = DictTransformer()
     return transformer.transform(tree)
