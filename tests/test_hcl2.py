@@ -307,6 +307,10 @@ def test_eval():
     assert hcl2.eval(hcl2.loads('a = int(b)'), {'b': 1.0}) == {'a': 1}
     assert hcl2.eval(hcl2.loads('a = str(b)'), {'b': 1.0}) == {'a': '1.0'}
     assert hcl2.eval(hcl2.loads('a = $math:ceil(b)'), {'b': 1.9}) == {'a': 2.0}
+    assert hcl2.eval(hcl2.loads('a = list($itertools:chain.from_iterable(b))'), {
+        'b': ['ABC', 'DEF']
+        }) == {'a': ['A', 'B', 'C', 'D', 'E', 'F']}
     assert hcl2.eval(hcl2.loads('a = $datetime:datetime(year, month, day)'), {
         'year': 1989, 'month': 6, 'day': 4,
     }) == {'a': datetime(1989, 6, 4) }
+    # assert hcl2.eval(hcl2.loads('a = "${$math:ceil(b)}"'), {'b': 1.9}) == {'a': 2.0}
