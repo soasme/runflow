@@ -180,6 +180,24 @@ def test_dict_expr():
             hcl2.Identifier('x'))
     )}
 
+def test_heredoc():
+    assert hcl2.loads('''a = <<EOT
+XXX
+YYY
+EOT''') == {'a': 'XXX\nYYY'}
+    assert hcl2.loads('''a = <<EOT
+  XXX
+  YYY
+EOT''') == {'a': '  XXX\n  YYY'}
+    assert hcl2.loads('''a = <<-EOT
+  XXX
+  YYY
+EOT''') == {'a': 'XXX\nYYY'}
+    assert hcl2.loads('''a = <<-EOT
+  XXX
+    YYY
+EOT''') == {'a': 'XXX\n  YYY'}
+
 
 def test_eval():
     assert hcl2.eval(hcl2.loads('a = b'), {'b': 1}) == {'a': 1}
@@ -195,6 +213,10 @@ def test_eval():
     assert hcl2.eval(hcl2.loads('a {k=b}\na {k=b+1}'), {'b': 1}) == {'a': [
         {'k': 1}, {'k': 2}
     ]}
+    assert hcl2.eval(hcl2.loads('a = !b'), {'b': True}) == {'a': False}
+    assert hcl2.eval(hcl2.loads('a = (!b) || (!c)'), {'b': True, 'c': False}) == {'a': True}
+    # TBD: need fix it
+    # assert hcl2.eval(hcl2.loads('a = !b || !c'), {'b': True, 'c': False}) == {'a': True}
     assert hcl2.eval(hcl2.loads('a = b && c'), {'b': True, 'c': True}) == {'a': True}
     assert hcl2.eval(hcl2.loads('a = b && c'), {'b': True, 'c': False}) == {'a': False}
     assert hcl2.eval(hcl2.loads('a = b && c'), {'b': False, 'c': False}) == {'a': False}
@@ -262,15 +284,18 @@ def test_eval():
         'xs': {'k1': 1, 'k2': 2},
     }) == {'a': {1: 'k1', 2: 'k2'}}
 
-    assert hcl2.eval(hcl2.loads('a = [for x in xs: x]'), {
+    assert set(hcl2.eval(hcl2.loads('a = [for x in xs: x]'), {
         'xs': {'k1', 'k2'},
-    }) == {'a': list(set(['k1', 'k2']))}
-    assert hcl2.eval(hcl2.loads('a = [for k, v in xs: k if v]'), {
+    })['a']) == {'k1', 'k2'}
+    assert set(hcl2.eval(hcl2.loads('a = [for k, v in xs: k if v]'), {
         'xs': {'k1', 'k2', False},
-    }) == {'a': list(set(['k2', 'k1']))}
+    })['a']) == {'k1', 'k2'}
     assert hcl2.eval(hcl2.loads('a = {for k in xs: k => k}'), {
         'xs': {'k1', 'k2'},
     }) == {'a': {'k1': 'k1', 'k2': 'k2'}}
     assert hcl2.eval(hcl2.loads('a = {for k, v in xs: v => k}'), {
         'xs': {'k1', 'k2'},
     }) == {'a': {'k1': 'k1', 'k2': 'k2'}}
+
+    assert hcl2.eval(hcl2.loads('a = b?c:d'), {'b': True, 'c': 1, 'd': 2}) == {'a': 1}
+    assert hcl2.eval(hcl2.loads('a = b?c:d'), {'b': False, 'c': 1, 'd': 2}) == {'a': 2}

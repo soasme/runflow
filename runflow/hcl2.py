@@ -13,13 +13,13 @@ It cannot transform full splat:
 
 import re
 import os
+import textwrap
 from os.path import dirname
 from typing import List, Dict, Any
 
 from lark import Token, Lark, Discard, Transformer
 
-HEREDOC_PATTERN = re.compile(r'<<([a-zA-Z][a-zA-Z0-9._-]+)\n((.|\n)*?)\n\s*\1', re.S)
-HEREDOC_TRIM_PATTERN = re.compile(r'<<-([a-zA-Z][a-zA-Z0-9._-]+)\n((.|\n)*?)\n\s*\1', re.S)
+HEREDOC_PATTERN = re.compile(r'<<-?([a-zA-Z][a-zA-Z0-9._-]+)\n((.|\n)*?)\n\s*\1', re.S)
 
 class Module(dict):
     pass
@@ -456,30 +456,17 @@ class DictTransformer(Transformer):
         elif args[0] == '!':
             return Not(args[1])
 
-    def heredoc_template(self, args: List) -> str:
+    def _heredoc_template(self, args: List) -> str:
         match = HEREDOC_PATTERN.match(str(args[0]))
         if not match:
             raise RuntimeError("Invalid Heredoc token: %s" % args[0])
-        return '"%s"' % match.group(2)
+        return match.group(2)
+
+    def heredoc_template(self, args: List) -> str:
+        return '"%s"' % self._heredoc_template(args)
 
     def heredoc_template_trim(self, args: List) -> str:
-        match = HEREDOC_TRIM_PATTERN.match(str(args[0]))
-        if not match:
-            raise RuntimeError("Invalid Heredoc token: %s" % args[0])
-
-        text = match.group(2)
-        lines = text.split('\n')
-
-        # calculate the min number of leading spaces in each line
-        min_spaces = sys.maxsize
-        for line in lines:
-            leading_spaces = len(line) - len(line.lstrip(' '))
-            min_spaces = min(min_spaces, leading_spaces)
-
-        # trim off that number of leading spaces from each line
-        lines = [line[min_spaces:] for line in lines]
-
-        return '"%s"' % '\n'.join(lines)
+        return '"%s"' % textwrap.dedent(self._heredoc_template(args))
 
     def new_line_and_or_comma(self, args: List) -> Discard:
         return Discard()
@@ -546,6 +533,8 @@ def eval(ast, env):
         return result
     elif isinstance(ast, Identifier):
         return env[ast]
+    elif isinstance(ast, Not):
+        return not eval(ast.expr, env)
     elif isinstance(ast, Splat):
         obj = eval(ast.array, env)
         def extract(o, attrs):
@@ -587,6 +576,19 @@ def eval(ast, env):
             value = eval(ast.value, newenv)
             result[key] = value
         return result
+    elif isinstance(ast, Conditional):
+        cond = eval(ast.predicate, env)
+        if cond:
+            return eval(ast.true_expr, env)
+        else:
+            return eval(ast.false_expr, env)
+    elif isinstance(ast, Call):
+        args = eval(ast.args, env)
+        try:
+            func = FUNCS[ast.func_name]
+        except KeyError:
+            raise NameError(f'function {ast.func_name} is not defined')
+        return func(*args)
     elif isinstance(ast, Operation):
         result = None
         op = None
