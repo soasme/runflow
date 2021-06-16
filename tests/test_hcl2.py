@@ -48,7 +48,9 @@ def test_block(input, output):
 def test_interpolation():
     assert hcl2.loads('message = "Hello, ${name}!"') == {
             'message': "Hello, ${name}!"}
-    assert hcl2.loads('sum = 1 + addend') == {'sum': hcl2.Interpolation('1 + addend')}
+    assert hcl2.loads('sum = 1 + addend') == {'sum': hcl2.Interpolation(
+        hcl2.Operation([1, '+', hcl2.Identifier('addend')])
+    )}
     assert hcl2.loads('a = var.b') == {
         'a': hcl2.Interpolation(
             hcl2.GetAttr(hcl2.Identifier('var'), hcl2.Identifier('b'))
@@ -98,4 +100,41 @@ def test_conditional():
             1,
             0
         )
+    )}
+
+def test_bin_or():
+    assert hcl2.loads('a = true || false') == {'a': hcl2.Interpolation(
+        hcl2.Operation([True, '||', False])
+    )}
+
+def test_bin_and():
+    assert hcl2.loads('a = true && false') == {'a': hcl2.Interpolation(
+        hcl2.Operation([True, '&&', False])
+    )}
+
+def test_bin_and_or():
+    assert hcl2.loads('a = true || true && false') == {'a': hcl2.Interpolation(
+        hcl2.Operation([True, '||', hcl2.Operation([True, '&&', False])])
+    )}
+    assert hcl2.loads('a = true && true || false') == {'a': hcl2.Interpolation(
+        hcl2.Operation([hcl2.Operation([True, '&&', True]), '||', False])
+    )}
+
+def test_bin_eq():
+    assert hcl2.loads('a = true == false') == {'a': hcl2.Interpolation(
+        hcl2.Operation([True, '==', False])
+    )}
+    assert hcl2.loads('a = true == false != false') == {'a': hcl2.Interpolation(
+        hcl2.Operation([True, '==', False, '!=', False])
+    )}
+
+def test_arithmetic():
+    assert hcl2.loads('a=1*(2+3)') == {'a': hcl2.Interpolation(
+        hcl2.Operation([1, '*', hcl2.Operation([2, '+', 3])])
+    )}
+    assert hcl2.loads('a=1*2+3') == {'a': hcl2.Interpolation(
+        hcl2.Operation([hcl2.Operation([1, '*', 2]), '+', 3])
+    )}
+    assert hcl2.loads('a=1+2*3') == {'a': hcl2.Interpolation(
+        hcl2.Operation([1, '+', hcl2.Operation([2, '*', 3])])
     )}

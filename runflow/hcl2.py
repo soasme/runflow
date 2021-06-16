@@ -180,6 +180,20 @@ class Conditional:
             and self.false_expr == o.false_expr
         )
 
+class Operation:
+
+    def __init__(self, elements):
+        self.elements = elements
+
+    def __repr__(self):
+        return '(%s)' % (''.join([str(e) for e in self.elements]))
+
+    def __eq__(self, o):
+        return (
+            isinstance(o, Operation)
+            and self.elements == o.elements
+        )
+
 class DictTransformer(_DictTransformer):
 
     def attribute(self, args: List) -> Attribute:
@@ -204,7 +218,7 @@ class DictTransformer(_DictTransformer):
             if value.startswith('"') and value.endswith('"'):
                 return str(value)[1:-1]
             return Interpolation(value)
-        if isinstance(value, (GetAttr, GetIndex, Splat, Call, Conditional, )):
+        if isinstance(value, (GetAttr, GetIndex, Splat, Call, Conditional, Operation, )):
             return Interpolation(value)
         return value
 
@@ -244,14 +258,58 @@ class DictTransformer(_DictTransformer):
 
     def conditional(self, args: List) -> Conditional:
         args = self.strip_new_line_tokens(args)
+        if len(args) == 1:
+            return args[0]
         return Conditional(args[0], args[1], args[2])
+
+    def binary_or_op(self, args: List):
+        return self.binary_op(args)
+
+    def binary_or_operator(self, args: List):
+        return str(args[0])
+
+    def binary_and_op(self, args: List):
+        return self.binary_op(args)
+
+    def binary_and_operator(self, args: List):
+        return str(args[0])
+
+    def binary_eq_op(self, args: List):
+        return self.binary_op(args)
+
+    def binary_eq_operator(self, args: List):
+        return str(args[0])
+
+    def binary_test_op(self, args: List):
+        return self.binary_op(args)
+
+    def binary_test_operator(self, args: List):
+        return str(args[0])
+
+    def binary_factor_op(self, args: List):
+        return self.binary_op(args)
+
+    def binary_factor_operator(self, args: List):
+        return str(args[0])
+
+    def binary_term_op(self, args: List):
+        return self.binary_op(args)
+
+    def binary_term_operator(self, args: List):
+        return str(args[0])
+
+    def binary_op(self, args: List):
+        args = self.strip_new_line_tokens(args)
+        if len(args) == 1:
+            return args[0]
+        return Operation(args)
 
 
 GRAMMAR_FILE = os.path.join(dirname(__file__), 'hcl2_grammar.lark')
 with open(GRAMMAR_FILE) as f:
     hcl2 = Lark(f.read(), parser="lalr", lexer="standard")
 
-def loads(source):
-    tree = hcl2.parse(source + "\n")
+def loads(source, start='start'):
+    tree = hcl2.parse(source + "\n", start=start)
     transformer = DictTransformer()
     return transformer.transform(tree)
