@@ -19,6 +19,8 @@ from typing import List, Dict, Any
 
 from lark import Token, Lark, Discard, Transformer
 
+from runflow.utils import import_module
+
 HEREDOC_PATTERN = re.compile(r'<<-?([a-zA-Z][a-zA-Z0-9._-]+)\n((.|\n)*?)\n\s*\1', re.S)
 
 class Module(dict):
@@ -366,6 +368,9 @@ class DictTransformer(Transformer):
             result.update(arg)
         return result
 
+    def magic_function_name(self, args: List):
+        return ''.join([a for a in args[1:]])
+
     def function_call(self, args: List) -> Call:
         args = self.strip_new_line_tokens(args)
         func_name = str(args[0])
@@ -585,9 +590,14 @@ def eval(ast, env):
     elif isinstance(ast, Call):
         args = eval(ast.args, env)
         func_name = str(ast.func_name)
-        if func_name not in FUNCS:
+        if '.' in func_name:
+            func = import_module(func_name)
+        elif func_name in __builtins__:
+            func = __builtins__[func_name]
+        elif func_name in FUNCS:
+            func = FUNCS[func_name]
+        else:
             raise NameError(f'function {ast.func_name} is not defined')
-        func = FUNCS[func_name]
         return func(*args)
     elif isinstance(ast, Operation):
         result = None
@@ -634,9 +644,6 @@ def eval(ast, env):
         return ast
 
 FUNCS = {
-    'int': int,
-    'float': float,
-    'str': str,
     'lower': lambda s: s.lower(),
     'upper': lambda s: s.upper(),
 }
