@@ -299,3 +299,9 @@ def test_eval():
 
     assert hcl2.eval(hcl2.loads('a = b?c:d'), {'b': True, 'c': 1, 'd': 2}) == {'a': 1}
     assert hcl2.eval(hcl2.loads('a = b?c:d'), {'b': False, 'c': 1, 'd': 2}) == {'a': 2}
+
+    assert hcl2.eval(hcl2.loads('a = lower(b)'), {'b': 'X'}) == {'a': 'x'}
+    assert hcl2.eval(hcl2.loads('a = upper(b)'), {'b': 'x'}) == {'a': 'X'}
+    assert hcl2.eval(hcl2.loads('a = float(b)'), {'b': 1}) == {'a': 1.0}
+    assert hcl2.eval(hcl2.loads('a = int(b)'), {'b': 1.0}) == {'a': 1}
+    assert hcl2.eval(hcl2.loads('a = str(b)'), {'b': 1.0}) == {'a': '1.0'}

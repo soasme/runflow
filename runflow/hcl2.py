@@ -584,10 +584,10 @@ def eval(ast, env):
             return eval(ast.false_expr, env)
     elif isinstance(ast, Call):
         args = eval(ast.args, env)
-        try:
-            func = FUNCS[ast.func_name]
-        except KeyError:
+        func_name = str(ast.func_name)
+        if func_name not in FUNCS:
             raise NameError(f'function {ast.func_name} is not defined')
+        func = FUNCS[func_name]
         return func(*args)
     elif isinstance(ast, Operation):
         result = None
@@ -632,3 +632,11 @@ def eval(ast, env):
         return {k: eval(v, env) for k, v in ast.items()}
     else:
         return ast
+
+FUNCS = {
+    'int': int,
+    'float': float,
+    'str': str,
+    'lower': lambda s: s.lower(),
+    'upper': lambda s: s.upper(),
+}
