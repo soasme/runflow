@@ -75,6 +75,16 @@ class Interpolation(str):
 class Identifier(str):
     pass
 
+def extract_attr_chain(v, rs):
+    if isinstance(v, GetAttr):
+        extract_attr_chain(v.expr, rs)
+        rs.append(v.attr)
+    elif isinstance(v, GetIndex):
+        extract_attr_chain(v.expr, rs)
+        rs.append(v.index)
+    else:
+        rs.append(v)
+
 class GetIndex:
 
     def __init__(self, expr, index):
@@ -95,17 +105,11 @@ class GetIndex:
             and self.index == o.index
         )
 
-def extract_attr_chain(v, rs):
-    if isinstance(v, GetAttr):
-        extract_attr_chain(v.expr, rs)
-        rs.append(v.attr)
-    elif isinstance(v, GetIndex):
-        extract_attr_chain(v.expr, rs)
-        rs.append(v.index)
-    elif isinstance(v, (str, int, )):
-        rs.append(v)
-    else:
-        raise ValueError(v)
+    @property
+    def attr_chain(self):
+        rs = []
+        extract_attr_chain(self, rs)
+        return rs
 
 class GetAttr:
 
@@ -423,8 +427,8 @@ class DictTransformer(Transformer):
         args = self.strip_new_line_tokens(args)
         if len(args) == 5:
             return [args[1], args[3]]
-        elif len(args) == 6:
-            return [(args[1], args[2]), args[4]]
+        elif len(args) == 7:
+            return [(args[1], args[3]), args[5]]
         else:
             raise ValueError(f'invalid for intro: {args}')
 
@@ -510,3 +514,119 @@ def loads(source, start='module'):
     tree = hcl2.parse(source, start=start)
     transformer = DictTransformer()
     return transformer.transform(tree)
+
+def _for_iterable(xs, id_count=1):
+    if isinstance(xs, (tuple, list, )):
+        for i, x in enumerate(xs):
+            yield x if id_count == 1 else (i, x)
+    elif isinstance(xs, dict):
+        for k, v in xs.items():
+            yield k if id_count == 1 else (k, v)
+    elif isinstance(xs, set):
+        for x in xs:
+            yield x if id_count == 1 else (x, x)
+
+def eval(ast, env):
+    if isinstance(ast, Module):
+        result = {}
+        for key, attribute_or_block in ast.items():
+            result[key] = eval(attribute_or_block, env)
+        return result
+    elif isinstance(ast, Interpolation):
+        return eval(ast.expr, env)
+    elif isinstance(ast, (GetIndex, GetAttr, )):
+        result = env
+        for attr in ast.attr_chain:
+            if isinstance(attr, Splat):
+                result = eval(attr, env)
+            elif isinstance(attr, str) and hasattr(result, attr):
+                result = getattr(result, attr)
+            else:
+                result = result[attr]
+        return result
+    elif isinstance(ast, Identifier):
+        return env[ast]
+    elif isinstance(ast, Splat):
+        obj = eval(ast.array, env)
+        def extract(o, attrs):
+            result = o
+            for attr in attrs:
+                if isinstance(attr, str) and hasattr(result, attr):
+                    result = getattr(result, attr)
+                else:
+                    result = result[attr]
+            return result
+        return [extract(o, ast.elements) for o in obj]
+    elif isinstance(ast, ListExpr):
+        result = []
+        id_count = 2 if isinstance(ast.element_id, tuple) else 1
+        for elem in _for_iterable(eval(ast.array, env), id_count):
+            if id_count == 2:
+                index_id, element_id = ast.element_id
+                _index, _elem = elem
+                newenv = dict(env, **{str(element_id): _elem, str(index_id): _index})
+            else:
+                newenv = dict(env, **{str(ast.element_id): elem})
+            if ast.condition and not eval(ast.condition, newenv):
+                continue
+            result.append(eval(ast.element, newenv))
+        return result
+    elif isinstance(ast, DictExpr):
+        result = {}
+        id_count = 2 if isinstance(ast.element_id, tuple) else 1
+        for elem in _for_iterable(eval(ast.array, env), id_count):
+            if id_count == 2:
+                index_id, element_id = ast.element_id
+                _index, _elem = elem
+                newenv = dict(env, **{str(element_id): _elem, str(index_id): _index})
+            else:
+                newenv = dict(env, **{str(ast.element_id): elem})
+            if ast.condition and not eval(ast.condition, newenv):
+                continue
+            key = eval(ast.key, newenv)
+            value = eval(ast.value, newenv)
+            result[key] = value
+        return result
+    elif isinstance(ast, Operation):
+        result = None
+        op = None
+        for index, elem in enumerate(ast.elements):
+            if index == 0:
+                result = eval(elem, env)
+            elif index % 2 == 1:
+                op = elem
+            elif op == '||':
+                result = result or eval(elem, env)
+            elif op == '&&':
+                result = result and eval(elem, env)
+            elif op == '==':
+                result = result == eval(elem, env)
+            elif op == '!=':
+                result = result != eval(elem, env)
+            elif op == '>=':
+                result = result >= eval(elem, env)
+            elif op == '>':
+                result = result > eval(elem, env)
+            elif op == '<=':
+                result = result <= eval(elem, env)
+            elif op == '<':
+                result = result < eval(elem, env)
+            elif op == '+':
+                result = result + eval(elem, env)
+            elif op == '-':
+                result = result - eval(elem, env)
+            elif op == '*':
+                result = result * eval(elem, env)
+            elif op == '/':
+                result = result / eval(elem, env)
+            elif op == '%':
+                result = result % eval(elem, env)
+            else:
+                raise ValueError(f'invalid op: {op}')
+        return result
+    elif isinstance(ast, list):
+        return [eval(a, env) for a in ast]
+    elif isinstance(ast, dict):
+        return {k: eval(v, env) for k, v in ast.items()}
+    else:
+        return ast
