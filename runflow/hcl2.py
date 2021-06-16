@@ -279,6 +279,9 @@ class DictTransformer(Transformer):
     def eval(self, args: List) -> Dict:
         return args[0]
 
+    def string_lit(self, args: Any):
+        return self.strip_quotes(str(args[0]))
+
     def float_lit(self, args: List) -> float:
         return float("".join([str(arg) for arg in args]))
 
@@ -326,13 +329,13 @@ class DictTransformer(Transformer):
         return result
 
     def to_string_dollar(self, value: Any) -> Any:
+        if isinstance(value, (GetAttr, GetIndex, Splat, Call, Conditional, Operation,
+                ListExpr, DictExpr, Not, Identifier, )):
+            return Interpolation(value)
         if isinstance(value, str):
             if value.startswith('"') and value.endswith('"'):
                 return str(value)[1:-1]
-            return Interpolation(value)
-        if isinstance(value, (GetAttr, GetIndex, Splat, Call, Conditional, Operation,
-                ListExpr, DictExpr, Not, )):
-            return Interpolation(value)
+            return str(value)
         return value
 
     def identifier(self, value: Any) -> Identifier:

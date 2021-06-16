@@ -20,7 +20,10 @@ def test_module():
     ('{"k" = 1}', {'k': 1}),
     ('{"k" : 1}', {'k': 1}),
     ('{k = 1}', {'k': 1}),
-    ('"${x}"', '"${x}"'),
+    ('"${x}"', '${x}'),
+    ('"abc"', 'abc'),
+    ('"abc ${x}"', 'abc ${x}'),
+    # ('"${"x"}"', '${"x"}'),
 ])
 def test_expression(input, output):
     assert hcl2.loads(input, start='eval') == output
