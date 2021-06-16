@@ -39,7 +39,6 @@ expr_term : "(" new_line_or_comment? expression new_line_or_comment? ")"
             | get_attr_expr_term
             | identifier
             | heredoc_template
-            | heredoc_template_trim
             | attr_splat_expr_term
             | full_splat_expr_term
             | for_tuple_expr

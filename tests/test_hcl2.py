@@ -20,6 +20,7 @@ def test_module():
     ('{"k" : 1}', {'k': 1}),
     ('{k = 1}', {'k': 1}),
     ('"${x}"', '"${x}"'),
+    ('"${x}"', '"${x}"'),
 ])
 def test_expression(input, output):
     assert hcl2.loads(input, start='eval') == output
@@ -178,3 +179,15 @@ def test_dict_expr():
             True,
             hcl2.Identifier('x'))
     )}
+
+def test_heredoc_template():
+    assert hcl2.loads("""
+a = <<EOT
+HELLO
+WORLD
+EOT""") == {'a': "HELLO\nWORLD"}
+    assert hcl2.loads("""
+a = <<-EOT
+    HELLO
+      WORLD
+EOT""") == {'a': "HELLO\n  WORLD"}
