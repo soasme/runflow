@@ -653,6 +653,8 @@ def eval(ast, env):
             func = __builtins__[func_name]
         elif func_name in FUNCS:
             func = FUNCS[func_name]
+        elif func_name in env.get('func'):
+            func = env['func'][func_name]
         else:
             raise NameError(f'function {ast.func_name} is not defined')
         return func(*args)

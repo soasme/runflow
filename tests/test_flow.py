@@ -382,4 +382,4 @@ def test_load_extension(tmpdir):
 
     runflow.runflow(flow, {'out': str(out)})
 
-    assert out.read() == "bingo, it is vanilla"
+    assert out.read().startswith("Bingo, it is VANILLA-")

@@ -114,7 +114,7 @@ class SequentialRunner:
 
 class Flow:
 
-    default_extensions = {
+    default_tasks = {
         'runflow.contribs.bash:BashRunTask',
         'runflow.contribs.docker:DockerRunTask',
         'runflow.contribs.local_file:FileReadTask',
@@ -132,7 +132,8 @@ class Flow:
         self.vars = {}
 
         self.exts = {}
-        self.load_default_extensions()
+        self.functions = {}
+        self.load_default_tasks()
 
     def __iter__(self):
         try:
@@ -160,7 +161,7 @@ class Flow:
     def set_default_var(self, name, value):
         self.vars[name] = value
 
-    def load_extension(self, import_string):
+    def load_task(self, import_string):
         task_class = utils.import_module(import_string)
         task_class_name = task_class.__name__
         assert task_class_name != 'Task' and task_class_name.endswith('Task')
@@ -169,12 +170,20 @@ class Flow:
         task_type = '_'.join(task_type_chunks[:-1]).lower()
         self.exts[task_type] = task_class
 
-    def load_default_extensions(self):
-        for mod in self.default_extensions:
-            self.load_extension(mod)
+    def load_default_tasks(self):
+        for mod in self.default_tasks:
+            self.load_task(mod)
+
+    def load_function(self, import_string):
+        function = utils.import_module(import_string)
+        self.functions[function.__name__] = function
 
     def make_run_context(self, vars=None):
-        context = { 'var': dict(self.vars, **dict(vars or {})), 'task': {}}
+        context = {
+            'var': dict(self.vars, **dict(vars or {})),
+            'task': {},
+            'func': self.functions,
+        }
         for task in self:
             context['task'].setdefault(task.type, {})
             context['task'][task.type][task.name] = task.payload

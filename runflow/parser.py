@@ -103,12 +103,21 @@ def load_flow_default_vars(flow, vars_spec):
             raise RunflowReferenceError(f"var.{var_name} is not provided.")
         flow.set_default_var(var_name, var_value)
 
+def load_flow_imported_tasks(flow, tasks):
+    for task in tasks:
+        flow.load_task(task)
+
+def load_flow_imported_functions(flow, functions):
+    for function in functions:
+        flow.load_function(function)
+
 def load_flow_extensions(flow, extensions):
     if not extensions:
         return
 
     for ext in extensions:
-        flow.load_extension(ext)
+        load_flow_imported_tasks(flow, ext.get('tasks', []))
+        load_flow_imported_functions(flow, ext.get('functions', []))
 
 def loads(spec):
     from .core import Flow
@@ -126,7 +135,7 @@ def loads(spec):
 
     flow = Flow(name=flow_name)
 
-    load_flow_extensions(flow, flow_spec.get('extensions', []))
+    load_flow_extensions(flow, flow_spec.get('import', []))
     load_flow_default_vars(flow, flow_spec.get('variable', []))
 
     for task in load_flow_tasks_from_spec(flow, flow_spec.get('task', [])):
