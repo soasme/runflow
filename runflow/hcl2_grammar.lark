@@ -50,7 +50,7 @@ string_lit : STRING_LIT
 quoted_template_expr: STRING_LIT
 STRING_LIT : "\"" (STRING_CHARS | INTERPOLATION | "${")* "\""
 STRING_CHARS : /(?:(?!\${)([^"\\]|\\.))+/+ // any character except '"" unless inside a interpolation string
-INTERPOLATION : "${" /(?:"(?:[^"\\]|\\.)*"|[^}]+)/ "}"
+INTERPOLATION : /\${ *(?:"(?:[^"\\]|\\.)*"|[^}"]+)+ *}/
 
 int_lit : DECIMAL+
 !float_lit: DECIMAL+ "." DECIMAL+ (EXP_MARK DECIMAL+)?

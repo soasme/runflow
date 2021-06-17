@@ -26,7 +26,14 @@ def test_module():
     ('"abc"', 'abc'),
     ('"abc ${x}"', 'abc ${x}'),
     ('"${"x"}"', '${"x"}'),
+    ('"${ "x" }"', '${ "x" }'),
     ('"${"x}"}"', '${"x}"}'),
+    ('"${"${x}"}"', '${"${x}"}'),
+    ('"${ "${abc}" }"', '${ "${abc}" }'),
+    ('"${ eval("abc") }"', '${ eval("abc") }'),
+    ('"${ eval2(eval("abc")) }"', '${ eval2(eval("abc")) }'),
+    ('"${ sum([for x in xs: x]) }"', '${ sum([for x in xs: x]) }'),
+    ('"${ eval("${abc}") }"', '${ eval("${abc}") }'),
 ])
 def test_expression(input, output):
     assert hcl2.loads(input, start='eval') == output
