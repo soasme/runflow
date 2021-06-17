@@ -46,7 +46,8 @@ expr_term : "(" new_line_or_comment? expression new_line_or_comment? ")"
             | for_object_expr
 
 
-string_lit : ESCAPED_STRING
+string_lit : /"(?:[^"\\]|\\.)*"/
+
 
 int_lit : DECIMAL+
 !float_lit: DECIMAL+ "." DECIMAL+ (EXP_MARK DECIMAL+)?
@@ -81,4 +82,3 @@ index : "[" new_line_or_comment? expression new_line_or_comment? "]" | "." int_l
 
 %ignore /[ \t]+/
 %ignore /\/\*(.|\n)*?(\*\/)/
-%import common.ESCAPED_STRING
