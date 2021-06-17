@@ -1,3 +1,4 @@
+from math import ceil
 from datetime import datetime
 import json
 import pytest
@@ -303,14 +304,14 @@ def test_eval():
     assert hcl2.eval(hcl2.loads('a = float(b)'), {'b': 1}) == {'a': 1.0}
     assert hcl2.eval(hcl2.loads('a = int(b)'), {'b': 1.0}) == {'a': 1}
     assert hcl2.eval(hcl2.loads('a = str(b)'), {'b': 1.0}) == {'a': '1.0'}
-    assert hcl2.eval(hcl2.loads('a = $math:ceil(b)'), {'b': 1.9}) == {'a': 2.0}
-    assert hcl2.eval(hcl2.loads('a = list($itertools:chain.from_iterable(b))'), {
-        'b': ['ABC', 'DEF']
-        }) == {'a': ['A', 'B', 'C', 'D', 'E', 'F']}
-    assert hcl2.eval(hcl2.loads('a = $datetime:datetime(year, month, day)'), {
+    assert hcl2.eval(hcl2.loads('a = ceil(b)'), {'b': 1.9, 'func': {'ceil': ceil}}) == {'a': 2.0}
+    # assert hcl2.eval(hcl2.loads('a = list($itertools:chain.from_iterable(b))'), {
+        # 'b': ['ABC', 'DEF']
+        # }) == {'a': ['A', 'B', 'C', 'D', 'E', 'F']}
+    assert hcl2.eval(hcl2.loads('a = datetime(year, month, day)'), {
         'year': 1989, 'month': 6, 'day': 4,
+        'func': {'datetime': datetime},
     }) == {'a': datetime(1989, 6, 4) }
-    # assert hcl2.eval(hcl2.loads('a = "${$math:ceil(b)}"'), {'b': 1.9}) == {'a': 2.0}
 
     assert hcl2.eval(hcl2.loads('a = "${x}"'), {'x': 1}) == {'a': 1}
     assert hcl2.eval(hcl2.loads('a = "Hello, ${name}!"'), {'name': 'world'}) == {
