@@ -25,7 +25,7 @@ To load it in the Runflow spec, use `import`:
 Run:
 
 ```
-$ PYTHONPATH=. runflow run examples/custom_task_type.hcl --var out=/tmp/out.txt
+$ runflow run custom_task_type.hcl --var out=/tmp/out.txt
 [2021-06-13 15:48:35,397] "task.guess_ice_cream.echo" is started.
 [2021-06-13 15:48:35,398] "task.guess_ice_cream.echo" is successful.
 
