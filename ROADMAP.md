@@ -8,6 +8,7 @@
 - [ ] ecosys: implement editor highlight.
 - [ ] cli: support `runflow visualize xxx.rf`.
 - [ ] cli: support `runflow run --var-file`.
+- [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
 - [ ] spec: variable type constraints.
 - [ ] task: call another remote flow (using python module).
 - [ ] task: call another remote flow (using http link).
