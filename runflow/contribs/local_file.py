@@ -8,6 +8,10 @@ class FileWriteTask:
         self.content = content
 
     async def run(self, context):
+        if self.filename == '/dev/stdout':
+            print(str(self.content))
+            return
+
         async with async_open(self.filename, 'w+') as f:
             await f.write(self.content)
 
