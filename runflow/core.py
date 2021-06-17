@@ -7,7 +7,6 @@ import asyncio
 import enum
 
 import lark
-import jinja2
 import networkx
 
 from .errors import (
@@ -74,10 +73,7 @@ class Task:
             template_context = hcl2.eval(self.payload.get('context', {}), context)
             context = dict(context, **template_context)
 
-        try:
-            payload = hcl2.eval(self.payload, context)
-        except jinja2.exceptions.UndefinedError as e:
-            raise RunflowReferenceError(str(e).replace("'dict object'", f"{self}"))
+        payload = hcl2.eval(self.payload, context)
 
         task_result = TaskResult(TaskStatus.PENDING)
 
