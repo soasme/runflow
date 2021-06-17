@@ -8,13 +8,6 @@
 - [ ] ci: code quality check: pylint or flake8.
 - [ ] cli: support `runflow visualize xxx.rf`.
 - [ ] cli: support `runflow run --var-file`.
-- [ ] cli: runflow show order of task executions.
-- [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
-- [ ] hcl2: output
-- [ ] spec: variable type constraints.
-- [ ] task: call another remote flow (using python module).
-- [ ] task: call another remote flow (using http link).
-- [ ] task: call another local flow.
 - [ ] task: dynamodb.
 - [ ] task: cloudwatch.
 - [ ] task: s3.
@@ -34,8 +27,15 @@
 - [ ] core: conditions: all_passed, all_failed, all_done, any_passed, any_failed, any_done.
 - [ ] core: foreach map tasks.
 - [ ] core: conditional (braching) tasks.
-- [ ] core: support default variable types.
 - [ ] core: retry running failed tasks.
+- [ ] cli: runflow show order of task executions.
+- [ ] hcl2: more test cases.
+- [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
+- [ ] hcl2: variable type constraints.
+- [ ] task: call another remote flow (using python module).
+- [ ] task: call another remote flow (using http link).
+- [ ] task: call another local flow.
+- [x] ~~hcl2: output~~ this can be done via task `file_write` with filename = `"/dev/stdout"`. v0.4.3.
 - [x] core: runflow() supports path, module, source. v0.4.3.
 - [x] ~~task: datetime.~~ this is complete as we can use import block for `datetime:datetime`. v0.4.0.
 - [x] ~~ecosys: implement editor highlight.~~ this is complete due to we decide the full support of hcl2. v0.4.0.
