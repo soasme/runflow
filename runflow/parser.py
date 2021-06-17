@@ -48,14 +48,13 @@ def load_flow_explicit_tasks_dependencies(flow, task):
         yield load_task_by_task_reference(flow, depends_on)
 
 def _load_flow_implicit_tasks_dependencies(deps_set, value):
-    if isinstance(value, str):
-        task_keys = re.findall(r"\${([^}]+)}", value)
-        if not task_keys:
-            return
-        for task_key in task_keys:
-            if not task_key.startswith('task.'):
+    if isinstance(value, hcl2.JoinedStr):
+        for element in value.elements:
+            if not isinstance(element, hcl2.GetAttr):
                 continue
-            deps_set.add(task_key)
+            task_keys = list(element.attr_chain)
+            if task_keys and task_keys[0] == 'task' and len(task_keys) > 3:
+                deps_set.add('.'.join(task_keys[:3]))
 
     elif isinstance(value, list):
         for _value in value:

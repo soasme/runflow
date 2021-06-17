@@ -7,7 +7,6 @@ import asyncio
 import enum
 
 import lark
-import hcl2
 import jinja2
 import networkx
 
@@ -15,7 +14,7 @@ from .errors import (
     RunflowReferenceError, RunflowTaskError,
     RunflowAcyclicTasksError,
 )
-from . import utils
+from . import hcl2, utils
 
 logger = logging.getLogger(__name__)
 
@@ -72,11 +71,11 @@ class Task:
 
     async def run(self, context):
         if self.type == "template":
-            template_context = utils.render(self.payload.get('context', {}), context)
+            template_context = hcl2.eval(self.payload.get('context', {}), context)
             context = dict(context, **template_context)
 
         try:
-            payload = utils.render(self.payload, context)
+            payload = hcl2.eval(self.payload, context)
         except jinja2.exceptions.UndefinedError as e:
             raise RunflowReferenceError(str(e).replace("'dict object'", f"{self}"))
 
