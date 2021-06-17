@@ -176,7 +176,8 @@ class Flow:
 
     def load_function(self, import_string):
         function = utils.import_module(import_string)
-        self.functions[function.__name__] = function
+        func_name = import_string.split(':')[-1].replace('.', '_')
+        self.functions[func_name] = function
 
     def make_run_context(self, vars=None):
         context = {
