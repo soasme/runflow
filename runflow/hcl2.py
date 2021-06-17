@@ -20,6 +20,7 @@ Given all these considerations, Runflow has its own implementation of hcl2 parse
 """
 
 import re
+import json
 import os
 import textwrap
 from os.path import dirname
@@ -28,14 +29,36 @@ from typing import List, Dict, Any
 from lark import Token, Lark, Discard, Transformer
 
 from runflow.utils import import_module
+from runflow.errors import RunflowReferenceError
 
 HEREDOC_PATTERN = re.compile(r'<<-?([a-zA-Z][a-zA-Z0-9._-]+)\n((.|\n)*?)\n\s*\1', re.S)
+INTERPOLATION = re.compile(r'\${ *((?:"(?:[^"\\]|\\.)*"|[^}"]+)+) *}')
+
+def parse_template(s):
+    result = []
+    previous = 0
+    for interpolation_match in INTERPOLATION.finditer(s):
+        start, end = interpolation_match.span()
+        if previous != start:
+            result.append(StringLit(s[previous:start]))
+        expr = interpolation_match.group(1)
+        result.append(loads(expr, start='eval'))
+        previous = end
+    if not result:
+        return StringLit(s)
+    elif previous != len(s):
+        result.append(StringLit(s[previous:]))
+    return JoinedStr(result)
 
 class Module(dict):
     pass
 
 class StringLit(str):
     pass
+
+class JoinedStr:
+    def __init__(self, elements):
+        self.elements = elements
 
 class Attribute(dict):
 
@@ -283,13 +306,25 @@ class DictTransformer(Transformer):
         return args[0]
 
     def quoted_template_expr(self, args: Any):
-        return args[0]
+        return parse_template(args[0])
 
     def string_lit(self, args: Any):
         return StringLit(args[0])
 
     def STRING_LIT(self, args: Any):
         return self.strip_quotes("".join([str(arg) for arg in args]))
+
+    def _heredoc_template(self, args: List) -> str:
+        match = HEREDOC_PATTERN.match(str(args[0]))
+        if not match:
+            raise RuntimeError("Invalid Heredoc token: %s" % args[0])
+        return match.group(2)
+
+    def heredoc_template(self, args: List) -> str:
+        return parse_template(self._heredoc_template(args))
+
+    def heredoc_template_trim(self, args: List) -> str:
+        return parse_template(textwrap.dedent(self._heredoc_template(args)))
 
     def float_lit(self, args: List) -> float:
         return float("".join([str(arg) for arg in args]))
@@ -481,18 +516,6 @@ class DictTransformer(Transformer):
         elif args[0] == '!':
             return Not(args[1])
 
-    def _heredoc_template(self, args: List) -> str:
-        match = HEREDOC_PATTERN.match(str(args[0]))
-        if not match:
-            raise RuntimeError("Invalid Heredoc token: %s" % args[0])
-        return match.group(2)
-
-    def heredoc_template(self, args: List) -> str:
-        return '"%s"' % self._heredoc_template(args)
-
-    def heredoc_template_trim(self, args: List) -> str:
-        return '"%s"' % textwrap.dedent(self._heredoc_template(args))
-
     def new_line_and_or_comma(self, args: List) -> Discard:
         return Discard()
 
@@ -554,12 +577,28 @@ def eval(ast, env):
             elif isinstance(attr, str) and hasattr(result, attr):
                 result = getattr(result, attr)
             else:
-                result = result[attr]
+                try:
+                    result = result[attr]
+                except KeyError:
+                    raise RunflowReferenceError(list(ast.attr_chain))
         return result
     elif isinstance(ast, Identifier):
         return env[ast]
     elif isinstance(ast, StringLit):
         return ast
+    elif isinstance(ast, JoinedStr):
+        result = []
+        if len(ast.elements) == 1:
+            if isinstance(ast.elements[0], StringLit):
+                return str(ast.elements[0])
+            else:
+                return eval(ast.elements[0], env)
+        for node in ast.elements:
+            if isinstance(node, StringLit):
+                result.append(str(node))
+            else:
+                result.append(str(eval(node, env)))
+        return ''.join(result)
     elif isinstance(ast, Not):
         return not eval(ast.expr, env)
     elif isinstance(ast, Splat):
@@ -668,4 +707,6 @@ def eval(ast, env):
 FUNCS = {
     'lower': lambda s: s.lower(),
     'upper': lambda s: s.upper(),
+    'split': lambda sep, s: s.split(sep),
+    'tojson': lambda s: json.dumps(s),
 }

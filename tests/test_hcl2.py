@@ -20,20 +20,6 @@ def test_module():
     ('{"k" = 1}', {'k': 1}),
     ('{"k" : 1}', {'k': 1}),
     ('{k = 1}', {'k': 1}),
-    ('"${x}"', '${x}'),
-    ('"${"', '${'),
-    ('"${}"', '${}'),
-    ('"abc"', 'abc'),
-    ('"abc ${x}"', 'abc ${x}'),
-    ('"${"x"}"', '${"x"}'),
-    ('"${ "x" }"', '${ "x" }'),
-    ('"${"x}"}"', '${"x}"}'),
-    ('"${"${x}"}"', '${"${x}"}'),
-    ('"${ "${abc}" }"', '${ "${abc}" }'),
-    ('"${ eval("abc") }"', '${ eval("abc") }'),
-    ('"${ eval2(eval("abc")) }"', '${ eval2(eval("abc")) }'),
-    ('"${ sum([for x in xs: x]) }"', '${ sum([for x in xs: x]) }'),
-    ('"${ eval("${abc}") }"', '${ eval("${abc}") }'),
 ])
 def test_expression(input, output):
     assert hcl2.loads(input, start='eval') == output
@@ -62,8 +48,6 @@ def test_block(input, output):
     assert hcl2.loads(input) == output
 
 def test_interpolation():
-    assert hcl2.loads('message = "Hello, ${name}!"') == {
-            'message': "Hello, ${name}!"}
     assert hcl2.loads('sum = 1 + addend') == {'sum': hcl2.Interpolation(
         hcl2.Operation([1, '+', hcl2.Identifier('addend')])
     )}
@@ -328,9 +312,30 @@ def test_eval():
     }) == {'a': datetime(1989, 6, 4) }
     # assert hcl2.eval(hcl2.loads('a = "${$math:ceil(b)}"'), {'b': 1.9}) == {'a': 2.0}
 
+    assert hcl2.eval(hcl2.loads('a = "${x}"'), {'x': 1}) == {'a': 1}
+    assert hcl2.eval(hcl2.loads('a = "Hello, ${name}!"'), {'name': 'world'}) == {
+        'a': "Hello, world!"
+    }
+    assert hcl2.eval(hcl2.loads('a = "${"'), {}) == {'a': '${'}
+    assert hcl2.eval(hcl2.loads('a = "${}"'), {}) == {'a': '${}'}
+    with pytest.raises(Exception):
+        assert hcl2.eval(hcl2.loads('a = "${  }"'), {}) == {'a': '${  }'}
+    assert hcl2.eval(hcl2.loads('a = "abc"'), {}) == {'a': 'abc'}
+    assert hcl2.eval(hcl2.loads('a = "${"x"}"'), {}) == {'a': 'x'}
+    assert hcl2.eval(hcl2.loads('a = "${ "x" }"'), {}) == {'a': 'x'}
+    assert hcl2.eval(hcl2.loads('a = "${ "x}" }"'), {}) == {'a': 'x}'}
+    assert hcl2.eval(hcl2.loads('a = "${ "${x}" }"'), {'x': 'y'}) == {'a': 'y'}
+    assert hcl2.eval(hcl2.loads('a = "${ "${xyz}" }"'), {'xyz': 'y'}) == {'a': 'y'}
+    assert hcl2.eval(hcl2.loads('a = "${ upper("${x}") }"'), {'x': 'y'}) == {'a': 'Y'}
+    assert hcl2.eval(hcl2.loads('a = "${ split(",", "${x}") }"'), {'x': 'a,b'}) == {
+        'a': ['a', 'b'],
+    }
+    assert hcl2.eval(hcl2.loads('a = "${ [for x in split(",", "${x}"): x if x != "a"] }"'), {'x': 'a,b,c'}) == {
+        'a': ['b', 'c'],
+    }
     assert hcl2.eval(hcl2.loads('task "${sth}" {}'), {'sth': "mytask"}) == {
         "task": [{"${sth}": {}}]
     }
-    # assert hcl2.eval(hcl2.loads('task "${sth}" { a = "${sth}" }'), {'sth': "mytask"}) == {
-        # "task": [{"${sth}": { "a": "mytask"}}]
-    # }
+    assert hcl2.eval(hcl2.loads('task "${sth}" { a = "${sth}" }'), {'sth': "mytask"}) == {
+        "task": [{"${sth}": { "a": "mytask"}}]
+    }
