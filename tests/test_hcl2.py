@@ -21,6 +21,8 @@ def test_module():
     ('{"k" : 1}', {'k': 1}),
     ('{k = 1}', {'k': 1}),
     ('"${x}"', '${x}'),
+    ('"${"', '${'),
+    ('"${}"', '${}'),
     ('"abc"', 'abc'),
     ('"abc ${x}"', 'abc ${x}'),
     ('"${"x"}"', '${"x"}'),
@@ -318,3 +320,10 @@ def test_eval():
         'year': 1989, 'month': 6, 'day': 4,
     }) == {'a': datetime(1989, 6, 4) }
     # assert hcl2.eval(hcl2.loads('a = "${$math:ceil(b)}"'), {'b': 1.9}) == {'a': 2.0}
+
+    assert hcl2.eval(hcl2.loads('task "${sth}" {}'), {'sth': "mytask"}) == {
+        "task": [{"${sth}": {}}]
+    }
+    # assert hcl2.eval(hcl2.loads('task "${sth}" { a = "${sth}" }'), {'sth': "mytask"}) == {
+        # "task": [{"${sth}": { "a": "mytask"}}]
+    # }

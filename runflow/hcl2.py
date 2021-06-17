@@ -34,6 +34,9 @@ HEREDOC_PATTERN = re.compile(r'<<-?([a-zA-Z][a-zA-Z0-9._-]+)\n((.|\n)*?)\n\s*\1'
 class Module(dict):
     pass
 
+class StringLit(str):
+    pass
+
 class Attribute(dict):
 
     def __init__(self, key, value):
@@ -278,6 +281,12 @@ class DictTransformer(Transformer):
 
     def eval(self, args: List) -> Dict:
         return args[0]
+
+    def quoted_template_expr(self, args: Any):
+        return args[0]
+
+    def string_lit(self, args: Any):
+        return StringLit(args[0])
 
     def STRING_LIT(self, args: Any):
         return self.strip_quotes("".join([str(arg) for arg in args]))
@@ -549,6 +558,8 @@ def eval(ast, env):
         return result
     elif isinstance(ast, Identifier):
         return env[ast]
+    elif isinstance(ast, StringLit):
+        return ast
     elif isinstance(ast, Not):
         return not eval(ast.expr, env)
     elif isinstance(ast, Splat):
