@@ -1,8 +1,13 @@
 import pytest
 from runflow import cli
 
+def test_cli_run_module(tmpdir, capsys):
+    cli(['run', 'examples.hello:flow'])
+    out, err = capsys.readouterr()
+    assert out == 'hello world\n'
+
 def test_cli(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
     flow.write("""
 flow "hello-world" {

@@ -5,11 +5,11 @@ import runflow
 
 
 def test_sqlite3_exec(tmpdir, capsys):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.db"
     with open('examples/sqlite3_exec.hcl') as f:
         flow.write(f.read())
-    runflow.runflow(flow, {'db': out})
+    runflow.runflow(flow, vars={'db': out})
 
     with sqlite3.connect(str(out)) as conn:
         cursor = conn.cursor()
@@ -18,16 +18,16 @@ def test_sqlite3_exec(tmpdir, capsys):
         assert rows == [('k1', 'v1'), ('k2', 'v2'), ('k3', 'v3')]
 
 def test_sqlite3_row(tmpdir, capsys):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.db"
 
     with open('examples/sqlite3_exec.hcl') as f:
         flow.write(f.read())
-    runflow.runflow(flow, {'db': out})
+    runflow.runflow(flow, vars={'db': out})
 
     with open('examples/sqlite3_row.hcl') as f:
         flow.write(f.read())
-    runflow.runflow(flow, {'db': out})
+    runflow.runflow(flow, vars={'db': out})
 
     out, err = capsys.readouterr()
     assert 'k1: v1' in out

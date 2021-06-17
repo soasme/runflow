@@ -39,7 +39,15 @@ def cli_subcommand_run(args):
             cli_abort(f"Invalid --var option: {var}")
 
     from .core import run
-    run(args.specfile, dict(vars))
+    from .utils import import_module
+
+    if args.specfile.endswith('.hcl'):
+        run(path=args.specfile, vars=dict(vars))
+    elif args.specfile == '-':
+        run(source=sys.stdin.read(), vars=dict(vars))
+    else:
+        import runflow.autoloader
+        run(flow=import_module(args.specfile), vars=dict(vars))
 
 def cli(argv=None):
     parser = cli_parser()

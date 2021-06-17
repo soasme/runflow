@@ -2,7 +2,7 @@
 
 ## Run Flow Using `runflow`
 
-Assume you have a Runflow spec file `mypackage/hello.hcl`.
+Assume you have a Runflow spec file `examples/hello.hcl`.
 
 <<< @/examples/hello.hcl
 
@@ -10,9 +10,33 @@ Run this flow:
 
 ```python
 >>> from runflow import runflow
->>> runflow('mypackage/hello.hcl', vars={})
+>>> runflow(path='examples/hello.hcl', vars={})
 hello world
 ```
+
+Another option is through import string:
+
+
+```python
+>>> runflow(module='examples.hello:flow', vars={})
+hello world
+```
+
+You can also provide it with the source of flow spec:
+
+```python
+>>> source = """
+... flow "hello_world" {
+...   task "bash_run" "echo" {
+...     command = "echo 'hello world'"
+...   }
+... }
+... """
+>>> runflow(source=source, vars={})
+hello world
+```
+
+Added in v0.5.0.
 
 ## Run Flow Using Autoloader
 
@@ -29,10 +53,18 @@ Import "runflow.autoloader" and you can import this flow in Python code.
 <runflow.core.Flow object at 0x10ca67f10>
 ```
 
-Run this flow:
+Run it by `runflow` function:
+
+```python
+>>> runflow(flow=flow, vars={})
+```
+
+If you prefer the low-level API, try this:
 
 ```python
 >>> import asyncio
 >>> asyncio.run(flow.run(vars={}))
 hello world
 ```
+
+Added in v0.5.0.
