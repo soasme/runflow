@@ -19,6 +19,6 @@ flow "sqlite3_row" {
   }
 
   task "bash_run" "echo" {
-    command = "echo 'k1: ${task.sqlite3_row.k1.rows[0][1]}\nkall: ${task.sqlite3_row.kall.rows|tojson}'"
+    command = "echo 'k1: ${task.sqlite3_row.k1.rows[0][1]}\nkall: ${tojson(task.sqlite3_row.kall.rows)}'"
   }
 }
