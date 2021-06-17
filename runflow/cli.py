@@ -46,6 +46,7 @@ def cli_subcommand_run(args):
     elif args.specfile == '-':
         run(source=sys.stdin.read(), vars=dict(vars))
     else:
+        import runflow.autoloader
         run(flow=import_module(args.specfile), vars=dict(vars))
 
 def cli(argv=None):
