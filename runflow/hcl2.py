@@ -279,8 +279,8 @@ class DictTransformer(Transformer):
     def eval(self, args: List) -> Dict:
         return args[0]
 
-    def string_lit(self, args: Any):
-        return self.strip_quotes(str(args[0]))
+    def STRING_LIT(self, args: Any):
+        return self.strip_quotes("".join([str(arg) for arg in args]))
 
     def float_lit(self, args: List) -> float:
         return float("".join([str(arg) for arg in args]))

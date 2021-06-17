@@ -23,7 +23,8 @@ def test_module():
     ('"${x}"', '${x}'),
     ('"abc"', 'abc'),
     ('"abc ${x}"', 'abc ${x}'),
-    # ('"${"x"}"', '${"x"}'),
+    ('"${"x"}"', '${"x"}'),
+    ('"${"x}"}"', '${"x}"}'),
 ])
 def test_expression(input, output):
     assert hcl2.loads(input, start='eval') == output
