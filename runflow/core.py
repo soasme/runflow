@@ -7,15 +7,13 @@ import asyncio
 import enum
 
 import lark
-import hcl2
-import jinja2
 import networkx
 
 from .errors import (
     RunflowReferenceError, RunflowTaskError,
     RunflowAcyclicTasksError,
 )
-from . import utils
+from . import hcl2, utils
 
 logger = logging.getLogger(__name__)
 
@@ -71,14 +69,11 @@ class Task:
         return self.type == o.type and self.name == o.name
 
     async def run(self, context):
-        if self.type == "template":
-            template_context = utils.render(self.payload.get('context', {}), context)
+        if self.type == "hcl2_template":
+            template_context = hcl2.eval(self.payload.get('context', {}), context)
             context = dict(context, **template_context)
 
-        try:
-            payload = utils.render(self.payload, context)
-        except jinja2.exceptions.UndefinedError as e:
-            raise RunflowReferenceError(str(e).replace("'dict object'", f"{self}"))
+        payload = hcl2.eval(self.payload, context)
 
         task_result = TaskResult(TaskStatus.PENDING)
 
@@ -119,15 +114,15 @@ class SequentialRunner:
 
 class Flow:
 
-    default_extensions = {
-        'runflow.contribs.bash.BashRunTask',
-        'runflow.contribs.docker.DockerRunTask',
-        'runflow.contribs.local_file.FileReadTask',
-        'runflow.contribs.local_file.FileWriteTask',
-        'runflow.contribs.template.TemplateTask',
-        'runflow.contribs.http.HttpRequestTask',
-        'runflow.contribs.sqlite3.Sqlite3ExecTask',
-        'runflow.contribs.sqlite3.Sqlite3RowTask',
+    default_tasks = {
+        'runflow.contribs.bash:BashRunTask',
+        'runflow.contribs.docker:DockerRunTask',
+        'runflow.contribs.local_file:FileReadTask',
+        'runflow.contribs.local_file:FileWriteTask',
+        'runflow.contribs.template:Hcl2TemplateTask',
+        'runflow.contribs.http:HttpRequestTask',
+        'runflow.contribs.sqlite3:Sqlite3ExecTask',
+        'runflow.contribs.sqlite3:Sqlite3RowTask',
     }
 
     def __init__(self, name, runner_cls=None):
@@ -137,7 +132,8 @@ class Flow:
         self.vars = {}
 
         self.exts = {}
-        self.load_default_extensions()
+        self.functions = {}
+        self.load_default_tasks()
 
     def __iter__(self):
         try:
@@ -165,7 +161,7 @@ class Flow:
     def set_default_var(self, name, value):
         self.vars[name] = value
 
-    def load_extension(self, import_string):
+    def load_task(self, import_string):
         task_class = utils.import_module(import_string)
         task_class_name = task_class.__name__
         assert task_class_name != 'Task' and task_class_name.endswith('Task')
@@ -174,12 +170,20 @@ class Flow:
         task_type = '_'.join(task_type_chunks[:-1]).lower()
         self.exts[task_type] = task_class
 
-    def load_default_extensions(self):
-        for mod in self.default_extensions:
-            self.load_extension(mod)
+    def load_default_tasks(self):
+        for mod in self.default_tasks:
+            self.load_task(mod)
+
+    def load_function(self, import_string):
+        function = utils.import_module(import_string)
+        self.functions[function.__name__] = function
 
     def make_run_context(self, vars=None):
-        context = { 'var': dict(self.vars, **dict(vars or {})), 'task': {}}
+        context = {
+            'var': dict(self.vars, **dict(vars or {})),
+            'task': {},
+            'func': self.functions,
+        }
         for task in self:
             context['task'].setdefault(task.type, {})
             context['task'][task.type][task.name] = task.payload

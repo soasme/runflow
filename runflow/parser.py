@@ -22,15 +22,13 @@ def load_flow_tasks_from_spec(flow, tasks_spec):
         yield Task(task_type, task_class, task_name, task_payload)
 
 def load_task_by_task_reference(flow, depends_on):
-    m = re.match(r"\${([^}]+)}", depends_on)
-    if not m:
+    if not isinstance(depends_on, hcl2.Interpolation):
         raise RunflowSyntaxError(
             f"Task parameter \"depends_on\" should "
             f"refer to a valid task: {depends_on}"
         )
 
-    task_key = m.group(1).strip()
-    task_key = task_key.split('.')
+    task_key = depends_on.expr.attr_chain
     if task_key[0] != 'task':
         raise RunflowSyntaxError(
             f"Task parameter \"depends_on\" should refer to a valid task: {depends_on}"
@@ -50,14 +48,13 @@ def load_flow_explicit_tasks_dependencies(flow, task):
         yield load_task_by_task_reference(flow, depends_on)
 
 def _load_flow_implicit_tasks_dependencies(deps_set, value):
-    if isinstance(value, str):
-        task_keys = re.findall(r"\${([^}]+)}", value)
-        if not task_keys:
-            return
-        for task_key in task_keys:
-            if not task_key.startswith('task.'):
+    if isinstance(value, hcl2.JoinedStr):
+        for element in value.elements:
+            if not isinstance(element, hcl2.GetAttr):
                 continue
-            deps_set.add(task_key)
+            task_keys = list(element.attr_chain)
+            if task_keys and task_keys[0] == 'task' and len(task_keys) > 3:
+                deps_set.add('.'.join(task_keys[:3]))
 
     elif isinstance(value, list):
         for _value in value:
@@ -106,12 +103,21 @@ def load_flow_default_vars(flow, vars_spec):
             raise RunflowReferenceError(f"var.{var_name} is not provided.")
         flow.set_default_var(var_name, var_value)
 
+def load_flow_imported_tasks(flow, tasks):
+    for task in tasks:
+        flow.load_task(task)
+
+def load_flow_imported_functions(flow, functions):
+    for function in functions:
+        flow.load_function(function)
+
 def load_flow_extensions(flow, extensions):
     if not extensions:
         return
 
     for ext in extensions:
-        flow.load_extension(ext)
+        load_flow_imported_tasks(flow, ext.get('tasks', []))
+        load_flow_imported_functions(flow, ext.get('functions', []))
 
 def loads(spec):
     from .core import Flow
@@ -129,7 +135,7 @@ def loads(spec):
 
     flow = Flow(name=flow_name)
 
-    load_flow_extensions(flow, flow_spec.get('extensions', []))
+    load_flow_extensions(flow, flow_spec.get('import', []))
     load_flow_default_vars(flow, flow_spec.get('variable', []))
 
     for task in load_flow_tasks_from_spec(flow, flow_spec.get('task', [])):

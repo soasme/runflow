@@ -13,6 +13,6 @@ Welcome to Runflow's documentation.
 * Tutorial: [Http Request](tasks/http-request.md) Task.
 * Tutorial: [Sqlite3 Exec](tasks/sqlite3-exec.md) Task.
 * Tutorial: [Sqlite3 Row](tasks/sqlite3-row.md) Task.
-* Tutorial: [Template](tasks/template.md) Task.
+* Tutorial: [Hcl2 Template](tasks/hcl2-template.md) Task.
 * Advanced Usage: Use [Python API](python-api.md).
 * Advanced Usage: [Develop your own Task](customize-task.md).

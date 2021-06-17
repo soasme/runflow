@@ -3,26 +3,6 @@ import sys
 import asyncio
 import importlib
 
-import jinja2
-
-def render(source, context):
-    if isinstance(source, str):
-        tpl = jinja2.Template(
-            source,
-            variable_start_string="${",
-            variable_end_string="}",
-            undefined=jinja2.StrictUndefined,
-        )
-        return tpl.render(context)
-    elif isinstance(source, list):
-        return [render(s, context) for s in source]
-    elif isinstance(source, dict):
-        return {k: render(v, context) for k, v in source.items()}
-    elif isinstance(source, int):
-        return source
-    else:
-        raise ValueError(f"Invalid template source: {source}")
-
 async def to_thread(f, *args, **kwargs):
     if sys.version_info[0] == 3 and sys.version_info[1] < 9:
         loop = asyncio.get_running_loop()
@@ -31,11 +11,15 @@ async def to_thread(f, *args, **kwargs):
         return await asyncio.to_thread(f, *args, **kwargs)
 
 def import_module(path):
-    module_name = '.'.join(path.split('.')[:-1])
-    package = importlib.import_module(module_name)
-    clazz_name = path.split('.')[-1]
-    clazz = getattr(package, clazz_name)
-    return clazz
+    try:
+        package_name, module_name = path.split(':')
+        result = importlib.import_module(package_name)
+        getters = module_name.split('.')
+        for getter in getters:
+            result = getattr(result, getter)
+        return result
+    except (AttributeError, ValueError):
+        raise ImportError(path)
 
 def split_camelcase(str):
     words = [[str[0]]]

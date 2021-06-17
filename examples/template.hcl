@@ -4,7 +4,7 @@ flow "render-template" {
     default = ""
   }
 
-  task "template" "this" {
+  task "hcl2_template" "this" {
     source = <<EOT
 ${ answer }
 ${ final.answer }
@@ -20,7 +20,7 @@ EOT
 
   task "file_write" "this" {
     filename = var.out
-    content = task.template.this.content
+    content = task.hcl2_template.this.content
   }
 }
 

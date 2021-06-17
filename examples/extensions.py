@@ -8,4 +8,4 @@ class GuessIceCreamTask:
 
     async def run(self, context):
         async with async_open(self.output, 'w+') as f:
-            await f.write(f"bingo, it is {self.name}")
+            await f.write(f"Bingo, it is {self.name}")

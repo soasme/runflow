@@ -1,4 +1,4 @@
-# File: sqlite3_exec
+# File: sqlite3_exec.hcl
 flow "sqlite3_exec" {
 
   variable "db" {
@@ -22,7 +22,7 @@ EOT
       ["k1", "v1"],
       ["k2", "v2"],
     ]
-    exec_many = True
+    exec_many = true
   }
 
   task "sqlite3_exec" "insert_one" {

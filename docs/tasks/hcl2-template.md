@@ -1,6 +1,6 @@
-# Template Task
+# Hcl2 Template Task
 
-Template task enables rendering source with given context.
+Hcl2 Template task enables rendering source with given context.
 
 Added in v0.3.0.
 

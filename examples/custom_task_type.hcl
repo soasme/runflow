@@ -1,17 +1,23 @@
-# File: custom-task-type.hcl
-flow "custom-task-type" {
+# File: custom_task_type.hcl
+flow "custom_task_type" {
+
+  import {
+    tasks = [
+      "examples.extensions:GuessIceCreamTask"
+    ]
+    functions = [
+      "random:randint"
+    ]
+  }
 
   variable "out" {
     default = ""
   }
 
   task "guess_ice_cream" "echo" {
-    name = "vanilla"
+    name = "${upper("vanilla")}-${randint(1, 100)}"
     output = var.out
   }
 
-  extensions = [
-    "examples.extensions.GuessIceCreamTask"
-  ]
 }
 

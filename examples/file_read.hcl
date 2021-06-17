@@ -4,6 +4,6 @@ flow "file_read" {
     filename = "pyproject.toml"
   }
   task "bash_run" "this" {
-    command = "echo '${task.file_read.this.content | tojson}'"
+    command = "echo ${tojson(task.file_read.this.content)}"
   }
 }
