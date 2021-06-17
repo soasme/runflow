@@ -5,15 +5,14 @@
 - [ ] docs: integrate with python-rq.
 - [ ] docs: integrate with pex.
 - [ ] docs: a flow app following 12-factor principle.
-- [ ] ecosys: implement editor highlight.
 - [ ] cli: support `runflow visualize xxx.rf`.
 - [ ] cli: support `runflow run --var-file`.
 - [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
+- [ ] hcl2: output
 - [ ] spec: variable type constraints.
 - [ ] task: call another remote flow (using python module).
 - [ ] task: call another remote flow (using http link).
 - [ ] task: call another local flow.
-- [ ] task: datetime.
 - [ ] task: dynamodb.
 - [ ] task: cloudwatch.
 - [ ] task: s3.
@@ -29,7 +28,6 @@
 - [ ] task: command: integrate pexpect.
 - [ ] task: command: support sending stdin.
 - [ ] task: command: cap_stdout, cap_stderr.
-- [ ] spec: output
 - [ ] cli: runflow visualize
 - [ ] cli: runflow show order of task executions.
 - [ ] core: cache flow results locally in a file ".state".
@@ -37,10 +35,11 @@
 - [ ] core: foreach map tasks.
 - [ ] core: conditional (braching) tasks.
 - [ ] core: support default variable types.
-- [ ] core: support envvar types.
-- [ ] core: jinja2 "${ xx.yy.zz }" should return xx.yy.zz instead of rendering it.
 - [ ] core: retry running failed tasks.
 - [ ] core: runflow() supports path, module, source.
+- [x] ~~task: datetime.~~ this is complete as we can use import block for `datetime:datetime`. v0.4.0.
+- [x] ~~ecosys: implement editor highlight.~~ this is complete due to we decide the full support of hcl2. v0.4.0.
+- [x] core: support envvar types. v0.4.0
 - [x] task: rename command to bash_run. v0.4.0.
 - [x] core: support extensions. v0.4.0.
 - [x] core: support envvar. v0.4.0.
