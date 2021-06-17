@@ -69,7 +69,7 @@ class Task:
         return self.type == o.type and self.name == o.name
 
     async def run(self, context):
-        if self.type == "template":
+        if self.type == "hcl2_template":
             template_context = hcl2.eval(self.payload.get('context', {}), context)
             context = dict(context, **template_context)
 
@@ -119,7 +119,7 @@ class Flow:
         'runflow.contribs.docker:DockerRunTask',
         'runflow.contribs.local_file:FileReadTask',
         'runflow.contribs.local_file:FileWriteTask',
-        'runflow.contribs.template:TemplateTask',
+        'runflow.contribs.template:Hcl2TemplateTask',
         'runflow.contribs.http:HttpRequestTask',
         'runflow.contribs.sqlite3:Sqlite3ExecTask',
         'runflow.contribs.sqlite3:Sqlite3RowTask',

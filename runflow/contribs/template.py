@@ -1,4 +1,4 @@
-class TemplateTask:
+class Hcl2TemplateTask:
 
     def __init__(self, source, context=None):
         self.source = source
