@@ -19,6 +19,7 @@ import re
 import json
 import os
 import textwrap
+import itertools
 from os.path import dirname
 from typing import List, Dict, Any
 
@@ -706,5 +707,7 @@ FUNCS = {
     'lower': lambda s: s.lower(),
     'upper': lambda s: s.upper(),
     'split': lambda sep, s: s.split(sep),
+    'join': lambda sep, s: sep.join(s),
     'tojson': lambda s: json.dumps(s),
+    'concat': lambda *s: list(itertools.chain(*s)),
 }

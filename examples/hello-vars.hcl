@@ -1,5 +1,5 @@
-# File: hello-vars.hcl
-flow "hello-vars" {
+# File: hello_vars.hcl
+flow "hello_vars" {
   variable "greeter" {
     default = "world"
   }

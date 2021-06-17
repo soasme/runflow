@@ -331,6 +331,9 @@ def test_eval():
     assert hcl2.eval(hcl2.loads('a = "${ split(",", "${x}") }"'), {'x': 'a,b'}) == {
         'a': ['a', 'b'],
     }
+    assert hcl2.eval(hcl2.loads('a = "${ join(" ", concat(["echo"], [for x in xs: x])) }"'), {'xs': ['a', 'b']}) == {
+        'a': "echo a b"
+    }
     assert hcl2.eval(hcl2.loads('a = "${ [for x in split(",", "${x}"): x if x != "a"] }"'), {'x': 'a,b,c'}) == {
         'a': ['b', 'c'],
     }

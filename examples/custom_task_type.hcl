@@ -20,4 +20,3 @@ flow "custom_task_type" {
   }
 
 }
-

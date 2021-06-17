@@ -29,6 +29,8 @@
 - [ ] task: command: support sending stdin.
 - [ ] task: command: cap_stdout, cap_stderr.
 - [ ] spec: output
+- [ ] cli: runflow visualize
+- [ ] cli: runflow show order of task executions.
 - [ ] core: cache flow results locally in a file ".state".
 - [ ] core: conditions: all_passed, all_failed, all_done, any_passed, any_failed, any_done.
 - [ ] core: foreach map tasks.
@@ -37,6 +39,7 @@
 - [ ] core: support envvar types.
 - [ ] core: jinja2 "${ xx.yy.zz }" should return xx.yy.zz instead of rendering it.
 - [ ] core: retry running failed tasks.
+- [ ] core: runflow() supports path, module, source.
 - [x] task: rename command to bash_run. v0.4.0.
 - [x] core: support extensions. v0.4.0.
 - [x] core: support envvar. v0.4.0.

@@ -16,3 +16,4 @@ Welcome to Runflow's documentation.
 * Tutorial: [Hcl2 Template](tasks/hcl2-template.md) Task.
 * Advanced Usage: Use [Python API](python-api.md).
 * Advanced Usage: [Develop your own Task](customize-task.md).
+* References: [Runflow Specification](flow-spec.md).
