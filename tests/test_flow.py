@@ -4,13 +4,13 @@ import pytest
 import runflow
 
 def test_one_flow_is_required(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     flow.write("# nothing ;(")
     with pytest.raises(AssertionError):
         runflow.runflow(flow)
 
 def test_invalid_spec(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     flow.write("""
 flow "hello-world" {
     """)
@@ -19,7 +19,7 @@ flow "hello-world" {
         runflow.runflow(flow)
 
 def test_multiple_flows_are_disallowed(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     flow.write("""
 flow "hello-world" { }
 flow "hello-world2" { }
@@ -29,7 +29,19 @@ flow "hello-world2" { }
         runflow.runflow(flow)
 
 def test_hello_world(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = """
+flow "hello-world" {
+  task "bash_run" "echo" {
+    command = "echo hello world > ${var.out}"
+  }
+}
+    """
+
+    runflow.runflow(source=flow, vars={'out': out})
+    assert out.read() == 'hello world\n'
+
+def test_hello_world(tmpdir):
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
     flow.write("""
 flow "hello-world" {
@@ -39,12 +51,12 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, {'out': out})
+    runflow.runflow(flow, vars={'out': out})
 
     assert out.read() == 'hello world\n'
 
 def test_command_env(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
     flow.write(r"""
 flow "hello-world" {
@@ -57,12 +69,12 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, {'out': out})
+    runflow.runflow(flow, vars={'out': out})
 
     assert out.read() == 'hello world\n'
 
 def test_command_env2(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
     flow.write(r"""
 flow "hello-world" {
@@ -75,12 +87,12 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, {'out': out})
+    runflow.runflow(flow, vars={'out': out})
 
     assert out.read() == 'hello world\n'
 
 def test_command_env3(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
     flow.write(r"""
 flow "hello-id-env" {
@@ -93,12 +105,12 @@ flow "hello-id-env" {
 }
     """)
 
-    runflow.runflow(flow, {'out': out})
+    runflow.runflow(flow, vars={'out': out})
 
     assert len(out.read().strip()) == 32
 
 def test_multiple_hello_world(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out1 = tmpdir / "out1.txt"
     out2 = tmpdir / "out2.txt"
     flow.write("""
@@ -112,13 +124,13 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, {'out1': out1, 'out2': out2})
+    runflow.runflow(flow, vars={'out1': out1, 'out2': out2})
 
     assert out1.read() == 'hello world1\n'
     assert out2.read() == 'hello world2\n'
 
 def test_explicit_depends_on(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out1 = tmpdir / "out1.txt"
     out2 = tmpdir / "out2.txt"
     flow.write("""
@@ -133,13 +145,13 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, {'out1': out1, 'out2': out2})
+    runflow.runflow(flow, vars={'out1': out1, 'out2': out2})
 
     assert out1.read() == 'hello world2\n'
     assert out2.read() == 'hello world2\n'
 
 def test_implicit_depends_on(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
     flow.write("""
 flow "hello-world" {
@@ -152,12 +164,12 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, {'out': out})
+    runflow.runflow(flow, vars={'out': out})
 
     assert out.read() == 'hello world2\n'
 
 def test_depends_on_must_be_a_task(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out1 = tmpdir / "out1.txt"
     out2 = tmpdir / "out2.txt"
     flow.write("""
@@ -173,10 +185,10 @@ flow "hello-world" {
     """)
 
     with pytest.raises(runflow.RunflowSyntaxError):
-        runflow.runflow(flow, {'out1': out1, 'out2': out2})
+        runflow.runflow(flow, vars={'out1': out1, 'out2': out2})
 
 def test_depends_on_must_be_a_reference(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out1 = tmpdir / "out1.txt"
     out2 = tmpdir / "out2.txt"
     flow.write("""
@@ -192,10 +204,10 @@ flow "hello-world" {
     """)
 
     with pytest.raises(runflow.RunflowSyntaxError):
-        runflow.runflow(flow, {'out1': out1, 'out2': out2})
+        runflow.runflow(flow, vars={'out1': out1, 'out2': out2})
 
 def test_depends_on_task_type_must_match(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out1 = tmpdir / "out1.txt"
     out2 = tmpdir / "out2.txt"
     flow.write("""
@@ -211,10 +223,10 @@ flow "hello-world" {
     """)
 
     with pytest.raises(runflow.RunflowSyntaxError):
-        runflow.runflow(flow, {'out1': out1, 'out2': out2})
+        runflow.runflow(flow, vars={'out1': out1, 'out2': out2})
 
 def test_unknown_runflow_task_type(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     flow.write("""
 flow "hello-world" {
   task "___unknown___" "out" {
@@ -227,7 +239,7 @@ flow "hello-world" {
         runflow.runflow(flow)
 
 def test_jinja_replacement(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
     flow.write("""
 flow "hello-world" {
@@ -237,11 +249,11 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, {'content': 'hello\nworld', 'out': out})
+    runflow.runflow(flow, vars={'content': 'hello\nworld', 'out': out})
     assert out.read() == 'hello\nworld\n'
 
 def test_invalid_reference_in_command(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
     flow.write("""
 flow "hello-world" {
@@ -252,10 +264,10 @@ flow "hello-world" {
     """)
 
     with pytest.raises(runflow.RunflowReferenceError):
-        runflow.runflow(flow, {'content': 'hello\nworld'})
+        runflow.runflow(flow, vars={'content': 'hello\nworld'})
 
 def test_command_failed(tmpdir, capsys):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
     out.write('definitely not hello world')
     flow.write("""
@@ -267,11 +279,11 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, {'out': str(out)})
+    runflow.runflow(flow, vars={'out': str(out)})
     assert out.read() == 'definitely not hello world'
 
 def test_command_passed_and_then_run_the_next_task(tmpdir, capsys):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
     out.write('definitely not hello world')
     flow.write("""
@@ -286,11 +298,11 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, {'out': str(out)})
+    runflow.runflow(flow, vars={'out': str(out)})
     assert out.read() == 'hello world\n'
 
 def test_command_failed_canceling_the_next_task(tmpdir, capsys):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
     out.write('definitely not hello world')
     flow.write("""
@@ -305,11 +317,11 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, {'out': str(out)})
+    runflow.runflow(flow, vars={'out': str(out)})
     assert out.read() == 'definitely not hello world'
 
 def test_default_variable(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
     flow.write("""
 flow "hello-world" {
@@ -320,12 +332,12 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, {'out': str(out)})
+    runflow.runflow(flow, vars={'out': str(out)})
 
     assert out.read() == '42\n'
 
 def test_acyclic_deps(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
     flow.write("""
 flow "hello-world" {
@@ -341,18 +353,18 @@ flow "hello-world" {
     """)
 
     with pytest.raises(runflow.RunflowAcyclicTasksError):
-        runflow.runflow(flow, {'out': str(out)})
+        runflow.runflow(flow, vars={'out': str(out)})
 
 def test_render_template(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
     with open('examples/template.hcl') as f:
         flow.write(f.read())
-    runflow.runflow(flow, {'out': str(out)})
+    runflow.runflow(flow, vars={'out': str(out)})
     assert out.read() == f'42\n42\n{out}'
 
 def test_default_env(tmpdir, request):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
 
     os.environ['RUNFLOW_VAR_out'] = str(out)
@@ -369,17 +381,17 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, {})
+    runflow.runflow(flow, vars={})
 
     assert out.read() == 'hello world\n'
 
 def test_load_extension(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
 
     with open('examples/custom_task_type.hcl') as f:
         flow.write(f.read())
 
-    runflow.runflow(flow, {'out': str(out)})
+    runflow.runflow(flow, vars={'out': str(out)})
 
     assert out.read().startswith("Bingo, it is VANILLA-")
