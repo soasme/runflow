@@ -16,9 +16,6 @@
   <a href="https://github.com/soasme/runflow/stargazers">
     <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/soasme/runflow?color=%2360be86&label=github%20stars&style=for-the-badge">
   </a>
-  <a href="https://github.com/soasme/runflow">
-    <img alt="Total LoC" src="https://img.shields.io/tokei/lines/github/soasme/runflow?color=%2360be86&style=for-the-badge">
-  </a>
 </p>
 
 ## What Runflow is?

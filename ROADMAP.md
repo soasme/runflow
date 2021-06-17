@@ -36,7 +36,7 @@
 - [ ] core: conditional (braching) tasks.
 - [ ] core: support default variable types.
 - [ ] core: retry running failed tasks.
-- [ ] core: runflow() supports path, module, source.
+- [x] core: runflow() supports path, module, source. v0.4.3.
 - [x] ~~task: datetime.~~ this is complete as we can use import block for `datetime:datetime`. v0.4.0.
 - [x] ~~ecosys: implement editor highlight.~~ this is complete due to we decide the full support of hcl2. v0.4.0.
 - [x] core: support envvar types. v0.4.0
