@@ -104,7 +104,7 @@ At last, let’s run it.
 $ runflow run example.hcl
 Hello World!
 
-$ runflow run example.hcl -var="content=Hello Runflow!"
+$ runflow run example.hcl --var="content=Hello Runflow!"
 Hello Runflow!
 ```
 
