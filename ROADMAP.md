@@ -5,8 +5,10 @@
 - [ ] docs: integrate with python-rq.
 - [ ] docs: integrate with pex.
 - [ ] docs: a flow app following 12-factor principle.
+- [ ] ci: code quality check: pylint or flake8.
 - [ ] cli: support `runflow visualize xxx.rf`.
 - [ ] cli: support `runflow run --var-file`.
+- [ ] cli: runflow show order of task executions.
 - [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
 - [ ] hcl2: output
 - [ ] spec: variable type constraints.
@@ -28,8 +30,6 @@
 - [ ] task: command: integrate pexpect.
 - [ ] task: command: support sending stdin.
 - [ ] task: command: cap_stdout, cap_stderr.
-- [ ] cli: runflow visualize
-- [ ] cli: runflow show order of task executions.
 - [ ] core: cache flow results locally in a file ".state".
 - [ ] core: conditions: all_passed, all_failed, all_done, any_passed, any_failed, any_done.
 - [ ] core: foreach map tasks.
