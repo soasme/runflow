@@ -2,11 +2,11 @@
 
 ## Not Yet Released
 
-[Code Changes](https://github.com/soasme/runflow/compare/v0.4.1..HEAD).
+[Code Changes](https://github.com/soasme/runflow/compare/v0.4.2..HEAD).
 
-## v0.4.1, 17 Jun, 2021
+## v0.4.2, 17 Jun, 2021
 
-[Code Changes](https://github.com/soasme/runflow/compare/v0.3.0..v0.4.1).
+[Code Changes](https://github.com/soasme/runflow/compare/v0.3.0..v0.4.2).
 
 * Added Runflow Specification. [#18](https://github.com/soasme/runflow/pull/18).
 * Rewrote HCL2 parse & eval engine. [#16](https://github.com/soasme/runflow/pull/16), [#17](https://github.com/soasme/runflow/pull/17).
