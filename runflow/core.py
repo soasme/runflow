@@ -195,8 +195,20 @@ class Flow:
         return await self.runner.run(context)
 
 
-def run(path, vars=None):
-    flow = Flow.from_specfile(path)
-    coro = flow.run(vars or {})
+def run(path=None, source=None, module=None, flow=None, vars=None):
+    if path:
+        _flow = Flow.from_specfile(path)
+    elif source:
+        _flow = Flow.from_spec(source)
+    elif module:
+        _flow = utils.import_module(module)
+    elif flow:
+        _flow = flow
+    else:
+        raise ValueError('Must provide one of path, source, module, flow')
+
+    assert isinstance(_flow, Flow)
+
+    coro = _flow.run(vars or {})
 
     asyncio.run(coro)
