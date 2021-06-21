@@ -27,6 +27,7 @@
 - [ ] core: conditional (braching) tasks.
 - [ ] core: retry running failed tasks.
 - [ ] cli: runflow show order of task executions.
+- [ ] hcl2: support any callable for `call()`.
 - [ ] hcl2: more test cases.
 - [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
 - [ ] hcl2: variable type constraints.
