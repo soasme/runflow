@@ -123,6 +123,7 @@ class Flow:
         'runflow.contribs.http:HttpRequestTask',
         'runflow.contribs.sqlite3:Sqlite3ExecTask',
         'runflow.contribs.sqlite3:Sqlite3RowTask',
+        'runflow.contribs.flow:FlowRunTask',
     }
 
     def __init__(self, name, runner_cls=None):
@@ -194,21 +195,22 @@ class Flow:
         context = self.make_run_context(vars)
         return await self.runner.run(context)
 
-
-def run(path=None, source=None, module=None, flow=None, vars=None):
+def load_flow(path=None, source=None, module=None, flow=None):
     if path:
         _flow = Flow.from_specfile(path)
     elif source:
         _flow = Flow.from_spec(source)
     elif module:
+        import runflow.autoloader
         _flow = utils.import_module(module)
     elif flow:
         _flow = flow
     else:
         raise ValueError('Must provide one of path, source, module, flow')
+    return _flow
 
-    assert isinstance(_flow, Flow)
-
+def run(path=None, source=None, module=None, flow=None, vars=None):
+    _flow = load_flow(path=path, source=source, module=module, flow=flow)
+    assert _flow and isinstance(_flow, Flow)
     coro = _flow.run(vars or {})
-
     asyncio.run(coro)
