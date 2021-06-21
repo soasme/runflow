@@ -24,4 +24,5 @@ Welcome to Runflow's documentation.
 * Advanced Usage: [Integrate with APScheduler](integrations/apscheduler.md).
 * Advanced Usage: [Handle DateTime Objects](integrations/datetime.md).
 * References: [Runflow Specification](flow-spec.md).
+* References: [Built-In Functions](builtin-functions.md).
 * Internal: [Development](dev.md).
