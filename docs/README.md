@@ -17,8 +17,8 @@ Welcome to Runflow's documentation.
 * Tutorial: [File Read](tasks/file-read.md) Task.
 * Tutorial: [Hcl2 Template](tasks/hcl2-template.md) Task.
 * Tutorial: [Http Request](tasks/http-request.md) Task.
-* Tutorial: [Sqlite3 Exec](tasks/sqlite3-exec.md) Task.
-* Tutorial: [Sqlite3 Row](tasks/sqlite3-row.md) Task.
+* Tutorial: [Sql Exec](tasks/sql-exec.md) Task.
+* Tutorial: [Sql Row](tasks/sql-row.md) Task.
 * Advanced Usage: Use [Python API](python-api.md).
 * Advanced Usage: [Develop your own Task](customize-task.md).
 * Advanced Usage: [Integrate with APScheduler](integrations/apscheduler.md).
