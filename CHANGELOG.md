@@ -2,7 +2,17 @@
 
 ## Not Yet Released
 
-[Code Changes](https://github.com/soasme/runflow/compare/v0.4.4..HEAD).
+[Code Changes](https://github.com/soasme/runflow/compare/v0.5.0..HEAD).
+
+## v0.5.0, 21 Jun, 2021
+
+[Code Changes](https://github.com/soasme/runflow/compare/v0.4.4..v0.5.0).
+
+* New task type: `sql_row`. [#26](https://github.com/soasme/runflow/pull/26).
+* New task type: `sql_exec`. [#26](https://github.com/soasme/runflow/pull/26).
+* Deprecate task type: `sqlte3_exec`. [#26](https://github.com/soasme/runflow/pull/26).
+* Deprecate task type: `sqlte3_exec`. [#26](https://github.com/soasme/runflow/pull/26).
+* Support `Task.run()` as synchronous method. [#25](https://github.com/soasme/runflow/pull/25).
 
 ## v0.4.4, 21 Jun, 2021
 
