@@ -1,3 +1,4 @@
+import json
 import sqlite3
 import pytest
 import docker
@@ -30,5 +31,11 @@ def test_sqlite3_row(tmpdir, capsys):
     runflow.runflow(flow, vars={'db': f"sqlite:///{out}"})
 
     out, err = capsys.readouterr()
-    assert 'k1: v1' in out
-    assert 'kall: [["k1", "v1"], ["k2", "v2"], ["k3", "v3"]]' in out
+    assert json.loads(out) == {
+        "k1": [{"key": "k1", "value": "v1"}],
+        "kall": [
+            {"key": "k1", "value": "v1"},
+            {"key": "k2", "value": "v2"},
+            {"key": "k3", "value": "v3"},
+        ],
+    }

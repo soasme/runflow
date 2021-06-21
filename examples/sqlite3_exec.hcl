@@ -37,7 +37,7 @@ flow "sqlite3_exec" {
       statement = "INSERT OR IGNORE INTO kvdb (key,value) VALUES (:key, :value);"
       parameters = {
         key = "k3"
-        value = "k3"
+        value = "v3"
       }
     }
   }
