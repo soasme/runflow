@@ -20,10 +20,12 @@ import json
 import os
 import textwrap
 import itertools
+from datetime import datetime
 from os.path import dirname
 from typing import List, Dict, Any
 
 from lark import Token, Lark, Discard, Transformer
+from dateutil.parser import parse as parse_datetime
 
 from runflow.utils import import_module
 from runflow.errors import RunflowReferenceError
@@ -710,4 +712,6 @@ FUNCS = {
     'join': lambda sep, s: sep.join(s),
     'tojson': lambda s: json.dumps(s),
     'concat': lambda *s: list(itertools.chain(*s)),
+    'datetime': lambda *a, **kw: datetime(*a, **kw),
+    'todatetime': lambda s: parse_datetime(s),
 }
