@@ -21,5 +21,6 @@ Welcome to Runflow's documentation.
 * Tutorial: [Sqlite3 Row](tasks/sqlite3-row.md) Task.
 * Advanced Usage: Use [Python API](python-api.md).
 * Advanced Usage: [Develop your own Task](customize-task.md).
+* Advanced Usage: [Integrate with APScheduler](integrations/apscheduler.md).
 * References: [Runflow Specification](flow-spec.md).
 * Internal: [Development](dev.md).
