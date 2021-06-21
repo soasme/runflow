@@ -1,3 +1,4 @@
+import inspect
 import traceback
 import argparse
 import re
@@ -84,7 +85,11 @@ class Task:
 
         try:
             logger.info(f'"task.{self.type}.{self.name}" is started.')
-            task_result.result = await task.run(context)
+            task_result.result = (
+                await task.run(context)
+                if inspect.iscoroutinefunction(task.run)
+                else await utils.to_thread(task.run, context)
+            )
             logger.info(f'"task.{self.type}.{self.name}" is successful.')
         except Exception as e:
             task_result.exception = e

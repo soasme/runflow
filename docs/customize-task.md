@@ -13,7 +13,7 @@ You class name must end with `Task`.
 The Task class has a constructor `__init__` method, which accepts the
 task payload.
 
-It has another `async def run(self, context)` method,
+It has `def run(self, context)` or `async def run(self, context)` method,
 which performs the actual task work.
 
 <<< @/examples/extensions.py
@@ -35,8 +35,6 @@ Bingo, it is VANILLA-95
 
 Tips:
 
-* If the code in `run` is non-async, please run it with `asyncio.to_thread` or
-  `loop.run_in_executor()`.
 * The Python code for the task must be in sys.path. Ideally, the code should
   be packaged. Learn how to package a Python project:
   [link](https://packaging.python.org/tutorials/packaging-projects/).
