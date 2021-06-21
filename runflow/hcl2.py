@@ -714,4 +714,7 @@ FUNCS = {
     'concat': lambda *s: list(itertools.chain(*s)),
     'datetime': lambda *a, **kw: datetime(*a, **kw),
     'todatetime': lambda s: parse_datetime(s),
+    'call': lambda obj, meth, args=None, kwargs=None: (
+        getattr(obj, meth)(*(args or []), **(kwargs or {}))
+    ),
 }

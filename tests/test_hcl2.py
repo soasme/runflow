@@ -350,3 +350,13 @@ def test_eval():
     assert hcl2.eval(hcl2.loads('a = datetime(2020, 1, 1, 0, 0, 0)'), {}) == {
         'a': datetime(2020, 1, 1, 0, 0, 0),
     }
+    assert hcl2.eval(hcl2.loads('a = datetime(2020, 1, 1)'), {}) == {
+        'a': datetime(2020, 1, 1, 0, 0, 0),
+    }
+
+    assert hcl2.eval(hcl2.loads('a = call(datetime(2020, 1, 1, 0, 0, 0), "isoformat", [], {})'), {}) == {
+        'a': '2020-01-01T00:00:00'
+    }
+    assert hcl2.eval(hcl2.loads('a = call("xyz.abc", "replace", ["abc", "ABC"], {})'), {}) == {
+        'a': "xyz.ABC"
+    }
