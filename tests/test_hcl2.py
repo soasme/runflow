@@ -1,5 +1,5 @@
 from math import ceil
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 import pytest
 
@@ -342,4 +342,11 @@ def test_eval():
     }
     assert hcl2.eval(hcl2.loads('task "${sth}" { a = "${sth}" }'), {'sth': "mytask"}) == {
         "task": [{"${sth}": { "a": "mytask"}}]
+    }
+
+    assert hcl2.eval(hcl2.loads('a = todatetime("2020-01-01T00:00:00Z")'), {}) == {
+        'a': datetime(2020, 1, 1, 0, 0, 0, tzinfo=timezone.utc),
+    }
+    assert hcl2.eval(hcl2.loads('a = datetime(2020, 1, 1, 0, 0, 0)'), {}) == {
+        'a': datetime(2020, 1, 1, 0, 0, 0),
     }
