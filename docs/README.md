@@ -2,6 +2,10 @@
 
 Welcome to Runflow's documentation.
 
+[![Stars](https://img.shields.io/github/stars/soasme/runflow?style=social)](https://github.com/soasme/runflow)
+[![Pypi](https://img.shields.io/pypi/v/runflow?style=social)](https://pypi.org/project/runflow/)
+[![License](https://img.shields.io/github/license/soasme/runflow?style=social)](https://github.com/soasme/runflow/blob/main/LICENSE)
+
 ## Links
 
 * Get started with [Installation](installation.md).

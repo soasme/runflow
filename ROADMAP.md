@@ -32,9 +32,9 @@
 - [ ] hcl2: more test cases.
 - [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
 - [ ] hcl2: variable type constraints.
-- [ ] task: call another remote flow (using python module).
 - [ ] task: call another remote flow (using http link).
-- [ ] task: call another local flow.
+- [x] task: call another remote flow (using python module). v0.4.4.
+- [x] task: call another local flow. v0.4.4.
 - [x] ~~hcl2: output~~ this can be done via task `file_write` with filename = `"/dev/stdout"`. v0.4.3.
 - [x] core: runflow() supports path, module, source. v0.4.3.
 - [x] ~~task: datetime.~~ this is complete as we can use import block for `datetime:datetime`. v0.4.0.
