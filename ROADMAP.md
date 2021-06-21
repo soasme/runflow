@@ -15,8 +15,6 @@
 - [ ] task: prometheus.
 - [ ] task: influxdb.
 - [ ] task: elasticsearch.
-- [ ] task: mysql.
-- [ ] task: postgres.
 - [ ] task: papermill.
 - [ ] task: python: eval python code.
 - [ ] task: file_write: b64_content for binary data.
@@ -32,7 +30,10 @@
 - [ ] hcl2: more test cases.
 - [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
 - [ ] hcl2: variable type constraints.
-- [ ] task: call another remote flow (using http link).
+- [ ] task: download flows to a local vendor dir.
+- [ ] task: call another remote flow (using http link)
+- [x] task: mysql. through sqlalchemy. v0.5.0
+- [x] task: postgres. through sqlalchemy. v0.5.0.
 - [x] docs: integrate with apscheduler. v0.4.4.
 - [x] task: call another remote flow (using python module). v0.4.4.
 - [x] task: call another local flow. v0.4.4.
