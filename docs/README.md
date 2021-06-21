@@ -26,3 +26,4 @@ Welcome to Runflow's documentation.
 * References: [Runflow Specification](flow-spec.md).
 * References: [Built-In Functions](builtin-functions.md).
 * Internal: [Development](dev.md).
+* See all changes: [Changelog](changelog.md).

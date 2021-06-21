@@ -2,7 +2,19 @@
 
 ## Not Yet Released
 
-[Code Changes](https://github.com/soasme/runflow/compare/v0.4.2..HEAD).
+[Code Changes](https://github.com/soasme/runflow/compare/v0.4.4..HEAD).
+
+## v0.4.4, 21 Jun, 2021
+
+[Code Changes](https://github.com/soasme/runflow/compare/v0.4.2..v0.4.4).
+
+* Built-In function: `call()`. [#24](https://github.com/soasme/runflow/pull/24).
+* Built-In function: `datetime()` & `todatetime()`. [#23](https://github.com/soasme/runflow/pull/23).
+* Docs: [integrate with apscheduler](https://runflow.org/integrations/apscheduler.html).
+* Docs: [built-in functions](https://runflow.org/builtin-functions.html).
+* New task type: `flow_run`. [#21](https://github.com/soasme/runflow/pull/21).
+* Enhancement: Task `file_write` supports writing to `/dev/stdout`. [#20](https://github.com/soasme/runflow/pull/20).
+* Python API: `runflow()` supports loading from path, module, source, or a Flow object. [#19](https://github.com/soasme/runflow/pull/19).
 
 ## v0.4.2, 17 Jun, 2021
 
