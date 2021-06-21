@@ -11,7 +11,7 @@ class Sqlite3ExecTask:
         self.autocommit = autocommit
         self.exec_many = exec_many
 
-    def sync_run(self, context):
+    def run(self, context):
         with sqlite3.connect(self.dsn) as conn:
             cursor = conn.cursor()
             if not self.parameters:
@@ -28,9 +28,6 @@ class Sqlite3ExecTask:
 
             return {'rowcount': rowcount}
 
-    async def run(self, context):
-        return await to_thread(self.sync_run, context)
-
 class Sqlite3RowTask:
 
     def __init__(self, sql, parameters=None, dsn=':memory:', exec_many=True):
@@ -39,7 +36,7 @@ class Sqlite3RowTask:
         self.parameters = parameters or []
         self.exec_many = exec_many
 
-    def sync_run(self, context):
+    def run(self, context):
         with sqlite3.connect(self.dsn) as conn:
             cursor = conn.cursor()
             if self.parameters:
@@ -53,6 +50,3 @@ class Sqlite3RowTask:
             else:
                 row = cursor.fetchone()
                 return {'rows': [row]}
-
-    async def run(self, context):
-        return await to_thread(self.sync_run, context)
