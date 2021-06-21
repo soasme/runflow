@@ -2,23 +2,29 @@
 flow "sqlite3_row" {
 
   variable "db" {
-    default = ":memory:"
+    default = "sqlite3://:memory:"
   }
 
-  task "sqlite3_row" "k1" {
+  task "sql_row" "k1" {
     dsn = var.db
-    sql = "SELECT * FROM kvdb where key=?;"
-    parameters = ["k1"]
-    exec_many = false
+    sql {
+      statement = "SELECT * FROM kvdb where key=:key"
+      parameters = { key = "k1" }
+    }
   }
 
-  task "sqlite3_row" "kall" {
+  task "sql_row" "kall" {
     dsn = var.db
-    sql = "SELECT * FROM kvdb limit 20;"
-    exec_many = true
+    sql {
+      statement = "SELECT * FROM kvdb limit 20"
+    }
   }
 
-  task "bash_run" "echo" {
-    command = "echo 'k1: ${task.sqlite3_row.k1.rows[0][1]}\nkall: ${tojson(task.sqlite3_row.kall.rows)}'"
+  task "file_write" "out" {
+    filename = "/dev/stdout"
+    content = tojson({
+      k1 = task.sql_row.k1.rows
+      kall = task.sql_row.kall.rows
+    })
   }
 }

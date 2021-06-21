@@ -126,8 +126,8 @@ class Flow:
         'runflow.contribs.local_file:FileWriteTask',
         'runflow.contribs.template:Hcl2TemplateTask',
         'runflow.contribs.http:HttpRequestTask',
-        'runflow.contribs.sqlite3:Sqlite3ExecTask',
-        'runflow.contribs.sqlite3:Sqlite3RowTask',
+        'runflow.contribs.sql:SqlExecTask',
+        'runflow.contribs.sql:SqlRowTask',
         'runflow.contribs.flow:FlowRunTask',
     }
 

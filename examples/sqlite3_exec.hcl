@@ -2,34 +2,43 @@
 flow "sqlite3_exec" {
 
   variable "db" {
-    default = ":memory:"
+    default = "sqlite:///:memory:"
   }
 
-  task "sqlite3_exec" "create_table" {
+  task "sql_exec" "create_table" {
     dsn = var.db
-    sql = <<EOT
-    CREATE TABLE IF NOT EXISTS kvdb (
-        key string PRIMARY KEY,
-        value string
-    );
-EOT
+    sql {
+      statement = <<-EOT
+        CREATE TABLE IF NOT EXISTS kvdb (
+            key string PRIMARY KEY,
+            value string
+        );
+      EOT
+    }
   }
 
-  task "sqlite3_exec" "insert_many" {
+  task "sql_exec" "insert_many" {
     dsn = var.db
-    sql = "INSERT OR IGNORE INTO kvdb (key,value) VALUES (?, ?);"
-    parameters = [
-      ["k1", "v1"],
-      ["k2", "v2"],
-    ]
-    exec_many = true
-  }
+    sql {
+      statement = "INSERT OR IGNORE INTO kvdb (key,value) VALUES (:key, :value);"
+      parameters =  [
+        {
+          key = "k1"
+          value = "v1"
+        },
+        {
+          key = "k2"
+          value = "v2"
+        },
+      ]
+    }
 
-  task "sqlite3_exec" "insert_one" {
-    dsn = var.db
-    sql = "INSERT OR IGNORE INTO kvdb (key,value) VALUES (?, ?);"
-    parameters = [
-      "k3", "v3",
-    ]
+    sql {
+      statement = "INSERT OR IGNORE INTO kvdb (key,value) VALUES (:key, :value);"
+      parameters = {
+        key = "k3"
+        value = "v3"
+      }
+    }
   }
 }
