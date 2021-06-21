@@ -40,11 +40,11 @@ more than [JSON](http://json.org/). Here lists some:
   other values.
   In this example, `"echo 'hello world'"` is an expression of type string.
 
-### Encoding
+## Encoding
 
 Runflow spec should be UTF-8 encoded.
 
-### Comments
+## Comments
 
 Runlow spec supports two types of comments:
 
@@ -53,13 +53,13 @@ Runlow spec supports two types of comments:
 
 We do prefer to use `#`-style comment at all cases for code consistency.
 
-### Identifiers
+## Identifiers
 
 An identifier is a sequence of alphabets, digits, underscores (`_`) and
 hyphens (`-`), with the first character not being a digit. Identifiers
 appear in attribute names, block type names, input variables, etc.
 
-### Attributes
+## Attributes
 
 An attribute associate a value with a name.
 
@@ -73,7 +73,7 @@ of '=' is the attribute value.
 To know what attribute name should be used and what kinds of attribute
 values should be associated, please refer to the specific block section.
 
-### Blocks
+## Blocks
 
 A block groups attributes and the other blocks.
 
@@ -159,7 +159,7 @@ customized task types and functions.
 
 Please read more docs [here](customize-task.md).
 
-### Expressions
+## Expressions
 
 Expressions can be simple literal values, such as
 
@@ -194,7 +194,8 @@ set the value for attribute `content` with expression
 Runflow execution engine provides some additional built-in functions,
 such as `lower()`, `upper()`, `split()`, etc.
 
-<!-- For a full list of available functions, see the function reference. -->
+For a full list of available functions, see the
+[function reference](builtin-functions.md).
 
 Expression can also be an string with interpolated expressions.
 Inside the interpolated string, you can wrap up another expression
