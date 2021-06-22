@@ -21,8 +21,9 @@ import os
 import textwrap
 import itertools
 from datetime import datetime
+from functools import singledispatch
 from os.path import dirname
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
 
 from lark import Token, Lark, Discard, Transformer
 from dateutil.parser import parse as parse_datetime
@@ -440,40 +441,7 @@ class DictTransformer(Transformer):
             return args[0]
         return Conditional(args[0], args[1], args[2])
 
-    def binary_or_op(self, args: List):
-        return self.binary_op(args)
-
-    def binary_or_operator(self, args: List):
-        return str(args[0])
-
-    def binary_and_op(self, args: List):
-        return self.binary_op(args)
-
-    def binary_and_operator(self, args: List):
-        return str(args[0])
-
-    def binary_eq_op(self, args: List):
-        return self.binary_op(args)
-
-    def binary_eq_operator(self, args: List):
-        return str(args[0])
-
-    def binary_test_op(self, args: List):
-        return self.binary_op(args)
-
-    def binary_test_operator(self, args: List):
-        return str(args[0])
-
-    def binary_factor_op(self, args: List):
-        return self.binary_op(args)
-
-    def binary_factor_operator(self, args: List):
-        return str(args[0])
-
-    def binary_term_op(self, args: List):
-        return self.binary_op(args)
-
-    def binary_term_operator(self, args: List):
+    def binary_operator(self, args: List):
         return str(args[0])
 
     def binary_op(self, args: List):
@@ -481,6 +449,24 @@ class DictTransformer(Transformer):
         if len(args) == 1:
             return args[0]
         return Operation(args)
+
+    binary_or_op = binary_op
+    binary_or_operator = binary_operator
+
+    binary_and_op = binary_op
+    binary_and_operator = binary_operator
+
+    binary_eq_op = binary_op
+    binary_eq_operator = binary_operator
+
+    binary_test_op = binary_op
+    binary_test_operator = binary_operator
+
+    binary_term_op = binary_op
+    binary_term_operator = binary_operator
+
+    binary_factor_op = binary_op
+    binary_factor_operator = binary_operator
 
     def for_intro(self, args: List):
         args = self.strip_new_line_tokens(args)
@@ -560,150 +546,181 @@ def _for_iterable(xs, id_count=1):
         for x in xs:
             yield x if id_count == 1 else (x, x)
 
+@singledispatch
 def eval(ast, env):
-    if isinstance(ast, Module):
-        result = {}
-        for key, attribute_or_block in ast.items():
-            result[key] = eval(attribute_or_block, env)
-        return result
-    elif isinstance(ast, Interpolation):
-        return eval(ast.expr, env)
-    elif isinstance(ast, (GetIndex, GetAttr, )):
-        result = env
-        for attr in ast.attr_chain:
-            if isinstance(attr, Splat):
-                result = eval(attr, env)
-            elif isinstance(attr, str) and hasattr(result, attr):
+    return ast
+
+@eval.register
+def _(ast: Module, env):
+    return {
+        key: eval(attribute_or_block, env)
+        for key, attribute_or_block in ast.items()
+    }
+
+@eval.register
+def _(ast: Interpolation, env):
+    return eval(ast.expr, env)
+
+@eval.register(GetIndex)
+@eval.register(GetAttr)
+def _(ast: Union[GetIndex, GetAttr], env):
+    result = env
+    for attr in ast.attr_chain:
+        if isinstance(attr, Splat):
+            result = eval(attr, env)
+        elif isinstance(attr, str) and hasattr(result, attr):
+            result = getattr(result, attr)
+        else:
+            try:
+                result = result[attr]
+            except KeyError:
+                raise RunflowReferenceError(list(ast.attr_chain))
+    return result
+
+@eval.register
+def _(ast: Identifier, env):
+    return env[ast]
+
+@eval.register
+def _(ast: StringLit, env):
+    return ast
+
+@eval.register
+def _(ast: JoinedStr, env):
+    result = []
+    if len(ast.elements) == 1:
+        if isinstance(ast.elements[0], StringLit):
+            return str(ast.elements[0])
+        else:
+            return eval(ast.elements[0], env)
+    for node in ast.elements:
+        if isinstance(node, StringLit):
+            result.append(str(node))
+        else:
+            result.append(str(eval(node, env)))
+    return ''.join(result)
+
+@eval.register
+def _(ast: Not, env):
+    return not eval(ast.expr, env)
+
+@eval.register
+def _(ast: Splat, env):
+    obj = eval(ast.array, env)
+    def extract(o, attrs):
+        result = o
+        for attr in attrs:
+            if isinstance(attr, str) and hasattr(result, attr):
                 result = getattr(result, attr)
             else:
-                try:
-                    result = result[attr]
-                except KeyError:
-                    raise RunflowReferenceError(list(ast.attr_chain))
+                result = result[attr]
         return result
-    elif isinstance(ast, Identifier):
-        return env[ast]
-    elif isinstance(ast, StringLit):
-        return ast
-    elif isinstance(ast, JoinedStr):
-        result = []
-        if len(ast.elements) == 1:
-            if isinstance(ast.elements[0], StringLit):
-                return str(ast.elements[0])
-            else:
-                return eval(ast.elements[0], env)
-        for node in ast.elements:
-            if isinstance(node, StringLit):
-                result.append(str(node))
-            else:
-                result.append(str(eval(node, env)))
-        return ''.join(result)
-    elif isinstance(ast, Not):
-        return not eval(ast.expr, env)
-    elif isinstance(ast, Splat):
-        obj = eval(ast.array, env)
-        def extract(o, attrs):
-            result = o
-            for attr in attrs:
-                if isinstance(attr, str) and hasattr(result, attr):
-                    result = getattr(result, attr)
-                else:
-                    result = result[attr]
-            return result
-        return [extract(o, ast.elements) for o in obj]
-    elif isinstance(ast, ListExpr):
-        result = []
-        id_count = 2 if isinstance(ast.element_id, tuple) else 1
-        for elem in _for_iterable(eval(ast.array, env), id_count):
-            if id_count == 2:
-                index_id, element_id = ast.element_id
-                _index, _elem = elem
-                newenv = dict(env, **{str(element_id): _elem, str(index_id): _index})
-            else:
-                newenv = dict(env, **{str(ast.element_id): elem})
-            if ast.condition and not eval(ast.condition, newenv):
-                continue
-            result.append(eval(ast.element, newenv))
-        return result
-    elif isinstance(ast, DictExpr):
-        result = {}
-        id_count = 2 if isinstance(ast.element_id, tuple) else 1
-        for elem in _for_iterable(eval(ast.array, env), id_count):
-            if id_count == 2:
-                index_id, element_id = ast.element_id
-                _index, _elem = elem
-                newenv = dict(env, **{str(element_id): _elem, str(index_id): _index})
-            else:
-                newenv = dict(env, **{str(ast.element_id): elem})
-            if ast.condition and not eval(ast.condition, newenv):
-                continue
-            key = eval(ast.key, newenv)
-            value = eval(ast.value, newenv)
-            result[key] = value
-        return result
-    elif isinstance(ast, Conditional):
-        cond = eval(ast.predicate, env)
-        if cond:
-            return eval(ast.true_expr, env)
+    return [extract(o, ast.elements) for o in obj]
+
+@eval.register
+def _(ast: ListExpr, env):
+    result = []
+    id_count = 2 if isinstance(ast.element_id, tuple) else 1
+    for elem in _for_iterable(eval(ast.array, env), id_count):
+        if id_count == 2:
+            index_id, element_id = ast.element_id
+            _index, _elem = elem
+            newenv = dict(env, **{str(element_id): _elem, str(index_id): _index})
         else:
-            return eval(ast.false_expr, env)
-    elif isinstance(ast, Call):
-        args = eval(ast.args, env)
-        func_name = str(ast.func_name)
-        if ':' in func_name:
-            func = import_module(func_name)
-        elif func_name in __builtins__:
-            func = __builtins__[func_name]
-        elif func_name in FUNCS:
-            func = FUNCS[func_name]
-        elif func_name in env.get('func'):
-            func = env['func'][func_name]
+            newenv = dict(env, **{str(ast.element_id): elem})
+        if ast.condition and not eval(ast.condition, newenv):
+            continue
+        result.append(eval(ast.element, newenv))
+    return result
+
+@eval.register
+def _(ast: DictExpr, env):
+    result = {}
+    id_count = 2 if isinstance(ast.element_id, tuple) else 1
+    for elem in _for_iterable(eval(ast.array, env), id_count):
+        if id_count == 2:
+            index_id, element_id = ast.element_id
+            _index, _elem = elem
+            newenv = dict(env, **{str(element_id): _elem, str(index_id): _index})
         else:
-            raise NameError(f'function {ast.func_name} is not defined')
-        return func(*args)
-    elif isinstance(ast, Operation):
-        result = None
-        op = None
-        for index, elem in enumerate(ast.elements):
-            if index == 0:
-                result = eval(elem, env)
-            elif index % 2 == 1:
-                op = elem
-            elif op == '||':
-                result = result or eval(elem, env)
-            elif op == '&&':
-                result = result and eval(elem, env)
-            elif op == '==':
-                result = result == eval(elem, env)
-            elif op == '!=':
-                result = result != eval(elem, env)
-            elif op == '>=':
-                result = result >= eval(elem, env)
-            elif op == '>':
-                result = result > eval(elem, env)
-            elif op == '<=':
-                result = result <= eval(elem, env)
-            elif op == '<':
-                result = result < eval(elem, env)
-            elif op == '+':
-                result = result + eval(elem, env)
-            elif op == '-':
-                result = result - eval(elem, env)
-            elif op == '*':
-                result = result * eval(elem, env)
-            elif op == '/':
-                result = result / eval(elem, env)
-            elif op == '%':
-                result = result % eval(elem, env)
-            else:
-                raise ValueError(f'invalid op: {op}')
-        return result
-    elif isinstance(ast, list):
-        return [eval(a, env) for a in ast]
-    elif isinstance(ast, dict):
-        return {k: eval(v, env) for k, v in ast.items()}
+            newenv = dict(env, **{str(ast.element_id): elem})
+        if ast.condition and not eval(ast.condition, newenv):
+            continue
+        key = eval(ast.key, newenv)
+        value = eval(ast.value, newenv)
+        result[key] = value
+    return result
+
+@eval.register
+def _(ast: Conditional, env):
+    cond = eval(ast.predicate, env)
+    if cond:
+        return eval(ast.true_expr, env)
     else:
-        return ast
+        return eval(ast.false_expr, env)
+
+@eval.register
+def _(ast: Call, env):
+    args = eval(ast.args, env)
+    func_name = str(ast.func_name)
+    if ':' in func_name:
+        func = import_module(func_name)
+    elif func_name in __builtins__:
+        func = __builtins__[func_name]
+    elif func_name in FUNCS:
+        func = FUNCS[func_name]
+    elif func_name in env.get('func'):
+        func = env['func'][func_name]
+    else:
+        raise NameError(f'function {ast.func_name} is not defined')
+    return func(*args)
+
+@eval.register
+def _(ast: Operation, env):
+    result = None
+    op = None
+    for index, elem in enumerate(ast.elements):
+        if index == 0:
+            result = eval(elem, env)
+        elif index % 2 == 1:
+            op = elem
+        elif op == '||':
+            result = result or eval(elem, env)
+        elif op == '&&':
+            result = result and eval(elem, env)
+        elif op == '==':
+            result = result == eval(elem, env)
+        elif op == '!=':
+            result = result != eval(elem, env)
+        elif op == '>=':
+            result = result >= eval(elem, env)
+        elif op == '>':
+            result = result > eval(elem, env)
+        elif op == '<=':
+            result = result <= eval(elem, env)
+        elif op == '<':
+            result = result < eval(elem, env)
+        elif op == '+':
+            result = result + eval(elem, env)
+        elif op == '-':
+            result = result - eval(elem, env)
+        elif op == '*':
+            result = result * eval(elem, env)
+        elif op == '/':
+            result = result / eval(elem, env)
+        elif op == '%':
+            result = result % eval(elem, env)
+        else:
+            raise ValueError(f'invalid op: {op}')
+    return result
+
+@eval.register
+def _(ast: list, env):
+    return [eval(a, env) for a in ast]
+
+@eval.register
+def _(ast: dict, env):
+        return {k: eval(v, env) for k, v in ast.items()}
 
 FUNCS = {
     'lower': lambda s: s.lower(),
