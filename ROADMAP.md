@@ -31,6 +31,7 @@
 - [ ] hcl2: more test cases.
 - [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
 - [ ] hcl2: variable type constraints.
+- [ ] task: flow_run: support exporting a value.
 - [ ] task: download flows to a local vendor dir.
 - [ ] task: call another remote flow (using http link)
 - [ ] support runflow.tasks: https://github.com/intake/filesystem_spec/blob/a84d7fe3d1044af35697ad320230abfd0bac4503/fsspec/__init__.py

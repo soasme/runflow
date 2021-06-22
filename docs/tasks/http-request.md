@@ -15,6 +15,7 @@ Added in v0.4.0.
 
 <<< @/examples/http_get.hcl
 
+::: details Click me to view the run output
 Run:
 
 ```
@@ -30,6 +31,7 @@ $ jq '[.name, .full_name]' /tmp/out.txt
   "soasme/runflow"
 ]
 ```
+:::
 
 ## Basic Usage (POST)
 
@@ -38,6 +40,7 @@ $ jq '[.name, .full_name]' /tmp/out.txt
 
 <<< @/examples/http_post.hcl
 
+::: details Click me to view the run output
 Run:
 
 ```
@@ -55,6 +58,7 @@ $ cat /tmp/out.txt
 ...(truncated)
 <p>Please report an issue at: <a href="https://github.com/soasme/runflow/issues">https://github.com/soasme/runflow/issues</a>.</p>
 ```
+:::
 
 ## Argument Reference
 
