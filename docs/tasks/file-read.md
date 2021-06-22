@@ -16,7 +16,9 @@ Added in v0.5.1.
 
 ## Example Usage
 
-One can use `task.file_read.YOUR_TASK_NAME.content` in another task.
+Set `filename` to the path to the file.
+
+You can use `task.file_read.TASK_NAME.content` in another task.
 
 <<< @/examples/file_read.hcl
 
