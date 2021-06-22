@@ -1,6 +1,6 @@
-# Sqlite3 Row Task
+# Sql Row Task
 
-Sqlite3 Row Task enables fetching rows from a sql database, such as sqlite3, MySQL, PostgreSQL, MSSQL, etc.
+Sql Row Task enables fetching rows from a sql database, such as sqlite3, MySQL, PostgreSQL, MSSQL, etc.
 
 The task type is "sql_row".
 
