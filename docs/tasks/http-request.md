@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # Http Request Task
 
 Http Request Task enables fetching data from an http url.
@@ -51,3 +55,28 @@ $ cat /tmp/out.txt
 ...(truncated)
 <p>Please report an issue at: <a href="https://github.com/soasme/runflow/issues">https://github.com/soasme/runflow/issues</a>.</p>
 ```
+
+## Argument Reference
+
+The following arguments are supported:
+
+* `method` - (Required, str) The HTTP request method. One of `"GET"`, `"POST"`, `"PUT"`, `"DELETE"`, `"PATCH"`.
+* `url` - (Required, str) The HTTP request url.
+* `headers` - (Optional, map) The HTTP request headers.
+* `json` - (Optional, map) The HTTP request JSON data. Must not be used with `data`.
+* `data` - (Optional, map) The HTTP request form data. Must not be used with `json`.
+* `timeout` - (Optional, int) The timeout on HTTP connection.
+
+The following attributes are supported:
+
+* `response` - The [httpx.Response object](https://www.python-httpx.org/quickstart/).
+
+Here lists some possible variable references you may use in other tasks:
+
+* `task.http_request.TASK_NAME.response.content` - Get HTTP response binary content.
+* `task.http_request.TASK_NAME.response.encoding` - Get HTTP response encoding.
+* `task.http_request.TASK_NAME.response.text` - Get HTTP response text.
+* `call(task.http_request.TASK_NAME.response, "json")` - Get HTTP response json object.
+* `task.http_request.TASK_NAME.response.status_code` - Get HTTP response status code.
+* `task.http_request.TASK_NAME.response.headers.content-type` - Get HTTP response status code.
+* `task.http_request.TASK_NAME.response.cookies.session-id` - Get HTTP response cookie.
