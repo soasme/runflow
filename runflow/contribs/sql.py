@@ -10,11 +10,8 @@ class SqlExecTask:
         self.autocommit = autocommit
 
     def run(self, context):
-        with (
-                self.engine
-                .begin()
-                .execution_options(autocommit=self.autocommit)
-        ) as conn:
+        with self.engine.begin() as conn:
+            conn = conn.execution_options(autocommit=self.autocommit)
             for sql in self.sqls:
                 statement = text(sql['statement'])
                 parameters = sql.get('parameters') or None
