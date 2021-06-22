@@ -5,9 +5,9 @@
 - [ ] docs: integrate with python-rq.
 - [ ] docs: integrate with pex.
 - [ ] docs: a flow app following 12-factor principle.
-- [ ] ci: code quality check: pylint or flake8.
 - [ ] cli: support `runflow visualize xxx.rf`.
 - [ ] cli: support `runflow run --var-file`.
+- [ ] ci: code quality check: pylint.
 - [ ] task: dynamodb.
 - [ ] task: cloudwatch.
 - [ ] task: s3.
@@ -32,6 +32,7 @@
 - [ ] hcl2: variable type constraints.
 - [ ] task: download flows to a local vendor dir.
 - [ ] task: call another remote flow (using http link)
+- [x] ci: code quality check: flake8. v0.5.1.
 - [x] task: mysql. through sqlalchemy. v0.5.0
 - [x] task: postgres. through sqlalchemy. v0.5.0.
 - [x] docs: integrate with apscheduler. v0.4.4.
