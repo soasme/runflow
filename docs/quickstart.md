@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # Quickstart
 
 Assume you have followed [Installation](installation.md) to set your project up and
