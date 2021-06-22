@@ -355,13 +355,10 @@ flow "hello-world" {
     with pytest.raises(runflow.RunflowAcyclicTasksError):
         runflow.runflow(flow, vars={'out': str(out)})
 
-def test_render_template(tmpdir):
-    flow = tmpdir / "test.hcl"
-    out = tmpdir / "out.txt"
-    with open('examples/template.hcl') as f:
-        flow.write(f.read())
-    runflow.runflow(flow, vars={'out': str(out)})
-    assert out.read() == f'42\n42\n{out}'
+def test_render_template(capsys):
+    runflow.runflow(module='examples.template:flow', vars={'global': 'test_render_template'})
+    out, _ = capsys.readouterr()
+    assert out == f'42\n42\n42\n42\n42\n'
 
 def test_default_env(tmpdir, request):
     flow = tmpdir / "test.hcl"
