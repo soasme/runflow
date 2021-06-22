@@ -18,8 +18,3 @@ def test_github_fs(capsys):
     assert 'build' in out
     assert 'twine' in out
     assert 'pytest' in out
-
-def test_git_fs(capsys):
-    runflow.runflow(module='examples.file_read_from_git:flow', vars={})
-    out, err = capsys.readouterr()
-    assert 'build' in out

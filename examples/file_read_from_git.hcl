@@ -13,7 +13,7 @@ flow "file_read_from_git" {
 
       # Set fs.ref to a valid Git sha, such as hash, tag, branch, HEAD, etc.
       # This is optional.
-      ref = "v0.5.0"
+      ref = "26551afd8"
     }
   }
 
@@ -23,5 +23,3 @@ flow "file_read_from_git" {
   }
 
 }
-
-
