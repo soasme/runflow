@@ -19,6 +19,13 @@ Welcome to Runflow's documentation.
 
 ## References
 
+Flow:
+
+* References: [Runflow Specification](flow-spec.md).
+* References: [Built-In Functions](builtin-functions.md).
+
+Tasks:
+
 * References: [Bash Run](tasks/bash-run.md) Task.
 * References: [Docker Run](tasks/docker-run.md) Task.
 * References: [Flow Run](tasks/flow-run.md) Task.
@@ -26,10 +33,9 @@ Welcome to Runflow's documentation.
 * References: [File Read](tasks/file-read.md) Task. Runflow supports these file systems: GitHub, FTP, SFTP, Arrow HDFS, HTTP, Zip, local Git repo, SMB, etc.
 * References: [Hcl2 Template](tasks/hcl2-template.md) Task.
 * References: [Http Request](tasks/http-request.md) Task.
-* References: [Runflow Specification](flow-spec.md).
-* References: [Built-In Functions](builtin-functions.md).
 * References: [Sql Exec](tasks/sql-exec.md) Task. Runflow supports these databases: SQLite3, MySQL, PostgreSQL, MSSQL, Oracle, etc.
 * References: [Sql Row](tasks/sql-row.md) Task. Runflow supports these databases: SQLite3, MySQL, PostgreSQL, MSSQL, Oracle, etc.
+
 
 ## Advanced Usage
 
