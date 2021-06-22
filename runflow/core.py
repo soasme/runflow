@@ -71,10 +71,10 @@ class Task:
 
     async def run(self, context):
         if self.type == "hcl2_template":
-            template_context = hcl2.eval(self.payload.get('context', {}), context)
+            template_context = hcl2.evaluate(self.payload.get('context', {}), context)
             context = dict(context, **template_context)
 
-        payload = hcl2.eval(self.payload, context)
+        payload = hcl2.evaluate(self.payload, context)
 
         task_result = TaskResult(TaskStatus.PENDING)
 

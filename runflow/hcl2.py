@@ -14,12 +14,14 @@ Some reasons not using python-hcl2:
 
 * I want something like `$datetime:datetime(year, month, date)` in HCL2.
 """
+# pylint: disable=missing-function-docstring,missing-class-docstring
 
 import re
 import json
 import os
 import textwrap
 import itertools
+import operator
 from datetime import datetime
 from functools import singledispatch
 from os.path import dirname
@@ -42,25 +44,25 @@ INTERPOLATION = re.compile(
 )
 
 
-def parse_template(s):
+def parse_template(string):
     result = []
     previous = 0
 
-    for interpolation_match in INTERPOLATION.finditer(s):
+    for interpolation_match in INTERPOLATION.finditer(string):
         start, end = interpolation_match.span()
 
         if previous != start:
-            result.append(StringLit(s[previous:start]))
+            result.append(StringLit(string[previous:start]))
 
         expr = interpolation_match.group(1)
         result.append(loads(expr, start='eval'))
         previous = end
 
     if not result:
-        return StringLit(s)
+        return StringLit(string)
 
-    elif previous != len(s):
-        result.append(StringLit(s[previous:]))
+    if previous != len(string):
+        result.append(StringLit(string[previous:]))
 
     return JoinedStr(result)
 
@@ -77,6 +79,12 @@ class JoinedStr:
 
     def __init__(self, elements):
         self.elements = elements
+
+    def __repr__(self):
+        return '<JoinedStr>'
+
+    def __eq__(self, o):
+        return isinstance(o, JoinedStr) and o.elements == self.elements
 
 
 class Attribute(dict):
@@ -118,6 +126,7 @@ class Block(dict):
 class Interpolation(str):
 
     def __init__(self, expr):
+        super().__init__()
         self.expr = expr
         self.value = '${%s}' % expr
 
@@ -133,19 +142,6 @@ class Interpolation(str):
 
 class Identifier(str):
     pass
-
-
-def extract_attr_chain(v, rs):
-    if isinstance(v, GetAttr):
-        extract_attr_chain(v.expr, rs)
-        rs.append(v.attr)
-
-    elif isinstance(v, GetIndex):
-        extract_attr_chain(v.expr, rs)
-        rs.append(v.index)
-
-    else:
-        rs.append(v)
 
 
 class GetIndex:
@@ -170,9 +166,9 @@ class GetIndex:
 
     @property
     def attr_chain(self):
-        rs = []
-        extract_attr_chain(self, rs)
-        return rs
+        chain = []
+        extract_attr_chain(self, chain)
+        return chain
 
 
 class GetAttr:
@@ -197,9 +193,26 @@ class GetAttr:
 
     @property
     def attr_chain(self):
-        rs = []
-        extract_attr_chain(self, rs)
-        return rs
+        chain = []
+        extract_attr_chain(self, chain)
+        return chain
+
+
+@singledispatch
+def extract_attr_chain(ast, chain):
+    chain.append(ast)
+
+
+@extract_attr_chain.register
+def _(ast: GetAttr, chain):
+    extract_attr_chain(ast.expr, chain)
+    chain.append(ast.attr)
+
+
+@extract_attr_chain.register
+def _(ast: GetIndex, chain):
+    extract_attr_chain(ast.expr, chain)
+    chain.append(ast.index)
 
 
 class Splat:
@@ -307,6 +320,7 @@ class ListExpr:
         )
 
 
+# pylint: disable=too-many-arguments
 class DictExpr:
 
     def __init__(self, element_id, array, key, value, condition):
@@ -352,10 +366,18 @@ class Not:
         return isinstance(o, Not) and self.expr == o.expr
 
 
-class DictTransformer(Transformer):
+def strip_new_line_tokens(args: List) -> List:
+    return [
+        arg for arg in args
+        if arg != "\n" and not isinstance(arg, Discard)
+    ]
+
+
+# pylint: disable=too-many-public-methods,no-self-use
+class AstTransformer(Transformer):
 
     def module(self, args: List) -> Dict:
-        args = self.strip_new_line_tokens(args)
+        args = strip_new_line_tokens(args)
         return Module(args[0])
 
     def eval(self, args: List) -> Dict:
@@ -367,6 +389,7 @@ class DictTransformer(Transformer):
     def string_lit(self, args: Any):
         return StringLit(args[0])
 
+    # pylint: disable=invalid-name
     def STRING_LIT(self, args: Any):
         return self.strip_quotes("".join([str(arg) for arg in args]))
 
@@ -389,7 +412,7 @@ class DictTransformer(Transformer):
         return int("".join([str(arg) for arg in args]))
 
     def expr_term(self, args: List) -> Any:
-        args = self.strip_new_line_tokens(args)
+        args = strip_new_line_tokens(args)
         if args[0] == "true":
             return True
         if args[0] == "false":
@@ -408,7 +431,7 @@ class DictTransformer(Transformer):
         return Attribute(key, value)
 
     def block(self, args: List) -> Block:
-        args = self.strip_new_line_tokens(args)
+        args = strip_new_line_tokens(args)
         if isinstance(args[-1], str):
             args.append({})
 
@@ -422,7 +445,7 @@ class DictTransformer(Transformer):
         return Block(result)
 
     def body(self, args: List) -> Module:
-        args = self.strip_new_line_tokens(args)
+        args = strip_new_line_tokens(args)
         result: Dict[str, Any] = {}
         for arg in args:
             result = arg.merge_to(result)
@@ -444,11 +467,11 @@ class DictTransformer(Transformer):
         return Identifier(str(value[0]))
 
     def index_expr_term(self, args: List) -> GetIndex:
-        args = self.strip_new_line_tokens(args)
+        args = strip_new_line_tokens(args)
         return GetIndex(args[0], args[1])
 
     def index(self, args: List) -> Any:
-        args = self.strip_new_line_tokens(args)
+        args = strip_new_line_tokens(args)
         return self.strip_quotes(args[0])
 
     def get_attr_expr_term(self, args: List) -> GetAttr:
@@ -467,7 +490,7 @@ class DictTransformer(Transformer):
         return args
 
     def tuple(self, args: List) -> List:
-        args = self.strip_new_line_tokens(args)
+        args = strip_new_line_tokens(args)
         return [self.to_string_dollar(arg) for arg in args]
 
     def object_elem(self, args: List) -> Dict:
@@ -476,17 +499,14 @@ class DictTransformer(Transformer):
         return {key: value}
 
     def object(self, args: List) -> Dict:
-        args = self.strip_new_line_tokens(args)
+        args = strip_new_line_tokens(args)
         result: Dict[str, Any] = {}
         for arg in args:
             result.update(arg)
         return result
 
-    def magic_function_name(self, args: List):
-        return ''.join([a for a in args[1:]])
-
     def function_call(self, args: List) -> Call:
-        args = self.strip_new_line_tokens(args)
+        args = strip_new_line_tokens(args)
         func_name = str(args[0])
         func_args = args[1] if len(args) > 1 else []
         return Call(func_name, func_args)
@@ -495,7 +515,7 @@ class DictTransformer(Transformer):
         return args
 
     def conditional(self, args: List) -> Conditional:
-        args = self.strip_new_line_tokens(args)
+        args = strip_new_line_tokens(args)
         if len(args) == 1:
             return args[0]
         return Conditional(args[0], args[1], args[2])
@@ -504,7 +524,7 @@ class DictTransformer(Transformer):
         return str(args[0])
 
     def binary_op(self, args: List):
-        args = self.strip_new_line_tokens(args)
+        args = strip_new_line_tokens(args)
         if len(args) == 1:
             return args[0]
         return Operation(args)
@@ -528,27 +548,29 @@ class DictTransformer(Transformer):
     binary_factor_operator = binary_operator
 
     def for_intro(self, args: List):
-        args = self.strip_new_line_tokens(args)
+        args = strip_new_line_tokens(args)
+
         if len(args) == 5:
             return [args[1], args[3]]
-        elif len(args) == 7:
+
+        if len(args) == 7:
             return [(args[1], args[3]), args[5]]
-        else:
-            raise ValueError(f'invalid for intro: {args}')
+
+        raise ValueError(f'invalid for intro: {args}')
 
     def for_cond(self, args: List):
-        args = self.strip_new_line_tokens(args)
+        args = strip_new_line_tokens(args)
         return args[-1]
 
     def for_tuple_expr(self, args: List):
-        args = self.strip_new_line_tokens(args)
+        args = strip_new_line_tokens(args)
         element_id, array = args[1]
         element = args[2]
         condition = args[3] if len(args) > 4 else None
         return ListExpr(element_id, array, element, condition)
 
     def for_object_expr(self, args: List):
-        args = self.strip_new_line_tokens(args)
+        args = strip_new_line_tokens(args)
         element_id, array = args[1]
         key, value = args[2], args[4]
         condition = args[5] if len(args) > 6 else None
@@ -557,20 +579,17 @@ class DictTransformer(Transformer):
     def unary_op(self, args: List):
         if args[0] == '-':
             return Operation([0, '-', args[1]])
-        elif args[0] == '!':
+
+        if args[0] == '!':
             return Not(args[1])
 
-    def new_line_and_or_comma(self, args: List) -> Discard:
+        raise ValueError(f'invalid operator: {args[0]}')
+
+    def new_line_and_or_comma(self, _: List) -> Discard:
         return Discard()
 
-    def new_line_or_comment(self, args: List) -> Discard:
+    def new_line_or_comment(self, _: List) -> Discard:
         return Discard()
-
-    def strip_new_line_tokens(self, args: List) -> List:
-        return [
-            arg for arg in args
-            if arg != "\n" and not isinstance(arg, Discard)
-        ]
 
     def strip_quotes(self, value: Any) -> Any:
         if isinstance(value, str):
@@ -594,94 +613,107 @@ def loads(source, start='module'):
         source = source + '\n'
 
     tree = hcl2.parse(source, start=start)
-    transformer = DictTransformer()
+    transformer = AstTransformer()
     return transformer.transform(tree)
 
 
-def _for_iterable(xs, id_count=1):
-    if isinstance(xs, (tuple, list, )):
-        for i, x in enumerate(xs):
-            yield x if id_count == 1 else (i, x)
-    elif isinstance(xs, dict):
-        for k, v in xs.items():
-            yield k if id_count == 1 else (k, v)
-    elif isinstance(xs, set):
-        for x in xs:
-            yield x if id_count == 1 else (x, x)
+@singledispatch
+def _for_iterable(iterable, id_count=1):
+    raise ValueError('invalid iterable type: {iterable}')
+
+
+@_for_iterable.register(tuple)
+@_for_iterable.register(list)
+def _(iterable, id_count=1):
+    for index, element in enumerate(iterable):
+        yield element if id_count == 1 else (index, element)
+
+
+@_for_iterable.register(dict)
+def _(iterable, id_count=1):
+    for key, value in iterable.items():
+        yield key if id_count == 1 else (key, value)
+
+
+@_for_iterable.register(set)
+def _(iterable, id_count=1):
+    for element in iterable:
+        yield element if id_count == 1 else (element, element)
 
 
 @singledispatch
-def eval(ast, env):
+def evaluate(ast, _):
     return ast
 
 
-@eval.register
+@evaluate.register
 def _(ast: Module, env):
     return {
-        key: eval(attribute_or_block, env)
+        key: evaluate(attribute_or_block, env)
         for key, attribute_or_block in ast.items()
     }
 
 
-@eval.register
+@evaluate.register
 def _(ast: Interpolation, env):
-    return eval(ast.expr, env)
+    return evaluate(ast.expr, env)
 
 
-@eval.register(GetIndex)
-@eval.register(GetAttr)
+@evaluate.register(GetIndex)
+@evaluate.register(GetAttr)
 def _(ast: Union[GetIndex, GetAttr], env):
     result = env
     for attr in ast.attr_chain:
         if isinstance(attr, Splat):
-            result = eval(attr, env)
+            result = evaluate(attr, env)
         elif isinstance(attr, str) and hasattr(result, attr):
             result = getattr(result, attr)
         else:
             try:
                 result = result[attr]
-            except KeyError:
-                raise RunflowReferenceError(list(ast.attr_chain))
+            except KeyError as error:
+                message = list(ast.attr_chain)
+                raise RunflowReferenceError(message) from error
     return result
 
 
-@eval.register
+@evaluate.register
 def _(ast: Identifier, env):
     return env[ast]
 
 
-@eval.register
-def _(ast: StringLit, env):
+@evaluate.register
+def _(ast: StringLit, _):
     return ast
 
 
-@eval.register
+@evaluate.register
 def _(ast: JoinedStr, env):
     result = []
     if len(ast.elements) == 1:
         if isinstance(ast.elements[0], StringLit):
             return str(ast.elements[0])
-        else:
-            return eval(ast.elements[0], env)
+        return evaluate(ast.elements[0], env)
+
     for node in ast.elements:
         if isinstance(node, StringLit):
             result.append(str(node))
         else:
-            result.append(str(eval(node, env)))
+            result.append(str(evaluate(node, env)))
     return ''.join(result)
 
 
-@eval.register
+@evaluate.register
 def _(ast: Not, env):
-    return not eval(ast.expr, env)
+    return not evaluate(ast.expr, env)
 
 
-@eval.register
+@evaluate.register
 def _(ast: Splat, env):
-    obj = eval(ast.array, env)
+    array = evaluate(ast.array, env)
 
-    def extract(o, attrs):
-        result = o
+    def extract(elem, attrs):
+        result = elem
         for attr in attrs:
             if isinstance(attr, str) and hasattr(result, attr):
                 result = getattr(result, attr)
@@ -689,14 +721,14 @@ def _(ast: Splat, env):
                 result = result[attr]
         return result
 
-    return [extract(o, ast.elements) for o in obj]
+    return [extract(elem, ast.elements) for elem in array]
 
 
-@eval.register
+@evaluate.register
 def _(ast: ListExpr, env):
     result = []
     id_count = 2 if isinstance(ast.element_id, tuple) else 1
-    for elem in _for_iterable(eval(ast.array, env), id_count):
+    for elem in _for_iterable(evaluate(ast.array, env), id_count):
         if id_count == 2:
             index_id, element_id = ast.element_id
             _index, _elem = elem
@@ -706,17 +738,17 @@ def _(ast: ListExpr, env):
             })
         else:
             newenv = dict(env, **{str(ast.element_id): elem})
-        if ast.condition and not eval(ast.condition, newenv):
+        if ast.condition and not evaluate(ast.condition, newenv):
             continue
-        result.append(eval(ast.element, newenv))
+        result.append(evaluate(ast.element, newenv))
     return result
 
 
-@eval.register
+@evaluate.register
 def _(ast: DictExpr, env):
     result = {}
     id_count = 2 if isinstance(ast.element_id, tuple) else 1
-    for elem in _for_iterable(eval(ast.array, env), id_count):
+    for elem in _for_iterable(evaluate(ast.array, env), id_count):
         if id_count == 2:
             index_id, element_id = ast.element_id
             _index, _elem = elem
@@ -726,26 +758,27 @@ def _(ast: DictExpr, env):
             })
         else:
             newenv = dict(env, **{str(ast.element_id): elem})
-        if ast.condition and not eval(ast.condition, newenv):
+        if ast.condition and not evaluate(ast.condition, newenv):
             continue
-        key = eval(ast.key, newenv)
-        value = eval(ast.value, newenv)
+        key = evaluate(ast.key, newenv)
+        value = evaluate(ast.value, newenv)
         result[key] = value
     return result
 
 
-@eval.register
+@evaluate.register
 def _(ast: Conditional, env):
-    cond = eval(ast.predicate, env)
+    cond = evaluate(ast.predicate, env)
+
     if cond:
-        return eval(ast.true_expr, env)
-    else:
-        return eval(ast.false_expr, env)
+        return evaluate(ast.true_expr, env)
+
+    return evaluate(ast.false_expr, env)
 
 
-@eval.register
+@evaluate.register
 def _(ast: Call, env):
-    args = eval(ast.args, env)
+    args = evaluate(ast.args, env)
     func_name = str(ast.func_name)
     if ':' in func_name:
         func = import_module(func_name)
@@ -759,55 +792,50 @@ def _(ast: Call, env):
         raise NameError(f'function {ast.func_name} is not defined')
     return func(*args)
 
+OPERATORS = {
+    '+': operator.add,
+    '-': operator.sub,
+    '*': operator.mul,
+    '/': operator.truediv,
+    '%': operator.mod,
+    '<': operator.lt,
+    '<=': operator.le,
+    '>': operator.gt,
+    '>=': operator.ge,
+    '==': operator.eq,
+    '!=': operator.ne,
+}
 
-@eval.register
+
+@evaluate.register
 def _(ast: Operation, env):
     result = None
-    op = None
+    _operator = None
     for index, elem in enumerate(ast.elements):
         if index == 0:
-            result = eval(elem, env)
+            result = evaluate(elem, env)
         elif index % 2 == 1:
-            op = elem
-        elif op == '||':
-            result = result or eval(elem, env)
-        elif op == '&&':
-            result = result and eval(elem, env)
-        elif op == '==':
-            result = result == eval(elem, env)
-        elif op == '!=':
-            result = result != eval(elem, env)
-        elif op == '>=':
-            result = result >= eval(elem, env)
-        elif op == '>':
-            result = result > eval(elem, env)
-        elif op == '<=':
-            result = result <= eval(elem, env)
-        elif op == '<':
-            result = result < eval(elem, env)
-        elif op == '+':
-            result = result + eval(elem, env)
-        elif op == '-':
-            result = result - eval(elem, env)
-        elif op == '*':
-            result = result * eval(elem, env)
-        elif op == '/':
-            result = result / eval(elem, env)
-        elif op == '%':
-            result = result % eval(elem, env)
+            _operator = elem
+        elif _operator in OPERATORS:
+            result = OPERATORS[_operator](result, evaluate(elem, env))
+        elif _operator == '||':
+            result = result or evaluate(elem, env)
+        elif _operator == '&&':
+            result = result and evaluate(elem, env)
         else:
-            raise ValueError(f'invalid op: {op}')
+            raise ValueError(f'invalid operator: {_operator}')
+
     return result
 
 
-@eval.register
+@evaluate.register
 def _(ast: list, env):
-    return [eval(a, env) for a in ast]
+    return [evaluate(a, env) for a in ast]
 
 
-@eval.register
+@evaluate.register
 def _(ast: dict, env):
-    return {k: eval(v, env) for k, v in ast.items()}
+    return {k: evaluate(v, env) for k, v in ast.items()}
 
 
 FUNCS = {
@@ -815,10 +843,10 @@ FUNCS = {
     'upper': lambda s: s.upper(),
     'split': lambda sep, s: s.split(sep),
     'join': lambda sep, s: sep.join(s),
-    'tojson': lambda s: json.dumps(s),
+    'tojson': json.dumps,
     'concat': lambda *s: list(itertools.chain(*s)),
-    'datetime': lambda *a, **kw: datetime(*a, **kw),
-    'todatetime': lambda s: parse_datetime(s),
+    'datetime': datetime,
+    'todatetime': parse_datetime,
     'call': lambda obj, meth, args=None, kwargs=None: (
         getattr(obj, meth)(*(args or []), **(kwargs or {}))
     ),
