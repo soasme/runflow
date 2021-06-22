@@ -35,3 +35,9 @@ The following arguments are supported:
 
 * `source` - (Required, str) The template string.
 * `context` - (Optional, map) The context for rendering the template. The context will be merged with global execution context so you are free to use something like `${task.bash_run.TASK_NAME.stdout}` in the source.
+
+## Attributes Reference
+
+The following attributes are supported:
+
+* `content` - The rendered content.

@@ -63,3 +63,9 @@ The following arguments are supported:
   * `parameters` - (Optional, list/map).
     * It can be a key-value pairs.
     * It can be a array of key-value pairs.
+
+## Attributes References
+
+The following attributes are supported:
+
+* `rows` - List. Each list element is a map with table field as key and row record as value.

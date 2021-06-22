@@ -67,6 +67,8 @@ The following arguments are supported:
 * `data` - (Optional, map) The HTTP request form data. Must not be used with `json`.
 * `timeout` - (Optional, int) The timeout on HTTP connection.
 
+## Attributes Reference
+
 The following attributes are supported:
 
 * `response` - The [httpx.Response object](https://www.python-httpx.org/quickstart/).

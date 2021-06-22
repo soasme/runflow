@@ -224,3 +224,9 @@ flow "hello_world" {
 [2021-06-22 21:28:15,592] "task.file_write.this" is successful.
 ```
 :::
+
+## Attributes Reference
+
+The following attributes are supported:
+
+* `content` - The file content.
