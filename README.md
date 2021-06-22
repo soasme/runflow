@@ -18,6 +18,8 @@
   </a>
 </p>
 
+![Logo](docs/.vuepress/logo.svg)
+
 ## What Runflow is?
 
 Runflow is a tool to define and run workflows. To find out more about Runflow, check out [runflow.org](https://runflow.org).
