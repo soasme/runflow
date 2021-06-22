@@ -1,14 +1,15 @@
-import inspect
 import sys
 import asyncio
 import importlib
+
 
 async def to_thread(f, *args, **kwargs):
     if sys.version_info[0] == 3 and sys.version_info[1] < 9:
         loop = asyncio.get_running_loop()
         return await loop.run_in_executor(None, lambda: f(*args, **kwargs))
-    else:
-        return await asyncio.to_thread(f, *args, **kwargs)
+
+    return await asyncio.to_thread(f, *args, **kwargs)
+
 
 def import_module(path):
     try:
@@ -20,6 +21,7 @@ def import_module(path):
         return result
     except (AttributeError, ValueError):
         raise ImportError(path)
+
 
 def split_camelcase(str):
     words = [[str[0]]]
