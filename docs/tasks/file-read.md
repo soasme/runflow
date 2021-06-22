@@ -62,8 +62,9 @@ FileNotFoundError: [Errno 2] No such file or directory: '__nonexist__.toml'
 The following arguments are supported:
 
 * `filename` - (Required, str) The path to file to read.
-* `fs` - (Optional, map) The file system. If not set, local filesystem is used. Please check the filesystem for the arguments to set in the map:
+* `fs` - (Optional, map) The file system that contains the file to read. If not set, local filesystem is used. Please check the filesystem for the arguments to set in the map:
   * [Local FileSystem](#local-filesystem)
+  * [FTP FileSystem](#ftp-filesystem)
   * [Git FileSystem](#git-filesystem)
   * [GitHub FileSystem](#github-filesystem)
   * [Zip FileSystem](#zip-filesystem)
@@ -98,6 +99,22 @@ build-backend = \"setuptools.build_meta\"
 [2021-06-12 19:40:56,292] Task "this" is successful.
 ```
 :::
+
+### FTP FileSystem
+
+This filesystem allows reading content from an FTP server.
+
+* `protocol` - (Required, str) `"ftp"`.
+* `host` - (Required, str) The FTP host to connect.
+* `port` - (Required, int) The FTP port to connect.
+* `username` - (Optional, str) The username for authentication.
+* `password` - (Optional, str) The password for authentication.
+* `acct` - (Optional, str) The "account" string for authentication. Some servers may need an additional "account" string for authentication.
+* `block_size` - (Optional, int) The read-ahead or write buffer size.
+* `tempdir` - (Optional, str) The directory on the FTP remote host to put temporary files on a transaction.
+* `timeout` - (Optional, int) Timeout on an FTP connection in seconds.
+
+<<< @/examples/file_read_from_ftp.hcl
 
 ### GitHub FileSystem
 

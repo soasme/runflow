@@ -33,6 +33,7 @@
 - [ ] hcl2: variable type constraints.
 - [ ] task: download flows to a local vendor dir.
 - [ ] task: call another remote flow (using http link)
+- [ ] support runflow.tasks: https://github.com/intake/filesystem_spec/blob/a84d7fe3d1044af35697ad320230abfd0bac4503/fsspec/__init__.py
 - [x] ci: code quality check: flake8. v0.5.1.
 - [x] task: mysql. through sqlalchemy. v0.5.0
 - [x] task: postgres. through sqlalchemy. v0.5.0.
