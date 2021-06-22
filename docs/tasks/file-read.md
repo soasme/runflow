@@ -4,7 +4,7 @@ File Read task enables reading content from a file.
 
 Added in v0.3.0.
 
-Runflow supports various file system by setting an optional `fs` attribute,
+Runflow supports various file systems by setting an optional `fs` attribute,
 such as GitHub, FTP, SFTP, Arrow HDFS, HTTP, Zip, local Git repo, SMB, etc.
 Check more information [here](https://filesystem-spec.readthedocs.io/en/latest/api.html#built-in-implementations).
 
