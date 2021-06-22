@@ -792,6 +792,7 @@ def _(ast: Call, env):
         raise NameError(f'function {ast.func_name} is not defined')
     return func(*args)
 
+
 OPERATORS = {
     '+': operator.add,
     '-': operator.sub,

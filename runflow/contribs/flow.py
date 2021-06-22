@@ -1,5 +1,6 @@
 from runflow.core import load_flow
 
+
 class FlowRunTask:
 
     def __init__(self, path=None, source=None, module=None, vars=None):

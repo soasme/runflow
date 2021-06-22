@@ -35,6 +35,10 @@ jobs:
         python3 -mpip install -r requirements-dev.txt
         python3 -mpip install -e .[docker]
 
+    - name: Run Flake8
+      run: |
+        flake8 runflow
+
     - name: Run tests
       run: |
         pytest --cov=runflow --cov-report=term --cov-report=html tests

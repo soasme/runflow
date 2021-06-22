@@ -2,6 +2,7 @@ import asyncio
 
 from runflow.errors import RunflowTaskError
 
+
 class BashRunTask:
 
     def __init__(self, command, env=None):
@@ -21,7 +22,8 @@ class BashRunTask:
         stdout = stdout.decode('utf-8').strip()
         stderr = stderr.decode('utf-8').strip()
 
-        if stdout: print(stdout)
+        if stdout:
+            print(stdout)
 
         if proc.returncode == 0:
             return dict(
@@ -35,4 +37,3 @@ class BashRunTask:
                 stdout=stdout,
                 stderr=stderr,
             ))
-

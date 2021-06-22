@@ -5,7 +5,9 @@ from importlib.util import spec_from_loader
 
 from .core import Flow
 
-EXT_RUNFLOW  = '.hcl'
+
+EXT_RUNFLOW = '.hcl'
+
 
 __all__ = []
 
@@ -16,17 +18,18 @@ class FlowLoader(Loader):
 
     def create_module(self, spec):
         try:
-            with open(self._full_path) as flow_specfile:
-                self._flow = Flow.from_specfile(self._full_path)
-        except Exception:
-            raise ImportError
+            self._flow = Flow.from_specfile(self._full_path)
+        except Exception as e:
+            raise ImportError from e
         return None
 
     def exec_module(self, module):
         module.__dict__.update({"flow": self._flow})
         return None
 
+
 class FlowMetaPathFinder(MetaPathFinder):
+
     def find_spec(self, fullname, path, target=None):
         mod_name = fullname.split('.')[-1]
         paths = path if path else [os.path.abspath(os.curdir)]

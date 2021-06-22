@@ -1,27 +1,23 @@
 import inspect
 import traceback
-import argparse
-import re
-import sys
 import logging
 import asyncio
 import enum
 
-import lark
 import networkx
 
-from .errors import (
-    RunflowReferenceError, RunflowTaskError,
-    RunflowAcyclicTasksError,
-)
+from .errors import RunflowAcyclicTasksError
 from . import hcl2, utils
 
+
 logger = logging.getLogger(__name__)
+
 
 class TaskStatus(enum.Enum):
     PENDING = enum.auto()
     SUCCESS = enum.auto()
     FAILED = enum.auto()
+
 
 class TaskResult:
 
@@ -33,7 +29,9 @@ class TaskResult:
     @property
     def result(self):
         if self._exception:
-            raise ValueError('Task has no result due to a failed run.')
+            raise ValueError(
+                'Task has no result due to a failed run.'
+            ) from self._exception
         return self._result
 
     @result.setter
@@ -52,6 +50,7 @@ class TaskResult:
         self.status = TaskStatus.FAILED
         self._exception = _exception
 
+
 class Task:
 
     def __init__(self, type, runner, name, payload):
@@ -61,7 +60,11 @@ class Task:
         self.payload = payload
 
     def __repr__(self):
-        return f'Task(type={self.type}, name={self.name}, payload={self.payload})'
+        return (
+            f'Task(type={self.type}, '
+            f'name={self.name}, '
+            f'payload={self.payload})'
+        )
 
     def __hash__(self):
         return hash(repr(self))
@@ -71,15 +74,18 @@ class Task:
 
     async def run(self, context):
         if self.type == "hcl2_template":
-            template_context = hcl2.evaluate(self.payload.get('context', {}), context)
-            context = dict(context, **template_context)
+            context = dict(context, **hcl2.evaluate(
+                self.payload.get('context', {}),
+                context
+            ))
 
         payload = hcl2.evaluate(self.payload, context)
 
         task_result = TaskResult(TaskStatus.PENDING)
 
         _payload = dict(payload)
-        _payload.pop('depends_on', None) # this is handled by runflow, not by runner.
+        # this is handled by runflow, not by runner.
+        _payload.pop('depends_on', None)
 
         task = self.runner(**_payload)
 
@@ -107,7 +113,10 @@ class SequentialRunner:
         runnable = True
         for task in self.flow:
             if not runnable:
-                logger.info(f'"task.{task.type}.{task.name}" is canceled due to previous task failed run.')
+                logger.info(
+                    f'"task.{task.type}.{task.name}" is canceled '
+                    'due to previous task failed run.'
+                )
                 continue
 
             task_result = await task.run(context)
@@ -116,6 +125,7 @@ class SequentialRunner:
                 continue
 
             context['task'][task.type][task.name] = task_result.result
+
 
 class Flow:
 
@@ -145,7 +155,7 @@ class Flow:
         try:
             return reversed(list(networkx.topological_sort(self.G)))
         except networkx.exception.NetworkXUnfeasible as e:
-            raise RunflowAcyclicTasksError(str(e))
+            raise RunflowAcyclicTasksError(str(e)) from e
 
     @classmethod
     def from_spec(cls, string):
@@ -200,19 +210,21 @@ class Flow:
         context = self.make_run_context(vars)
         return await self.runner.run(context)
 
+
 def load_flow(path=None, source=None, module=None, flow=None):
     if path:
         _flow = Flow.from_specfile(path)
     elif source:
         _flow = Flow.from_spec(source)
     elif module:
-        import runflow.autoloader
+        import runflow.autoloader # noqa
         _flow = utils.import_module(module)
     elif flow:
         _flow = flow
     else:
         raise ValueError('Must provide one of path, source, module, flow')
     return _flow
+
 
 def run(path=None, source=None, module=None, flow=None, vars=None):
     _flow = load_flow(path=path, source=source, module=module, flow=flow)
