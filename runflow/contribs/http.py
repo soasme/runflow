@@ -1,11 +1,15 @@
 from base64 import b64decode
+
 import httpx
+
 
 class HttpRequestTask:
 
-    def __init__(self, method, url, params=None, headers=None, cookies=None,
-            content=None, b64content=None, data=None, files=None, json=None,
-            auth=None, allow_redirects=True, timeout=None, raise_for_status=True):
+    def __init__(self, method, url, params=None, headers=None,
+                 cookies=None, content=None, b64content=None,
+                 data=None, files=None, json=None,
+                 auth=None, allow_redirects=True, timeout=None,
+                 raise_for_status=True):
         self.method = method
         self.url = url
         self.params = params

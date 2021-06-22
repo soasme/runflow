@@ -13,12 +13,14 @@ Welcome to Runflow's documentation.
 * Tutorial: [Bash Run](tasks/bash-run.md) Task.
 * Tutorial: [Docker Run](tasks/docker-run.md) Task.
 * Tutorial: [Flow Run](tasks/flow-run.md) Task.
-* Tutorial: [File Write](tasks/file-write.md) Task.
-* Tutorial: [File Read](tasks/file-read.md) Task.
+* File. Runflow supports these file systems: GitHub, FTP, SFTP, Arrow HDFS, HTTP, Zip, local Git repo, SMB, etc.
+  * Tutorial: [File Write](tasks/file-write.md) Task.
+  * Tutorial: [File Read](tasks/file-read.md) Task.
 * Tutorial: [Hcl2 Template](tasks/hcl2-template.md) Task.
 * Tutorial: [Http Request](tasks/http-request.md) Task.
-* Tutorial: [Sql Exec](tasks/sql-exec.md) Task.
-* Tutorial: [Sql Row](tasks/sql-row.md) Task.
+* SQL. Runflow supports these databases: SQLite3, MySQL, PostgreSQL, etc.
+  * Tutorial: [Sql Exec](tasks/sql-exec.md) Task.
+  * Tutorial: [Sql Row](tasks/sql-row.md) Task.
 * Advanced Usage: Use [Python API](python-api.md).
 * Advanced Usage: [Develop your own Task](customize-task.md).
 * Advanced Usage: [Integrate with APScheduler](integrations/apscheduler.md).

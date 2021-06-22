@@ -1,6 +1,11 @@
+import fsspec
+
+
 class FileWriteTask:
 
-    def __init__(self, filename, content):
+    def __init__(self, filename, content, fs=None):
+        fs = fs if fs else {'protocol': 'file'}
+        self.fs = fsspec.filesystem(**fs)
         self.filename = filename
         self.content = content
 
@@ -9,15 +14,17 @@ class FileWriteTask:
             print(str(self.content))
             return
 
-        with open(self.filename, 'w+') as f:
+        with self.fs.open(self.filename, 'w+') as f:
             f.write(self.content)
 
 
 class FileReadTask:
 
-    def __init__(self, filename):
+    def __init__(self, filename, fs=None):
+        fs = fs if fs else {'protocol': 'file'}
+        self.fs = fsspec.filesystem(**fs)
         self.filename = filename
 
     async def run(self, contenxt):
-        with open(self.filename, 'r') as f:
+        with self.fs.open(self.filename, 'r') as f:
             return {'content': f.read()}

@@ -1,2 +1,5 @@
 test:
-	PYTHONPATH=. pytest --cov=runflow --cov-report=term --cov-report=html tests
+	PYTHONPATH=. python3 -mpytest --cov=runflow --cov-report=term --cov-report=html tests
+
+lint:
+	python3 -mflake8 runflow

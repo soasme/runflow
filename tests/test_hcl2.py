@@ -199,164 +199,164 @@ EOT''') == {'a': 'XXX\n  YYY'}
 
 
 def test_eval():
-    assert hcl2.eval(hcl2.loads('a = b'), {'b': 1}) == {'a': 1}
-    assert hcl2.eval(hcl2.loads('a = var.b'), {'var': {'b': 1}}) == {'a': 1}
-    assert hcl2.eval(hcl2.loads('a = b.0'), {'b': [1]}) == {'a': 1}
+    assert hcl2.evaluate(hcl2.loads('a = b'), {'b': 1}) == {'a': 1}
+    assert hcl2.evaluate(hcl2.loads('a = var.b'), {'var': {'b': 1}}) == {'a': 1}
+    assert hcl2.evaluate(hcl2.loads('a = b.0'), {'b': [1]}) == {'a': 1}
     with pytest.raises(IndexError):
-        assert hcl2.eval(hcl2.loads('a = b.1'), {'b': [1]}) == {'a': 1}
+        assert hcl2.evaluate(hcl2.loads('a = b.1'), {'b': [1]}) == {'a': 1}
     with pytest.raises(TypeError):
-        assert hcl2.eval(hcl2.loads('a = b.c'), {'b': [1]}) == {'a': 1}
-    assert hcl2.eval(hcl2.loads('a {k=b}\na {k=b}'), {'b': 1}) == {'a': [
+        assert hcl2.evaluate(hcl2.loads('a = b.c'), {'b': [1]}) == {'a': 1}
+    assert hcl2.evaluate(hcl2.loads('a {k=b}\na {k=b}'), {'b': 1}) == {'a': [
         {'k': 1}, {'k': 1}
     ]}
-    assert hcl2.eval(hcl2.loads('a {k=b}\na {k=b+1}'), {'b': 1}) == {'a': [
+    assert hcl2.evaluate(hcl2.loads('a {k=b}\na {k=b+1}'), {'b': 1}) == {'a': [
         {'k': 1}, {'k': 2}
     ]}
-    assert hcl2.eval(hcl2.loads('a = !b'), {'b': True}) == {'a': False}
-    assert hcl2.eval(hcl2.loads('a = (!b) || (!c)'), {'b': True, 'c': False}) == {'a': True}
+    assert hcl2.evaluate(hcl2.loads('a = !b'), {'b': True}) == {'a': False}
+    assert hcl2.evaluate(hcl2.loads('a = (!b) || (!c)'), {'b': True, 'c': False}) == {'a': True}
     # TBD: need fix it
-    # assert hcl2.eval(hcl2.loads('a = !b || !c'), {'b': True, 'c': False}) == {'a': True}
-    assert hcl2.eval(hcl2.loads('a = b && c'), {'b': True, 'c': True}) == {'a': True}
-    assert hcl2.eval(hcl2.loads('a = b && c'), {'b': True, 'c': False}) == {'a': False}
-    assert hcl2.eval(hcl2.loads('a = b && c'), {'b': False, 'c': False}) == {'a': False}
-    assert hcl2.eval(hcl2.loads('a = b && c'), {'b': False, 'c': True}) == {'a': False}
-    assert hcl2.eval(hcl2.loads('a = b || c'), {'b': True, 'c': True}) == {'a': True}
-    assert hcl2.eval(hcl2.loads('a = b || c'), {'b': True, 'c': False}) == {'a': True}
-    assert hcl2.eval(hcl2.loads('a = b || c'), {'b': False, 'c': False}) == {'a': False}
-    assert hcl2.eval(hcl2.loads('a = b || c'), {'b': False, 'c': True}) == {'a': True}
-    assert hcl2.eval(hcl2.loads('a = b == c == d'), {'b': 1, 'c': 1, 'd': 1}) == {'a': True}
-    assert hcl2.eval(hcl2.loads('a = b == c == d'), {'b': 1, 'c': 1, 'd': 2}) == {'a': False}
-    assert hcl2.eval(hcl2.loads('a = b == c == d'), {'b': 2, 'c': 1, 'd': 1}) == {'a': False}
+    # assert hcl2.evaluate(hcl2.loads('a = !b || !c'), {'b': True, 'c': False}) == {'a': True}
+    assert hcl2.evaluate(hcl2.loads('a = b && c'), {'b': True, 'c': True}) == {'a': True}
+    assert hcl2.evaluate(hcl2.loads('a = b && c'), {'b': True, 'c': False}) == {'a': False}
+    assert hcl2.evaluate(hcl2.loads('a = b && c'), {'b': False, 'c': False}) == {'a': False}
+    assert hcl2.evaluate(hcl2.loads('a = b && c'), {'b': False, 'c': True}) == {'a': False}
+    assert hcl2.evaluate(hcl2.loads('a = b || c'), {'b': True, 'c': True}) == {'a': True}
+    assert hcl2.evaluate(hcl2.loads('a = b || c'), {'b': True, 'c': False}) == {'a': True}
+    assert hcl2.evaluate(hcl2.loads('a = b || c'), {'b': False, 'c': False}) == {'a': False}
+    assert hcl2.evaluate(hcl2.loads('a = b || c'), {'b': False, 'c': True}) == {'a': True}
+    assert hcl2.evaluate(hcl2.loads('a = b == c == d'), {'b': 1, 'c': 1, 'd': 1}) == {'a': True}
+    assert hcl2.evaluate(hcl2.loads('a = b == c == d'), {'b': 1, 'c': 1, 'd': 2}) == {'a': False}
+    assert hcl2.evaluate(hcl2.loads('a = b == c == d'), {'b': 2, 'c': 1, 'd': 1}) == {'a': False}
     with pytest.raises(ZeroDivisionError):
-        assert hcl2.eval(hcl2.loads('a = b / 0'), {'b': 1})
-    assert hcl2.eval(hcl2.loads('a = b / 2'), {'b': 4}) == {'a': 2}
-    assert hcl2.eval(hcl2.loads('a = b / 2.0'), {'b': 4}) == {'a': 2.0}
-    assert hcl2.eval(hcl2.loads('a = b % 3'), {'b': 5}) == {'a': 2}
-    assert hcl2.eval(hcl2.loads('a = b * 3'), {'b': 5}) == {'a': 15}
-    assert hcl2.eval(hcl2.loads('a = b+(c*d)'), {'b': 1, 'c': 2, 'd': 3}) == {'a': 7}
-    assert hcl2.eval(hcl2.loads('a = b+c*d'), {'b': 1, 'c': 2, 'd': 3}) == {'a': 7}
-    assert hcl2.eval(hcl2.loads('a = (b+c)*d'), {'b': 1, 'c': 2, 'd': 3}) == {'a': 9}
-    assert hcl2.eval(hcl2.loads('a = b*(c+d)'), {'b': 2, 'c': 1, 'd': 3}) == {'a': 8}
-    assert hcl2.eval(hcl2.loads('a = b*c+d'), {'b': 2, 'c': 1, 'd': 3}) == {'a': 5}
-    assert hcl2.eval(hcl2.loads('a = b.*.c'), {
+        assert hcl2.evaluate(hcl2.loads('a = b / 0'), {'b': 1})
+    assert hcl2.evaluate(hcl2.loads('a = b / 2'), {'b': 4}) == {'a': 2}
+    assert hcl2.evaluate(hcl2.loads('a = b / 2.0'), {'b': 4}) == {'a': 2.0}
+    assert hcl2.evaluate(hcl2.loads('a = b % 3'), {'b': 5}) == {'a': 2}
+    assert hcl2.evaluate(hcl2.loads('a = b * 3'), {'b': 5}) == {'a': 15}
+    assert hcl2.evaluate(hcl2.loads('a = b+(c*d)'), {'b': 1, 'c': 2, 'd': 3}) == {'a': 7}
+    assert hcl2.evaluate(hcl2.loads('a = b+c*d'), {'b': 1, 'c': 2, 'd': 3}) == {'a': 7}
+    assert hcl2.evaluate(hcl2.loads('a = (b+c)*d'), {'b': 1, 'c': 2, 'd': 3}) == {'a': 9}
+    assert hcl2.evaluate(hcl2.loads('a = b*(c+d)'), {'b': 2, 'c': 1, 'd': 3}) == {'a': 8}
+    assert hcl2.evaluate(hcl2.loads('a = b*c+d'), {'b': 2, 'c': 1, 'd': 3}) == {'a': 5}
+    assert hcl2.evaluate(hcl2.loads('a = b.*.c'), {
         'b': [{'c': 1}, {'c': 2}]
     }) == {'a': [1, 2]}
-    assert hcl2.eval(hcl2.loads('a = b[*].c[0]'), {
+    assert hcl2.evaluate(hcl2.loads('a = b[*].c[0]'), {
         'b': [{'c': [1]}, {'c': [2]}]
     }) == {'a': [1, 2]}
-    assert hcl2.eval(hcl2.loads('a = b[*].c.0'), {
+    assert hcl2.evaluate(hcl2.loads('a = b[*].c.0'), {
         'b': [{'c': [1]}, {'c': [2]}]
     }) == {'a': [1, 2]}
-    assert hcl2.eval(hcl2.loads('a = b.*.c[0]'), {
+    assert hcl2.evaluate(hcl2.loads('a = b.*.c[0]'), {
         'b': [{'c': [1]}, {'c': [2]}]
     }) == {'a': [1]}
-    assert hcl2.eval(hcl2.loads('a = b.*.c[0]'), {
+    assert hcl2.evaluate(hcl2.loads('a = b.*.c[0]'), {
         'b': [{'c': 1}, {'c': 2}]
     }) == {'a': 1}
 
-    assert hcl2.eval(hcl2.loads('a = [for x in xs: x.key]'), {
+    assert hcl2.evaluate(hcl2.loads('a = [for x in xs: x.key]'), {
         'xs': [{'key': 1}, {'key': 2}]
     }) == {'a': [1, 2]}
-    assert hcl2.eval(hcl2.loads('a = [for i, x in xs: x.key * (i+1)]'), {
+    assert hcl2.evaluate(hcl2.loads('a = [for i, x in xs: x.key * (i+1)]'), {
         'xs': [{'key': 1}, {'key': 2}]
     }) == {'a': [1, 4]}
-    assert hcl2.eval(hcl2.loads('a = [for x in xs: x.key if x.key >= 2]'), {
+    assert hcl2.evaluate(hcl2.loads('a = [for x in xs: x.key if x.key >= 2]'), {
         'xs': [{'key': 1}, {'key': 2}, {'key': 3}]
     }) == {'a': [2, 3]}
-    assert hcl2.eval(hcl2.loads('a = {for x in xs: x.key => x.key * 2}'), {
+    assert hcl2.evaluate(hcl2.loads('a = {for x in xs: x.key => x.key * 2}'), {
         'xs': [{'key': 1}, {'key': 2}]
     }) == {'a': {1: 2, 2: 4}}
-    assert hcl2.eval(hcl2.loads('a = {for i, x in xs: x.key => x.key * (i+2)}'), {
+    assert hcl2.evaluate(hcl2.loads('a = {for i, x in xs: x.key => x.key * (i+2)}'), {
         'xs': [{'key': 1}, {'key': 2}]
     }) == {'a': {1: 2, 2: 6}}
 
-    assert hcl2.eval(hcl2.loads('a = [for x in xs: x]'), {
+    assert hcl2.evaluate(hcl2.loads('a = [for x in xs: x]'), {
         'xs': {'k1': 1, 'k2': 2},
     }) == {'a': ['k1', 'k2']}
-    assert hcl2.eval(hcl2.loads('a = [for k, v in xs: k if v > 1]'), {
+    assert hcl2.evaluate(hcl2.loads('a = [for k, v in xs: k if v > 1]'), {
         'xs': {'k1': 1, 'k2': 2},
     }) == {'a': ['k2']}
-    assert hcl2.eval(hcl2.loads('a = {for k in xs: k => k}'), {
+    assert hcl2.evaluate(hcl2.loads('a = {for k in xs: k => k}'), {
         'xs': {'k1': 1, 'k2': 2},
     }) == {'a': {'k1': 'k1', 'k2': 'k2'}}
-    assert hcl2.eval(hcl2.loads('a = {for k, v in xs: v => k}'), {
+    assert hcl2.evaluate(hcl2.loads('a = {for k, v in xs: v => k}'), {
         'xs': {'k1': 1, 'k2': 2},
     }) == {'a': {1: 'k1', 2: 'k2'}}
 
-    assert set(hcl2.eval(hcl2.loads('a = [for x in xs: x]'), {
+    assert set(hcl2.evaluate(hcl2.loads('a = [for x in xs: x]'), {
         'xs': {'k1', 'k2'},
     })['a']) == {'k1', 'k2'}
-    assert set(hcl2.eval(hcl2.loads('a = [for k, v in xs: k if v]'), {
+    assert set(hcl2.evaluate(hcl2.loads('a = [for k, v in xs: k if v]'), {
         'xs': {'k1', 'k2', False},
     })['a']) == {'k1', 'k2'}
-    assert hcl2.eval(hcl2.loads('a = {for k in xs: k => k}'), {
+    assert hcl2.evaluate(hcl2.loads('a = {for k in xs: k => k}'), {
         'xs': {'k1', 'k2'},
     }) == {'a': {'k1': 'k1', 'k2': 'k2'}}
-    assert hcl2.eval(hcl2.loads('a = {for k, v in xs: v => k}'), {
+    assert hcl2.evaluate(hcl2.loads('a = {for k, v in xs: v => k}'), {
         'xs': {'k1', 'k2'},
     }) == {'a': {'k1': 'k1', 'k2': 'k2'}}
 
-    assert hcl2.eval(hcl2.loads('a = b?c:d'), {'b': True, 'c': 1, 'd': 2}) == {'a': 1}
-    assert hcl2.eval(hcl2.loads('a = b?c:d'), {'b': False, 'c': 1, 'd': 2}) == {'a': 2}
+    assert hcl2.evaluate(hcl2.loads('a = b?c:d'), {'b': True, 'c': 1, 'd': 2}) == {'a': 1}
+    assert hcl2.evaluate(hcl2.loads('a = b?c:d'), {'b': False, 'c': 1, 'd': 2}) == {'a': 2}
 
-    assert hcl2.eval(hcl2.loads('a = lower(b)'), {'b': 'X'}) == {'a': 'x'}
-    assert hcl2.eval(hcl2.loads('a = upper(b)'), {'b': 'x'}) == {'a': 'X'}
-    assert hcl2.eval(hcl2.loads('a = float(b)'), {'b': 1}) == {'a': 1.0}
-    assert hcl2.eval(hcl2.loads('a = int(b)'), {'b': 1.0}) == {'a': 1}
-    assert hcl2.eval(hcl2.loads('a = str(b)'), {'b': 1.0}) == {'a': '1.0'}
-    assert hcl2.eval(hcl2.loads('a = ceil(b)'), {'b': 1.9, 'func': {'ceil': ceil}}) == {'a': 2.0}
-    # assert hcl2.eval(hcl2.loads('a = list($itertools:chain.from_iterable(b))'), {
+    assert hcl2.evaluate(hcl2.loads('a = lower(b)'), {'b': 'X'}) == {'a': 'x'}
+    assert hcl2.evaluate(hcl2.loads('a = upper(b)'), {'b': 'x'}) == {'a': 'X'}
+    assert hcl2.evaluate(hcl2.loads('a = float(b)'), {'b': 1}) == {'a': 1.0}
+    assert hcl2.evaluate(hcl2.loads('a = int(b)'), {'b': 1.0}) == {'a': 1}
+    assert hcl2.evaluate(hcl2.loads('a = str(b)'), {'b': 1.0}) == {'a': '1.0'}
+    assert hcl2.evaluate(hcl2.loads('a = ceil(b)'), {'b': 1.9, 'func': {'ceil': ceil}}) == {'a': 2.0}
+    # assert hcl2.evaluate(hcl2.loads('a = list($itertools:chain.from_iterable(b))'), {
         # 'b': ['ABC', 'DEF']
         # }) == {'a': ['A', 'B', 'C', 'D', 'E', 'F']}
-    assert hcl2.eval(hcl2.loads('a = datetime(year, month, day)'), {
+    assert hcl2.evaluate(hcl2.loads('a = datetime(year, month, day)'), {
         'year': 1989, 'month': 6, 'day': 4,
         'func': {'datetime': datetime},
     }) == {'a': datetime(1989, 6, 4) }
 
-    assert hcl2.eval(hcl2.loads('a = "${x}"'), {'x': 1}) == {'a': 1}
-    assert hcl2.eval(hcl2.loads('a = "Hello, ${name}!"'), {'name': 'world'}) == {
+    assert hcl2.evaluate(hcl2.loads('a = "${x}"'), {'x': 1}) == {'a': 1}
+    assert hcl2.evaluate(hcl2.loads('a = "Hello, ${name}!"'), {'name': 'world'}) == {
         'a': "Hello, world!"
     }
-    assert hcl2.eval(hcl2.loads('a = "${"'), {}) == {'a': '${'}
-    assert hcl2.eval(hcl2.loads('a = "${}"'), {}) == {'a': '${}'}
+    assert hcl2.evaluate(hcl2.loads('a = "${"'), {}) == {'a': '${'}
+    assert hcl2.evaluate(hcl2.loads('a = "${}"'), {}) == {'a': '${}'}
     with pytest.raises(Exception):
-        assert hcl2.eval(hcl2.loads('a = "${  }"'), {}) == {'a': '${  }'}
-    assert hcl2.eval(hcl2.loads('a = "abc"'), {}) == {'a': 'abc'}
-    assert hcl2.eval(hcl2.loads('a = "${"x"}"'), {}) == {'a': 'x'}
-    assert hcl2.eval(hcl2.loads('a = "${ "x" }"'), {}) == {'a': 'x'}
-    assert hcl2.eval(hcl2.loads('a = "${ "x}" }"'), {}) == {'a': 'x}'}
-    assert hcl2.eval(hcl2.loads('a = "${ "${x}" }"'), {'x': 'y'}) == {'a': 'y'}
-    assert hcl2.eval(hcl2.loads('a = "${ "${xyz}" }"'), {'xyz': 'y'}) == {'a': 'y'}
-    assert hcl2.eval(hcl2.loads('a = "${ upper("${x}") }"'), {'x': 'y'}) == {'a': 'Y'}
-    assert hcl2.eval(hcl2.loads('a = "${ split(",", "${x}") }"'), {'x': 'a,b'}) == {
+        assert hcl2.evaluate(hcl2.loads('a = "${  }"'), {}) == {'a': '${  }'}
+    assert hcl2.evaluate(hcl2.loads('a = "abc"'), {}) == {'a': 'abc'}
+    assert hcl2.evaluate(hcl2.loads('a = "${"x"}"'), {}) == {'a': 'x'}
+    assert hcl2.evaluate(hcl2.loads('a = "${ "x" }"'), {}) == {'a': 'x'}
+    assert hcl2.evaluate(hcl2.loads('a = "${ "x}" }"'), {}) == {'a': 'x}'}
+    assert hcl2.evaluate(hcl2.loads('a = "${ "${x}" }"'), {'x': 'y'}) == {'a': 'y'}
+    assert hcl2.evaluate(hcl2.loads('a = "${ "${xyz}" }"'), {'xyz': 'y'}) == {'a': 'y'}
+    assert hcl2.evaluate(hcl2.loads('a = "${ upper("${x}") }"'), {'x': 'y'}) == {'a': 'Y'}
+    assert hcl2.evaluate(hcl2.loads('a = "${ split(",", "${x}") }"'), {'x': 'a,b'}) == {
         'a': ['a', 'b'],
     }
-    assert hcl2.eval(hcl2.loads('a = "${ join(" ", concat(["echo"], [for x in xs: x])) }"'), {'xs': ['a', 'b']}) == {
+    assert hcl2.evaluate(hcl2.loads('a = "${ join(" ", concat(["echo"], [for x in xs: x])) }"'), {'xs': ['a', 'b']}) == {
         'a': "echo a b"
     }
-    assert hcl2.eval(hcl2.loads('a = "${ [for x in split(",", "${x}"): x if x != "a"] }"'), {'x': 'a,b,c'}) == {
+    assert hcl2.evaluate(hcl2.loads('a = "${ [for x in split(",", "${x}"): x if x != "a"] }"'), {'x': 'a,b,c'}) == {
         'a': ['b', 'c'],
     }
-    assert hcl2.eval(hcl2.loads('task "${sth}" {}'), {'sth': "mytask"}) == {
+    assert hcl2.evaluate(hcl2.loads('task "${sth}" {}'), {'sth': "mytask"}) == {
         "task": [{"${sth}": {}}]
     }
-    assert hcl2.eval(hcl2.loads('task "${sth}" { a = "${sth}" }'), {'sth': "mytask"}) == {
+    assert hcl2.evaluate(hcl2.loads('task "${sth}" { a = "${sth}" }'), {'sth': "mytask"}) == {
         "task": [{"${sth}": { "a": "mytask"}}]
     }
 
-    assert hcl2.eval(hcl2.loads('a = todatetime("2020-01-01T00:00:00Z")'), {}) == {
+    assert hcl2.evaluate(hcl2.loads('a = todatetime("2020-01-01T00:00:00Z")'), {}) == {
         'a': datetime(2020, 1, 1, 0, 0, 0, tzinfo=timezone.utc),
     }
-    assert hcl2.eval(hcl2.loads('a = datetime(2020, 1, 1, 0, 0, 0)'), {}) == {
+    assert hcl2.evaluate(hcl2.loads('a = datetime(2020, 1, 1, 0, 0, 0)'), {}) == {
         'a': datetime(2020, 1, 1, 0, 0, 0),
     }
-    assert hcl2.eval(hcl2.loads('a = datetime(2020, 1, 1)'), {}) == {
+    assert hcl2.evaluate(hcl2.loads('a = datetime(2020, 1, 1)'), {}) == {
         'a': datetime(2020, 1, 1, 0, 0, 0),
     }
 
-    assert hcl2.eval(hcl2.loads('a = call(datetime(2020, 1, 1, 0, 0, 0), "isoformat", [], {})'), {}) == {
+    assert hcl2.evaluate(hcl2.loads('a = call(datetime(2020, 1, 1, 0, 0, 0), "isoformat", [], {})'), {}) == {
         'a': '2020-01-01T00:00:00'
     }
-    assert hcl2.eval(hcl2.loads('a = call("xyz.abc", "replace", ["abc", "ABC"], {})'), {}) == {
+    assert hcl2.evaluate(hcl2.loads('a = call("xyz.abc", "replace", ["abc", "ABC"], {})'), {}) == {
         'a': "xyz.ABC"
     }
