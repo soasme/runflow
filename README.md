@@ -18,7 +18,7 @@
   </a>
 </p>
 
-![Logo](docs/.vuepress/logo.svg)
+![Logo](docs/.vuepress/public/logo.svg)
 
 ## What Runflow is?
 
