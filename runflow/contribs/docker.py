@@ -1,13 +1,11 @@
-import sys
-import asyncio
-
 try:
     import docker
 except ImportError:
-    print("Please install Python package `docker` to use task of type `docker`.")
+    print("Please install Python package `docker` to use `docker_run` task.")
     docker = None
 
 from runflow.utils import to_thread
+
 
 class DockerRunTask:
 
