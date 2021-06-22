@@ -66,6 +66,7 @@ The following arguments are supported:
   * [Local FileSystem](#local-filesystem)
   * [Git FileSystem](#git-filesystem)
   * [GitHub FileSystem](#github-filesystem)
+  * [Zip FileSystem](#zip-filesystem)
   * More documentations for the other filesystems are on the way. :smile:
 
 ### Local FileSystem
@@ -153,7 +154,7 @@ For example, this flow reads "requirements-dev.txt" from the git repo.
 
 ::: details Click me to view the run output
 Run:
-```
+```bash
 $ pip install pygit2
 
 $ runflow run examples/file_read_from_git.hcl
@@ -165,5 +166,42 @@ twine
 pytest
 pytest-cov
 [2021-06-22 16:15:01,129] "task.file_write.this" is successful.
+```
+:::
+
+### Zip FileSystem
+
+This filesystem allows reading content from a zip archive.
+
+* `protocol` - (Required, str) `"zip"`.
+* `fo` - (Required, str) The file object that contains zip.
+* `mode` - (Optional, str) The file open mode. Defaults to `"r"`. Currently, only `"r"` is accepted.
+
+For example, this flow read the content of file "hello.hcl" in zip archive "hello.hcl.zip".
+
+<<< @/examples/file_read_from_zip.hcl
+
+::: details Click me to view the run output
+Run:
+
+```bash
+$ runflow run examples/file_read_from_zip.hcl
+[2021-06-22 21:28:15,591] "task.file_read.this" is started.
+[2021-06-22 21:28:15,592] "task.file_read.this" is successful.
+[2021-06-22 21:28:15,592] "task.file_write.this" is started.
+# File: hello_world.hcl
+
+# This declares a flow as "hello_world".
+# There can only be only one flow declaration per flow file.
+flow "hello_world" {
+
+  # A task defines what should be done on the host.
+  # In this example, we use "task_run" to run an echo command.
+  task "bash_run" "echo" {
+    command = "echo 'hello world'"
+  }
+
+}
+[2021-06-22 21:28:15,592] "task.file_write.this" is successful.
 ```
 :::
