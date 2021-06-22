@@ -2,9 +2,11 @@ import sys
 import logging
 import argparse
 
+
 def cli_abort(message):
     print(message, file=sys.stderr)
     exit(1)
+
 
 def cli_parser():
     parser = argparse.ArgumentParser(
@@ -23,12 +25,14 @@ def cli_parser():
     run_parser = subparsers.add_parser('run', help='Run a Runflow spec file')
     run_parser.add_argument('specfile', help='Path to a Runflow spec file')
     run_parser.add_argument('--var', dest='vars', action='append',
-                        help='Provide variables for a Runflow job run')
+                            help='Provide variables for a Runflow job run')
     return parser
+
 
 def cli_parser_var(var):
     key, value = var.split('=')
     return key.strip(), value.strip()
+
 
 def cli_subcommand_run(args):
     vars = []
@@ -39,7 +43,6 @@ def cli_subcommand_run(args):
             cli_abort(f"Invalid --var option: {var}")
 
     from .core import run
-    from .utils import import_module
 
     if args.specfile.endswith('.hcl'):
         run(path=args.specfile, vars=dict(vars))
@@ -47,6 +50,7 @@ def cli_subcommand_run(args):
         run(source=sys.stdin.read(), vars=dict(vars))
     else:
         run(module=args.specfile, vars=dict(vars))
+
 
 def cli(argv=None):
     parser = cli_parser()
