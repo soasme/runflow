@@ -6,6 +6,12 @@ def test_cli_run_module(tmpdir, capsys):
     out, err = capsys.readouterr()
     assert out == 'hello world\n'
 
+def test_cli_print_help(capsys):
+    cli([])
+    out, err = capsys.readouterr()
+    assert 'runflow' in out
+
+
 def test_cli(tmpdir):
     flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
@@ -33,4 +39,5 @@ flow "hello-world" {
     """)
 
     with pytest.raises(SystemExit):
-        cli(['--var', f'out-2', str(flow)])
+        cli(['run', '--var', f'out-2', str(flow)])
+
