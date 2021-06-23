@@ -8,7 +8,7 @@ import importlib
 def run_async(coro):
     """Wrap async function as sync call."""
     if sys.version_info[0] == 3 and sys.version_info[1] < 7:
-        loop = asyncio.get_running_loop()
+        loop = asyncio.get_event_loop()
         loop.run_until_complete(coro)
         return
     asyncio.run(coro)
