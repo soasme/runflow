@@ -1,4 +1,4 @@
-from runflow.core import load_flow
+from runflow import load_flow
 
 
 class FlowRunTask:
