@@ -1,2 +1,2 @@
 [MESSAGES CONTROL]
-disable=unused-argument
+disable=unused-argument,redefined-builtin,too-few-public-methods

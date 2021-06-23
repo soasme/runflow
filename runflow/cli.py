@@ -6,6 +6,7 @@ import argparse
 
 from .run import runflow
 
+
 def cli_abort(message):
     """Print abort message."""
     print(message, file=sys.stderr)
