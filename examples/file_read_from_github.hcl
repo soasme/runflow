@@ -11,7 +11,7 @@ flow "file_read_from_github" {
       # Set fs.org to the github organization
       org = "soasme"
 
-      # Set fs.repo to the github repo
+      # Set fs.repo to the github repository
       repo = "runflow"
 
       # Set fs.sha to a valid Git sha, such as hash, tag, branch, HEAD, etc.
@@ -20,6 +20,7 @@ flow "file_read_from_github" {
     }
   }
 
+  # Output to the console
   task "file_write" "this" {
     filename = "/dev/stdout"
     content = task.file_read.this.content

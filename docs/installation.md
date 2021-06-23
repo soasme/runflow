@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # Installing Runflow
 
 ## Python Version
