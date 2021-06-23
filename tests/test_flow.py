@@ -356,7 +356,7 @@ flow "hello-world" {
         runflow.runflow(flow, vars={'out': str(out)})
 
 def test_render_template(capsys):
-    runflow.runflow(module='examples.template:flow', vars={'global': 'test_render_template'})
+    runflow.runflow(module='examples.template:flow', vars={'global': 42})
     out, _ = capsys.readouterr()
     assert out == f'42\n42\n42\n42\n42\n'
 
