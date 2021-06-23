@@ -17,6 +17,7 @@ from .errors import (
     RunflowTaskTypeError, RunflowTaskError, RunflowAcyclicTasksError,
 )
 from .run import load_flow, runflow
+from . import autoloader # noqa
 
 
 if __name__ == '__main__':

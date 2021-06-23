@@ -1,5 +1,6 @@
 """Runflow errors."""
 
+
 class RunflowError(Exception):
     """Base Runflow error."""
 

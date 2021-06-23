@@ -111,7 +111,7 @@ class Task:
                 else await utils.to_thread(task.run, context)
             )
             logger.info('"task.%s.%s" is successful.', self.type, self.name)
-        except Exception as err: # pylint: disable=broad-except
+        except Exception as err:  # pylint: disable=broad-except
             task_result.exception = err
             logger.info('"task.%s.%s" is failed.', self.type, self.name)
             traceback.print_exc()
