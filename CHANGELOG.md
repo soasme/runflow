@@ -2,7 +2,17 @@
 
 ## Not Yet Released
 
-[Code Changes](https://github.com/soasme/runflow/compare/v0.5.0..HEAD).
+[Code Changes](https://github.com/soasme/runflow/compare/v0.5.1..HEAD).
+
+## v0.5.1, 23 Jun, 2021
+
+[Code Changes](https://github.com/soasme/runflow/compare/v0.5.0..v0.5.1).
+
+* Code Quality: Auto-format code via black. [#33](https://github.com/soasme/runflow/pull/33).
+* Code Quality: Passed pylint & flake8 checks. [#28](https://github.com/soasme/runflow/pull/28), [#32](https://github.com/soasme/runflow/pull/32).
+* Code Quality: Removed all circular imports. [#31](https://github.com/soasme/runflow/pull/31).
+* Documentation: Added argument reference to all task types. [#30](https://github.com/soasme/runflow/pull/30).
+* Enhancement: Task `file_read` & `file_write` can now read file from local, FTP, zip, Git, GitHub. [#29](https://github.com/soasme/runflow/pull/29).
 
 ## v0.5.0, 21 Jun, 2021
 
