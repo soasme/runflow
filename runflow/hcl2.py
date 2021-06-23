@@ -14,7 +14,6 @@ Some reasons not using python-hcl2:
 
 * I want something like `$datetime:datetime(year, month, date)` in HCL2.
 """
-# pylint: disable=missing-function-docstring,missing-class-docstring
 
 import re
 import json
