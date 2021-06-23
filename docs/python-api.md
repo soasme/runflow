@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # Python API
 
 ## Run Flow Using `runflow`

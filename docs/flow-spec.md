@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # Flow Specification
 
 The Runflow specification, or Runflow spec, defines the schema for
