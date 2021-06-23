@@ -31,9 +31,9 @@ class BashRunTask:
                 stdout=stdout,
                 stderr=stderr,
             )
-        else:
-            raise RunflowTaskError(dict(
-                returncode=proc.returncode,
-                stdout=stdout,
-                stderr=stderr,
-            ))
+
+        raise RunflowTaskError(dict(
+            returncode=proc.returncode,
+            stdout=stdout,
+            stderr=stderr,
+        ))
