@@ -1,7 +1,5 @@
 """Run a flow spec."""
 
-import asyncio
-
 from .core import Flow
 from .utils import import_module, run_async
 
