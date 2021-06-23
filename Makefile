@@ -3,3 +3,4 @@ test:
 
 lint:
 	python3 -mflake8 runflow
+	python3 -mpylint runflow
