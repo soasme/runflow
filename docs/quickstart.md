@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # Quickstart
 
 Assume you have followed [Installation](installation.md) to set your project up and
@@ -119,26 +123,6 @@ hello bbd43baa501af05103cdd1ea2e6d9ffa
 [2021-06-07 16:11:56,806] Task "echo" is successful.
 ```
 
-## Concepts
+## Next to Read
 
-Cool, we have walk through some examples and have first-hand experience on how Runflow is used.
-
-Let's take a break and refresh some concepts.
-
-### Flow
-
-A flow is a series of tasks that are performed in order.
-
-Runflow has a dependency graph of your flow and guarantees the tasks are run when the dependent tasks runs are successful.
-
-### Task
-
-A task is actual work.
-
-In general, each task is performing a logical step in your flow.
-
-### Variable
-
-A variable is a configurable value.
-
-A flow may accept some variables.
+* [Concepts](concepts.md)

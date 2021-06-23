@@ -5,7 +5,7 @@
 flow "hello_world" {
 
   # A task defines what should be done on the host.
-  # In this example, we use "task_run" to run an echo command.
+  # In this example, we use "bash_run" to run an echo command.
   task "bash_run" "echo" {
     command = "echo 'hello world'"
   }
