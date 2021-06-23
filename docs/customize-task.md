@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # Develop Your Own Task
 
 It's impossible Runflow can provide all kinds of tasks you need.

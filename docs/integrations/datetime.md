@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # Handle DateTime Objects
 
 ## Built-in Function `datetime`

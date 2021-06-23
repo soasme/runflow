@@ -1,16 +1,16 @@
-import asyncio
+"""Run a flow spec."""
 
 from .core import Flow
-from .utils import import_module
+from .utils import import_module, run_async
 
 
 def load_flow(path=None, source=None, module=None, flow=None):
+    """Load a flow object."""
     if path:
         _flow = Flow.from_specfile(path)
     elif source:
         _flow = Flow.from_spec(source)
     elif module:
-        from . import autoloader # noqa
         _flow = import_module(module)
     elif flow:
         _flow = flow
@@ -20,7 +20,8 @@ def load_flow(path=None, source=None, module=None, flow=None):
 
 
 def runflow(path=None, source=None, module=None, flow=None, vars=None):
+    """Run a flow object."""
     _flow = load_flow(path=path, source=source, module=module, flow=flow)
     assert _flow and isinstance(_flow, Flow)
     coro = _flow.run(vars or {})
-    asyncio.run(coro)
+    run_async(coro)

@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # Integrate With APScheduler
 
 Runflow does not come with a default scheduler, but it's easy to be
