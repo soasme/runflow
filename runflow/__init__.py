@@ -1,3 +1,6 @@
+"""
+runflow - a tool to define an run your workflows.
+"""
 __all__ = [
     'Flow', 'Task', 'runflow',
     'cli',
