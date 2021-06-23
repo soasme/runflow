@@ -25,7 +25,7 @@ import operator
 from datetime import datetime
 from functools import singledispatch
 from os.path import dirname
-from typing import List, Dict, Any, Union
+from typing import List, Dict, Any, Set, Union
 
 from lark import Lark, Discard, Transformer
 from dateutil.parser import parse as parse_datetime
@@ -639,6 +639,33 @@ def _(iterable, id_count=1):
 def _(iterable, id_count=1):
     for element in iterable:
         yield element if id_count == 1 else (element, element)
+
+
+@singledispatch
+def resolve_deps(value: Any, deps: Set):
+    pass
+
+
+@resolve_deps.register
+def _(value: JoinedStr, deps: Set):
+    for element in value.elements:
+        if not isinstance(element, GetAttr):
+            continue
+        task_keys = list(element.attr_chain)
+        if task_keys and task_keys[0] == 'task' and len(task_keys) > 3:
+            deps.add('.'.join(task_keys[:3]))
+
+
+@resolve_deps.register
+def _(value: list, deps: Set):
+    for _value in value:
+        resolve_deps(_value, deps)
+
+
+@resolve_deps.register
+def _(value: dict, deps: Set):
+    for _value in value.values():
+        resolve_deps(_value, deps)
 
 
 @singledispatch
