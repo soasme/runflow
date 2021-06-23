@@ -1,22 +1,24 @@
+"""Runflow errors."""
+
 class RunflowError(Exception):
-    pass
+    """Base Runflow error."""
 
 
 class RunflowSyntaxError(RunflowError):
-    pass
+    """The flow spec has a syntax error."""
 
 
 class RunflowReferenceError(RunflowError):
-    pass
+    """The variable is not declared in the flow spec."""
 
 
 class RunflowTaskTypeError(RunflowError):
-    pass
+    """The task type is not registered."""
 
 
 class RunflowTaskError(RunflowError):
-    pass
+    """The task execution is failed."""
 
 
 class RunflowAcyclicTasksError(RunflowError):
-    pass
+    """The task has circular dependency."""
