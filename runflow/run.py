@@ -15,7 +15,7 @@ def load_flow(path=None, source=None, module=None, flow=None):
     elif flow:
         _flow = flow
     else:
-        raise ValueError('Must provide one of path, source, module, flow')
+        raise ValueError("Must provide one of path, source, module, flow")
     return _flow
 
 

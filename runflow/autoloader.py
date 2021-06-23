@@ -7,15 +7,14 @@ you can get the flow object by running the statements like below::
     >>> import runflow.autoloader
     >>> from mypackage.my_flow import flow
 """
-import sys
 import os
-from importlib.abc import MetaPathFinder, Loader
+import sys
+from importlib.abc import Loader, MetaPathFinder
 from importlib.util import spec_from_loader
 
 from .core import Flow
 
-
-EXT_RUNFLOW = '.hcl'
+EXT_RUNFLOW = ".hcl"
 
 
 __all__ = []
@@ -53,7 +52,7 @@ class FlowMetaPathFinder(MetaPathFinder):
 
     def find_spec(self, fullname, path, target=None):
         """Find import-related information used to load a Flow module."""
-        mod_name = fullname.split('.')[-1]
+        mod_name = fullname.split(".")[-1]
         paths = path if path else [os.path.abspath(os.curdir)]
         for check_path in paths:
             full_path = os.path.join(check_path, mod_name + EXT_RUNFLOW)

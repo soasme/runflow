@@ -1,7 +1,9 @@
 import json
 import sqlite3
-import pytest
+
 import docker
+import pytest
+
 import runflow
 
 

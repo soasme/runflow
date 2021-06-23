@@ -1,7 +1,9 @@
 import os
 
 import pytest
+
 import runflow
+
 
 def test_one_flow_is_required(tmpdir):
     flow = tmpdir / "test.hcl"

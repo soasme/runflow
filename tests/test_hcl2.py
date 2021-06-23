@@ -1,9 +1,11 @@
-from math import ceil
-from datetime import datetime, timezone
 import json
+from datetime import datetime, timezone
+from math import ceil
+
 import pytest
 
 from runflow import hcl2
+
 
 def test_module():
     assert isinstance(hcl2.loads('a=1'), hcl2.Module)

@@ -15,32 +15,28 @@ Some reasons not using python-hcl2:
 * I want something like `$datetime:datetime(year, month, date)` in HCL2.
 """
 
-import re
-import json
-import os
-import textwrap
 import itertools
+import json
 import operator
+import os
+import re
+import textwrap
 from datetime import datetime
 from functools import singledispatch
 from os.path import dirname
-from typing import List, Dict, Any, Set, Union
+from typing import Any, Dict, List, Set, Union
 
-from lark import Lark, Discard, Transformer
 from dateutil.parser import parse as parse_datetime
+from lark import Discard, Lark, Transformer
 
-from runflow.utils import import_module
 from runflow.errors import RunflowReferenceError
-
+from runflow.utils import import_module
 
 HEREDOC_PATTERN = re.compile(
-    r'<<-?([a-zA-Z][a-zA-Z0-9._-]+)\n((.|\n)*?)\n\s*\1',
-    re.S
+    r"<<-?([a-zA-Z][a-zA-Z0-9._-]+)\n((.|\n)*?)\n\s*\1", re.S
 )
 
-INTERPOLATION = re.compile(
-    r'\${ *((?:"(?:[^"\\]|\\.)*"|[^}"]+)+) *}'
-)
+INTERPOLATION = re.compile(r'\${ *((?:"(?:[^"\\]|\\.)*"|[^}"]+)+) *}')
 
 
 def parse_template(string):
@@ -54,7 +50,7 @@ def parse_template(string):
             result.append(StringLit(string[previous:start]))
 
         expr = interpolation_match.group(1)
-        result.append(loads(expr, start='eval'))
+        result.append(loads(expr, start="eval"))
         previous = end
 
     if not result:
@@ -75,19 +71,17 @@ class StringLit(str):
 
 
 class JoinedStr:
-
     def __init__(self, elements):
         self.elements = elements
 
     def __repr__(self):
-        return '<JoinedStr>'
+        return "<JoinedStr>"
 
     def __eq__(self, o):
         return isinstance(o, JoinedStr) and o.elements == self.elements
 
 
 class Attribute(dict):
-
     def __init__(self, key, value):
         self.key = key
         self.value = value
@@ -100,7 +94,6 @@ class Attribute(dict):
 
 
 class Block(dict):
-
     def merge_to(self, res):
         res = dict(res)
         for key, value in self.items():
@@ -123,11 +116,10 @@ class Block(dict):
 
 
 class Interpolation(str):
-
     def __init__(self, expr):
         super().__init__()
         self.expr = expr
-        self.value = '${%s}' % expr
+        self.value = "${%s}" % expr
 
     def __str__(self):
         return self.value
@@ -144,11 +136,10 @@ class Identifier(str):
 
 
 class GetIndex:
-
     def __init__(self, expr, index):
         self.expr = expr
         self.index = index
-        self.value = '%s[%s]' % (self.expr, self.index)
+        self.value = "%s[%s]" % (self.expr, self.index)
 
     def __str__(self):
         return self.value
@@ -171,11 +162,10 @@ class GetIndex:
 
 
 class GetAttr:
-
     def __init__(self, expr, attr):
         self.expr = expr
         self.attr = attr
-        self.value = '%s.%s' % (self.expr, self.attr)
+        self.value = "%s.%s" % (self.expr, self.attr)
 
     def __str__(self):
         return self.value
@@ -215,15 +205,14 @@ def _(ast: GetIndex, chain):
 
 
 class Splat:
-
     def __init__(self, array, elements):
         self.array = array
         self.elements = elements
 
     def __repr__(self):
-        return '%s.*.%s' % (
+        return "%s.*.%s" % (
             self.array,
-            '.'.join([str(e) for e in self.elements])
+            ".".join([str(e) for e in self.elements]),
         )
 
     def __eq__(self, o):
@@ -235,13 +224,12 @@ class Splat:
 
 
 class Call:
-
     def __init__(self, func_name, args):
         self.func_name = func_name
         self.args = args
 
     def __repr__(self):
-        return '%s(%s)' % (self.func_name, ','.join(str(a) for a in self.args))
+        return "%s(%s)" % (self.func_name, ",".join(str(a) for a in self.args))
 
     def __eq__(self, o):
         return (
@@ -252,14 +240,13 @@ class Call:
 
 
 class Conditional:
-
     def __init__(self, predicate, true_expr, false_expr):
         self.predicate = predicate
         self.true_expr = true_expr
         self.false_expr = false_expr
 
     def __repr__(self):
-        return '%s ? %s : %s' % (
+        return "%s ? %s : %s" % (
             self.predicate,
             self.true_expr,
             self.false_expr,
@@ -275,22 +262,17 @@ class Conditional:
 
 
 class Operation:
-
     def __init__(self, elements):
         self.elements = elements
 
     def __repr__(self):
-        return '(%s)' % (''.join([str(e) for e in self.elements]))
+        return "(%s)" % ("".join([str(e) for e in self.elements]))
 
     def __eq__(self, o):
-        return (
-            isinstance(o, Operation)
-            and self.elements == o.elements
-        )
+        return isinstance(o, Operation) and self.elements == o.elements
 
 
 class ListExpr:
-
     def __init__(self, element_id, array, element, condition):
         self.element_id = element_id
         self.array = array
@@ -298,15 +280,15 @@ class ListExpr:
         self.condition = condition
 
     def __repr__(self):
-        return '[for %s in %s: %s%s]' % (
+        return "[for %s in %s: %s%s]" % (
             (
-                ','.join(self.element_id)
+                ",".join(self.element_id)
                 if isinstance(self.element_id, tuple)
                 else self.element_id
             ),
             self.array,
             self.element,
-            f' if {self.condition}' if self.condition else ''
+            f" if {self.condition}" if self.condition else "",
         )
 
     def __eq__(self, o):
@@ -321,7 +303,6 @@ class ListExpr:
 
 # pylint: disable=too-many-arguments
 class DictExpr:
-
     def __init__(self, element_id, array, key, value, condition):
         self.array = array
         self.element_id = element_id
@@ -330,16 +311,16 @@ class DictExpr:
         self.condition = condition
 
     def __repr__(self):
-        return '{for %s in %s: %s => %s%s}' % (
+        return "{for %s in %s: %s => %s%s}" % (
             (
-                ','.join(self.element_id)
+                ",".join(self.element_id)
                 if isinstance(self.element_id, tuple)
                 else self.element_id
             ),
             self.array,
             self.key,
             self.value,
-            f' if {self.condition}' if self.condition else ''
+            f" if {self.condition}" if self.condition else "",
         )
 
     def __eq__(self, o):
@@ -354,12 +335,11 @@ class DictExpr:
 
 
 class Not:
-
     def __init__(self, expr):
         self.expr = expr
 
     def __repr__(self):
-        return '(!%s)' % self.expr
+        return "(!%s)" % self.expr
 
     def __eq__(self, o):
         return isinstance(o, Not) and self.expr == o.expr
@@ -367,14 +347,12 @@ class Not:
 
 def strip_new_line_tokens(args: List) -> List:
     return [
-        arg for arg in args
-        if arg != "\n" and not isinstance(arg, Discard)
+        arg for arg in args if arg != "\n" and not isinstance(arg, Discard)
     ]
 
 
 # pylint: disable=too-many-public-methods,no-self-use
 class AstTransformer(Transformer):
-
     def module(self, args: List) -> Dict:
         args = strip_new_line_tokens(args)
         return Module(args[0])
@@ -451,10 +429,21 @@ class AstTransformer(Transformer):
         return result
 
     def to_string_dollar(self, value: Any) -> Any:
-        if isinstance(value, (
-                GetAttr, GetIndex, Splat, Call, Conditional, Operation,
-                ListExpr, DictExpr, Not, Identifier,
-        )):
+        if isinstance(
+            value,
+            (
+                GetAttr,
+                GetIndex,
+                Splat,
+                Call,
+                Conditional,
+                Operation,
+                ListExpr,
+                DictExpr,
+                Not,
+                Identifier,
+            ),
+        ):
             return Interpolation(value)
         if isinstance(value, str):
             if value.startswith('"') and value.endswith('"'):
@@ -555,7 +544,7 @@ class AstTransformer(Transformer):
         if len(args) == 7:
             return [(args[1], args[3]), args[5]]
 
-        raise ValueError(f'invalid for intro: {args}')
+        raise ValueError(f"invalid for intro: {args}")
 
     def for_cond(self, args: List):
         args = strip_new_line_tokens(args)
@@ -576,13 +565,13 @@ class AstTransformer(Transformer):
         return DictExpr(element_id, array, key, value, condition)
 
     def unary_op(self, args: List):
-        if args[0] == '-':
-            return Operation([0, '-', args[1]])
+        if args[0] == "-":
+            return Operation([0, "-", args[1]])
 
-        if args[0] == '!':
+        if args[0] == "!":
             return Not(args[1])
 
-        raise ValueError(f'invalid operator: {args[0]}')
+        raise ValueError(f"invalid operator: {args[0]}")
 
     def new_line_and_or_comma(self, _: List) -> Discard:
         return Discard()
@@ -597,19 +586,22 @@ class AstTransformer(Transformer):
         return value
 
 
-GRAMMAR_FILE = os.path.join(dirname(__file__), 'hcl2_grammar.lark')
+GRAMMAR_FILE = os.path.join(dirname(__file__), "hcl2_grammar.lark")
 with open(GRAMMAR_FILE) as f:
     hcl2 = Lark(
         f.read(),
         parser="lalr",
         lexer="standard",
-        start=['module', 'eval', ],
+        start=[
+            "module",
+            "eval",
+        ],
     )
 
 
-def loads(source, start='module'):
-    if start == 'module':
-        source = source + '\n'
+def loads(source, start="module"):
+    if start == "module":
+        source = source + "\n"
 
     tree = hcl2.parse(source, start=start)
     transformer = AstTransformer()
@@ -618,7 +610,7 @@ def loads(source, start='module'):
 
 @singledispatch
 def _for_iterable(iterable, id_count=1):
-    raise ValueError('invalid iterable type: {iterable}')
+    raise ValueError("invalid iterable type: {iterable}")
 
 
 @_for_iterable.register(tuple)
@@ -651,8 +643,8 @@ def _(value: JoinedStr, deps: Set):
         if not isinstance(element, GetAttr):
             continue
         task_keys = list(element.attr_chain)
-        if task_keys and task_keys[0] == 'task' and len(task_keys) > 3:
-            deps.add('.'.join(task_keys[:3]))
+        if task_keys and task_keys[0] == "task" and len(task_keys) > 3:
+            deps.add(".".join(task_keys[:3]))
 
 
 @resolve_deps.register
@@ -726,7 +718,7 @@ def _(ast: JoinedStr, env):
             result.append(str(node))
         else:
             result.append(str(evaluate(node, env)))
-    return ''.join(result)
+    return "".join(result)
 
 
 @evaluate.register
@@ -758,10 +750,13 @@ def _(ast: ListExpr, env):
         if id_count == 2:
             index_id, element_id = ast.element_id
             _index, _elem = elem
-            newenv = dict(env, **{
-                str(element_id): _elem,
-                str(index_id): _index,
-            })
+            newenv = dict(
+                env,
+                **{
+                    str(element_id): _elem,
+                    str(index_id): _index,
+                },
+            )
         else:
             newenv = dict(env, **{str(ast.element_id): elem})
         if ast.condition and not evaluate(ast.condition, newenv):
@@ -778,10 +773,13 @@ def _(ast: DictExpr, env):
         if id_count == 2:
             index_id, element_id = ast.element_id
             _index, _elem = elem
-            newenv = dict(env, **{
-                str(element_id): _elem,
-                str(index_id): _index,
-            })
+            newenv = dict(
+                env,
+                **{
+                    str(element_id): _elem,
+                    str(index_id): _index,
+                },
+            )
         else:
             newenv = dict(env, **{str(ast.element_id): elem})
         if ast.condition and not evaluate(ast.condition, newenv):
@@ -806,31 +804,31 @@ def _(ast: Conditional, env):
 def _(ast: Call, env):
     args = evaluate(ast.args, env)
     func_name = str(ast.func_name)
-    if ':' in func_name:
+    if ":" in func_name:
         func = import_module(func_name)
     elif func_name in __builtins__:
         func = __builtins__[func_name]
     elif func_name in FUNCS:
         func = FUNCS[func_name]
-    elif func_name in env.get('func'):
-        func = env['func'][func_name]
+    elif func_name in env.get("func"):
+        func = env["func"][func_name]
     else:
-        raise NameError(f'function {ast.func_name} is not defined')
+        raise NameError(f"function {ast.func_name} is not defined")
     return func(*args)
 
 
 OPERATORS = {
-    '+': operator.add,
-    '-': operator.sub,
-    '*': operator.mul,
-    '/': operator.truediv,
-    '%': operator.mod,
-    '<': operator.lt,
-    '<=': operator.le,
-    '>': operator.gt,
-    '>=': operator.ge,
-    '==': operator.eq,
-    '!=': operator.ne,
+    "+": operator.add,
+    "-": operator.sub,
+    "*": operator.mul,
+    "/": operator.truediv,
+    "%": operator.mod,
+    "<": operator.lt,
+    "<=": operator.le,
+    ">": operator.gt,
+    ">=": operator.ge,
+    "==": operator.eq,
+    "!=": operator.ne,
 }
 
 
@@ -845,12 +843,12 @@ def _(ast: Operation, env):
             _operator = elem
         elif _operator in OPERATORS:
             result = OPERATORS[_operator](result, evaluate(elem, env))
-        elif _operator == '||':
+        elif _operator == "||":
             result = result or evaluate(elem, env)
-        elif _operator == '&&':
+        elif _operator == "&&":
             result = result and evaluate(elem, env)
         else:
-            raise ValueError(f'invalid operator: {_operator}')
+            raise ValueError(f"invalid operator: {_operator}")
 
     return result
 
@@ -866,15 +864,15 @@ def _(ast: dict, env):
 
 
 FUNCS = {
-    'lower': lambda s: s.lower(),
-    'upper': lambda s: s.upper(),
-    'split': lambda sep, s: s.split(sep),
-    'join': lambda sep, s: sep.join(s),
-    'tojson': json.dumps,
-    'concat': lambda *s: list(itertools.chain(*s)),
-    'datetime': datetime,
-    'todatetime': parse_datetime,
-    'call': lambda obj, meth, args=None, kwargs=None: (
+    "lower": lambda s: s.lower(),
+    "upper": lambda s: s.upper(),
+    "split": lambda sep, s: s.split(sep),
+    "join": lambda sep, s: sep.join(s),
+    "tojson": json.dumps,
+    "concat": lambda *s: list(itertools.chain(*s)),
+    "datetime": datetime,
+    "todatetime": parse_datetime,
+    "call": lambda obj, meth, args=None, kwargs=None: (
         getattr(obj, meth)(*(args or []), **(kwargs or {}))
     ),
 }

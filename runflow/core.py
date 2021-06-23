@@ -1,26 +1,28 @@
 """Core module for runflow."""
 
-import inspect
-import traceback
-import logging
 import enum
+import inspect
+import logging
+import traceback
 
 import lark
 import networkx
 from decouple import config
 
-from .errors import (
-    RunflowSyntaxError, RunflowTaskTypeError, RunflowReferenceError,
-    RunflowAcyclicTasksError,
-)
 from . import hcl2, utils
-
+from .errors import (
+    RunflowAcyclicTasksError,
+    RunflowReferenceError,
+    RunflowSyntaxError,
+    RunflowTaskTypeError,
+)
 
 logger = logging.getLogger(__name__)
 
 
 class TaskStatus(enum.Enum):
     """Task execution status."""
+
     PENDING = enum.auto()
     SUCCESS = enum.auto()
     FAILED = enum.auto()
@@ -39,7 +41,7 @@ class TaskResult:
         """Get task result."""
         if self._exception:
             raise ValueError(
-                'Task has no result due to a failed run.'
+                "Task has no result due to a failed run."
             ) from self._exception
         return self._result
 
@@ -53,7 +55,7 @@ class TaskResult:
     def exception(self):
         """Get task exception."""
         if self._result:
-            raise ValueError('Task has no exception due to a successful run.')
+            raise ValueError("Task has no exception due to a successful run.")
         return self._exception
 
     @exception.setter
@@ -74,9 +76,9 @@ class Task:
 
     def __repr__(self):
         return (
-            f'Task(type={self.type}, '
-            f'name={self.name}, '
-            f'payload={self.payload})'
+            f"Task(type={self.type}, "
+            f"name={self.name}, "
+            f"payload={self.payload})"
         )
 
     def __hash__(self):
@@ -88,10 +90,10 @@ class Task:
     async def run(self, context):
         """Run a task."""
         if self.type == "hcl2_template":
-            context = dict(context, **hcl2.evaluate(
-                self.payload.get('context', {}),
-                context
-            ))
+            context = dict(
+                context,
+                **hcl2.evaluate(self.payload.get("context", {}), context),
+            )
 
         payload = hcl2.evaluate(self.payload, context)
 
@@ -99,7 +101,7 @@ class Task:
 
         _payload = dict(payload)
         # this is handled by runflow, not by runner.
-        _payload.pop('depends_on', None)
+        _payload.pop("depends_on", None)
 
         task = self.runner(**_payload)
 
@@ -131,7 +133,7 @@ class SequentialRunner:
             if not runnable:
                 logger.info(
                     '"%s" is canceled due to previous task failed run.',
-                    f'task.{task.type}.{task.name}',
+                    f"task.{task.type}.{task.name}",
                 )
                 continue
 
@@ -140,22 +142,22 @@ class SequentialRunner:
                 runnable = False
                 continue
 
-            context['task'][task.type][task.name] = task_result.result
+            context["task"][task.type][task.name] = task_result.result
 
 
 class Flow:
     """Flow object manages the flow graph and the order of task executions."""
 
     default_tasks = {
-        'runflow.contribs.bash:BashRunTask',
-        'runflow.contribs.docker:DockerRunTask',
-        'runflow.contribs.local_file:FileReadTask',
-        'runflow.contribs.local_file:FileWriteTask',
-        'runflow.contribs.template:Hcl2TemplateTask',
-        'runflow.contribs.http:HttpRequestTask',
-        'runflow.contribs.sql:SqlExecTask',
-        'runflow.contribs.sql:SqlRowTask',
-        'runflow.contribs.flow:FlowRunTask',
+        "runflow.contribs.bash:BashRunTask",
+        "runflow.contribs.docker:DockerRunTask",
+        "runflow.contribs.local_file:FileReadTask",
+        "runflow.contribs.local_file:FileWriteTask",
+        "runflow.contribs.template:Hcl2TemplateTask",
+        "runflow.contribs.http:HttpRequestTask",
+        "runflow.contribs.sql:SqlExecTask",
+        "runflow.contribs.sql:SqlRowTask",
+        "runflow.contribs.flow:FlowRunTask",
     }
 
     def __init__(self, name, runner_cls=None):
@@ -183,10 +185,10 @@ class Flow:
         except lark.exceptions.LarkError as err:
             raise RunflowSyntaxError(str(err)) from err
 
-        assert 'flow' in flow, 'Need a flow block'
-        assert len(flow['flow']) == 1, 'Runflow spec should have only one flow'
+        assert "flow" in flow, "Need a flow block"
+        assert len(flow["flow"]) == 1, "Runflow spec should have only one flow"
 
-        flow = flow['flow'][0]
+        flow = flow["flow"][0]
         flow_name, flow_spec_body = next(iter(flow.items()))
 
         flow = cls(name=flow_name)
@@ -216,10 +218,10 @@ class Flow:
         """Load the imoprted tasks into task type namespace."""
         task_class = utils.import_module(import_string)
         task_class_name = task_class.__name__
-        assert task_class_name != 'Task' and task_class_name.endswith('Task')
+        assert task_class_name != "Task" and task_class_name.endswith("Task")
         task_type_chunks = utils.split_camelcase(task_class_name)
-        assert task_type_chunks[-1] == 'Task'
-        task_type = '_'.join(task_type_chunks[:-1]).lower()
+        assert task_type_chunks[-1] == "Task"
+        task_type = "_".join(task_type_chunks[:-1]).lower()
         self.exts[task_type] = task_class
 
     def load_default_tasks(self):
@@ -230,7 +232,7 @@ class Flow:
     def load_function(self, import_string):
         """Load the imported function to task func namespace."""
         function = utils.import_module(import_string)
-        func_name = import_string.split(':')[-1].replace('.', '_')
+        func_name = import_string.split(":")[-1].replace(".", "_")
         self.functions[func_name] = function
 
     def load_flow_tasks_from_spec(self, tasks_spec):
@@ -239,7 +241,7 @@ class Flow:
             for task_type in task_spec:
                 if task_type not in self.exts:
                     raise RunflowTaskTypeError(
-                        f'unknown task type {task_type}'
+                        f"unknown task type {task_type}"
                     )
 
                 task_class = self.exts[task_type]
@@ -252,14 +254,14 @@ class Flow:
         """Find task by a reference like `task.TASK_TYPE.TASK_NAME`."""
         if not isinstance(depends_on, hcl2.Interpolation):
             raise RunflowSyntaxError(
-                f"Task parameter \"depends_on\" should "
+                f'Task parameter "depends_on" should '
                 f"refer to a valid task: {depends_on}"
             )
 
         task_key = depends_on.expr.attr_chain
-        if task_key[0] != 'task':
+        if task_key[0] != "task":
             raise RunflowSyntaxError(
-                "Task parameter \"depends_on\" should refer "
+                'Task parameter "depends_on" should refer '
                 f"to a valid task: {depends_on}"
             )
 
@@ -269,33 +271,37 @@ class Flow:
         if task_dependency.type != task_key[1]:
             raise RunflowSyntaxError(
                 f'Task parameter "depends_on" {depends_on}, '
-                f'but task {task_key[2]} is of type {task_key[1]}'
+                f"but task {task_key[2]} is of type {task_key[1]}"
             )
 
         return task_dependency
 
     def load_flow_explicit_tasks_dependencies(self, task):
         """Find task explicit dependencies."""
-        for depends_on in task.payload.get('depends_on', []):
+        for depends_on in task.payload.get("depends_on", []):
             yield self.load_task_by_task_reference(depends_on)
 
     def load_flow_implicit_tasks_dependencies(self, task):
         """Find task implicit dependencies."""
         deps_set = set()
         for key, value in task.payload.items():
-            if key == 'depends_on':
+            if key == "depends_on":
                 continue
             hcl2.resolve_deps(value, deps_set)
         for task_key in deps_set:
-            task_key = task_key.split('.')
-            task_dependency = next((
-                t for t in self.graph.nodes
-                if t.name == task_key[2] and t.type == task_key[1]
-            ), None)
+            task_key = task_key.split(".")
+            task_dependency = next(
+                (
+                    t
+                    for t in self.graph.nodes
+                    if t.name == task_key[2] and t.type == task_key[1]
+                ),
+                None,
+            )
             if not task_dependency:
                 raise RunflowSyntaxError(
-                    f'Task depends_on {task_key} '
-                    f'but the dependent task does not exist'
+                    f"Task depends_on {task_key} "
+                    f"but the dependent task does not exist"
                 )
 
             yield task_dependency
@@ -316,10 +322,10 @@ class Flow:
         for var_spec in vars_spec:
             var_name = next(iter(var_spec.keys()))
             var_value_spec = next(iter(var_spec.values()))
-            var_default_value = var_value_spec.get('default', [])
+            var_default_value = var_value_spec.get("default", [])
             try:
                 var_value = (
-                    config(f'RUNFLOW_VAR_{var_name}', default=None)
+                    config(f"RUNFLOW_VAR_{var_name}", default=None)
                     or var_default_value
                 )
             except IndexError as err:
@@ -344,15 +350,15 @@ class Flow:
             return
 
         for ext in extensions:
-            self.load_flow_imported_tasks(ext.get('tasks', []))
-            self.load_flow_imported_functions(ext.get('functions', []))
+            self.load_flow_imported_tasks(ext.get("tasks", []))
+            self.load_flow_imported_functions(ext.get("functions", []))
 
     def load_flow_spec_body(self, spec):
         """Load the body of a flow block."""
-        self.load_flow_extensions(spec.get('import', []))
-        self.load_flow_default_vars(spec.get('variable', []))
+        self.load_flow_extensions(spec.get("import", []))
+        self.load_flow_default_vars(spec.get("variable", []))
 
-        for task in self.load_flow_tasks_from_spec(spec.get('task', [])):
+        for task in self.load_flow_tasks_from_spec(spec.get("task", [])):
             self.add_task(task)
 
         self.set_tasks_dependencies()
@@ -360,13 +366,13 @@ class Flow:
     def make_run_context(self, vars=None):
         """Prepare the context for a task run."""
         context = {
-            'var': dict(self.vars, **dict(vars or {})),
-            'task': {},
-            'func': self.functions,
+            "var": dict(self.vars, **dict(vars or {})),
+            "task": {},
+            "func": self.functions,
         }
         for task in self:
-            context['task'].setdefault(task.type, {})
-            context['task'][task.type][task.name] = task.payload
+            context["task"].setdefault(task.type, {})
+            context["task"][task.type][task.name] = task.payload
         return context
 
     async def run(self, vars=None):

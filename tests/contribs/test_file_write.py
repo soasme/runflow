@@ -1,6 +1,8 @@
-import pytest
 import docker
+import pytest
+
 import runflow
+
 
 def test_file_write(tmpdir, capsys):
     flow = tmpdir / "test.hcl"

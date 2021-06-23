@@ -1,5 +1,7 @@
 import pytest
+
 import runflow
+
 
 def test_flow_run_by_path(tmpdir, capsys):
     runflow.runflow(path='./examples/flow_by_path.hcl', vars={})

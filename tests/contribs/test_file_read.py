@@ -1,6 +1,8 @@
-import pytest
 import docker
+import pytest
+
 import runflow
+
 
 def test_file_read(capsys):
     runflow.runflow(module='examples.file_read:flow', vars={})

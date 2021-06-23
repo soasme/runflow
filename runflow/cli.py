@@ -1,8 +1,8 @@
 """Command-line interface for runflow."""
 
-import sys
-import logging
 import argparse
+import logging
+import sys
 
 from .run import runflow
 
@@ -16,28 +16,32 @@ def cli_abort(message):
 def cli_parser():
     """Parse runflow arguments."""
     parser = argparse.ArgumentParser(
-        prog='runflow',
-        description='Runflow - a lightweight workflow engine.',
+        prog="runflow",
+        description="Runflow - a lightweight workflow engine.",
     )
     parser.add_argument(
-        '--log-level',
-        choices=['DEBUG', 'INFO', 'WARNING', 'CRITICAL'],
-        default='INFO',
-        help='Logging level',
+        "--log-level",
+        choices=["DEBUG", "INFO", "WARNING", "CRITICAL"],
+        default="INFO",
+        help="Logging level",
     )
 
-    subparsers = parser.add_subparsers(help='', dest='subparser_name')
+    subparsers = parser.add_subparsers(help="", dest="subparser_name")
 
-    run_parser = subparsers.add_parser('run', help='Run a Runflow spec file')
-    run_parser.add_argument('specfile', help='Path to a Runflow spec file')
-    run_parser.add_argument('--var', dest='vars', action='append',
-                            help='Provide variables for a Runflow job run')
+    run_parser = subparsers.add_parser("run", help="Run a Runflow spec file")
+    run_parser.add_argument("specfile", help="Path to a Runflow spec file")
+    run_parser.add_argument(
+        "--var",
+        dest="vars",
+        action="append",
+        help="Provide variables for a Runflow job run",
+    )
     return parser
 
 
 def cli_parser_var(var):
     """Parse runflow `--var` value."""
-    key, value = var.split('=')
+    key, value = var.split("=")
     return key.strip(), value.strip()
 
 
@@ -50,9 +54,9 @@ def cli_subcommand_run(args):
         except ValueError:
             cli_abort(f"Invalid --var option: {var}")
 
-    if args.specfile.endswith('.hcl'):
+    if args.specfile.endswith(".hcl"):
         runflow(path=args.specfile, vars=dict(vars))
-    elif args.specfile == '-':
+    elif args.specfile == "-":
         runflow(source=sys.stdin.read(), vars=dict(vars))
     else:
         runflow(module=args.specfile, vars=dict(vars))
@@ -63,10 +67,10 @@ def cli(argv=None):
     parser = cli_parser()
     args, _rest = parser.parse_known_args(argv)
 
-    logging_format = '[%(asctime)-15s] %(message)s'
+    logging_format = "[%(asctime)-15s] %(message)s"
     logging.basicConfig(level=args.log_level, format=logging_format)
 
-    if args.subparser_name == 'run':
+    if args.subparser_name == "run":
         cli_subcommand_run(args)
     else:
         parser.print_help()

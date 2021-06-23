@@ -1,7 +1,10 @@
 import json
-import pytest
+
 import docker
+import pytest
+
 import runflow
+
 
 def test_http_get(tmpdir, capsys):
     flow = tmpdir / "test.hcl"
