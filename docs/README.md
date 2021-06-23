@@ -1,4 +1,6 @@
-# Runflow
+<h1>
+<div style="background-image: url('/logo.svg'); background-position: 0 -185px; background-repeat: no-repeat; height: 125px;"></div>
+</h1>
 
 Welcome to Runflow's documentation.
 
@@ -6,7 +8,6 @@ Welcome to Runflow's documentation.
 [![Pypi](https://img.shields.io/pypi/v/runflow?style=social)](https://pypi.org/project/runflow/)
 [![License](https://img.shields.io/github/license/soasme/runflow?style=social)](https://github.com/soasme/runflow/blob/main/LICENSE)
 
-<div style="background-image: url('/logo.svg'); background-position: 0 -185px; background-repeat: no-repeat; height: 125px;"></div>
 
 ## Getting Started
 
