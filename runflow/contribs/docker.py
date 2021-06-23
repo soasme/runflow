@@ -8,7 +8,6 @@ from runflow.utils import to_thread
 
 
 class DockerRunTask:
-
     def __init__(self, image, command=None, **kwargs):
         self.image = image
         self.command = command
@@ -25,5 +24,5 @@ class DockerRunTask:
             **self.args
         )
         return {
-            'stdout': stdout.decode('utf-8').strip(),
+            "stdout": stdout.decode("utf-8").strip(),
         }

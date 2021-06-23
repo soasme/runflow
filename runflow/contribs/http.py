@@ -4,12 +4,23 @@ import httpx
 
 
 class HttpRequestTask:
-
-    def __init__(self, method, url, params=None, headers=None,
-                 cookies=None, content=None, b64content=None,
-                 data=None, files=None, json=None,
-                 auth=None, allow_redirects=True, timeout=None,
-                 raise_for_status=True):
+    def __init__(
+        self,
+        method,
+        url,
+        params=None,
+        headers=None,
+        cookies=None,
+        content=None,
+        b64content=None,
+        data=None,
+        files=None,
+        json=None,
+        auth=None,
+        allow_redirects=True,
+        timeout=None,
+        raise_for_status=True,
+    ):
         self.method = method
         self.url = url
         self.params = params
@@ -42,4 +53,4 @@ class HttpRequestTask:
             )
             if self.raise_for_status:
                 response.raise_for_status()
-            return {'response': response}
+            return {"response": response}

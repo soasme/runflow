@@ -1,8 +1,8 @@
 """Utility functions."""
 
-import sys
 import asyncio
 import importlib
+import sys
 
 
 def run_async(coro):
@@ -26,9 +26,9 @@ async def to_thread(func, *args, **kwargs):
 def import_module(path):
     """Import a path like `path.to.module:class`."""
     try:
-        package_name, module_name = path.split(':')
+        package_name, module_name = path.split(":")
         result = importlib.import_module(package_name)
-        getters = module_name.split('.')
+        getters = module_name.split(".")
         for getter in getters:
             result = getattr(result, getter)
         return result
@@ -46,4 +46,4 @@ def split_camelcase(str):
         else:
             words[-1].append(char)
 
-    return [''.join(word) for word in words]
+    return ["".join(word) for word in words]

@@ -1,5 +1,7 @@
 import pytest
+
 from runflow import cli
+
 
 def test_cli_run_module(tmpdir, capsys):
     cli(['run', 'examples.hello:flow'])

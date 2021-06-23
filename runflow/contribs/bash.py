@@ -4,7 +4,6 @@ from runflow.errors import RunflowTaskError
 
 
 class BashRunTask:
-
     def __init__(self, command, env=None):
         self.command = command
         env = env or {}
@@ -19,8 +18,8 @@ class BashRunTask:
         )
 
         stdout, stderr = await proc.communicate()
-        stdout = stdout.decode('utf-8').strip()
-        stderr = stderr.decode('utf-8').strip()
+        stdout = stdout.decode("utf-8").strip()
+        stderr = stderr.decode("utf-8").strip()
 
         if stdout:
             print(stdout)
@@ -32,8 +31,10 @@ class BashRunTask:
                 stderr=stderr,
             )
 
-        raise RunflowTaskError(dict(
-            returncode=proc.returncode,
-            stdout=stdout,
-            stderr=stderr,
-        ))
+        raise RunflowTaskError(
+            dict(
+                returncode=proc.returncode,
+                stdout=stdout,
+                stderr=stderr,
+            )
+        )

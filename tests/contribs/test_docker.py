@@ -1,6 +1,8 @@
-import pytest
 import docker
+import pytest
+
 import runflow
+
 
 def test_docker_hello_world(tmpdir):
     flow = tmpdir / "test.hcl"
