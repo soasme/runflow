@@ -3,7 +3,7 @@
 import asyncio
 
 from .core import Flow
-from .utils import import_module
+from .utils import import_module, run_async
 
 
 def load_flow(path=None, source=None, module=None, flow=None):
@@ -26,4 +26,4 @@ def runflow(path=None, source=None, module=None, flow=None, vars=None):
     _flow = load_flow(path=path, source=source, module=module, flow=flow)
     assert _flow and isinstance(_flow, Flow)
     coro = _flow.run(vars or {})
-    asyncio.run(coro)
+    run_async(coro)

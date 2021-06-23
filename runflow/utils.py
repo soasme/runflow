@@ -4,6 +4,13 @@ import sys
 import asyncio
 import importlib
 
+def run_async(coro):
+    if sys.version_info[0] == 3 and sys.version_info[1] < 7:
+        loop = asyncio.get_running_loop()
+        loop.run_until_complete(coro)
+        return
+    asyncio.run(coro)
+
 
 async def to_thread(func, *args, **kwargs):
     """Run sync function in thread."""
