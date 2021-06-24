@@ -1,3 +1,5 @@
+# File: examples/extensions.py
+
 class GuessIceCreamTask:
 
     def __init__(self, name, output):

@@ -152,6 +152,41 @@ flow "hello-world" {
     assert out1.read() == 'hello world2\n'
     assert out2.read() == 'hello world2\n'
 
+def test_implicit_depends_on_nonexist_task(tmpdir):
+    flow = tmpdir / "test.hcl"
+    out = tmpdir / "out.txt"
+    flow.write("""
+flow "hello-world" {
+  task "bash_run" "out1" {
+    command = "echo ${task.bash_run.out3.stdout} > ${var.out}"
+  }
+  task "bash_run" "out2" {
+    command = "echo hello world2"
+  }
+}
+    """)
+
+    with pytest.raises(runflow.RunflowSyntaxError):
+        runflow.runflow(flow, vars={'out': out})
+
+def test_implicit_depends_on_wrong_task_type(tmpdir):
+    flow = tmpdir / "test.hcl"
+    out = tmpdir / "out.txt"
+    flow.write("""
+flow "hello-world" {
+  task "bash_run" "out1" {
+    command = "echo ${task.file_read.out2.content} > ${var.out}"
+  }
+  task "bash_run" "out2" {
+    command = "echo hello world2"
+  }
+}
+    """)
+
+    with pytest.raises(runflow.RunflowSyntaxError):
+        runflow.runflow(flow, vars={'out': out})
+
+
 def test_implicit_depends_on(tmpdir):
     flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
@@ -237,7 +272,61 @@ flow "hello-world" {
 }
     """)
 
-    with pytest.raises(runflow.RunflowTaskTypeError):
+    with pytest.raises(ValueError):
+        runflow.runflow(flow)
+
+def test_register_unknown_task_class(tmpdir):
+    flow = tmpdir / "test.hcl"
+    flow.write("""
+flow "hello-world" {
+  import {
+    tasks = {
+      test_register_unknown_task_class = "runflow.contribs.local_file:SomeTask"
+    }
+  }
+  task "test_register_unknown_task_class" "out" {
+    command = "echo hello world2"
+  }
+}
+    """)
+
+    with pytest.raises(ImportError):
+        runflow.runflow(flow)
+
+def test_register_unknown_task_class2(tmpdir):
+    flow = tmpdir / "test.hcl"
+    flow.write("""
+flow "hello-world" {
+  import {
+    tasks = {
+      test_register_unknown_task_class2 = "runflow.contribs.__some_task__:SomeTask"
+    }
+  }
+  task "test_register_unknown_task_class2" "out" {
+    command = "echo hello world2"
+  }
+}
+    """)
+
+    with pytest.raises(ImportError):
+        runflow.runflow(flow)
+
+def test_reregister_task_class(tmpdir):
+    flow = tmpdir / "test.hcl"
+    flow.write("""
+flow "hello-world" {
+  import {
+    tasks = {
+      file_read = "runflow.contribs.local_file:FileReadTask"
+    }
+  }
+  task "file_read" "out" {
+    command = "echo hello world2"
+  }
+}
+    """)
+
+    with pytest.raises(ValueError):
         runflow.runflow(flow)
 
 def test_jinja_replacement(tmpdir):

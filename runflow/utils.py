@@ -34,16 +34,3 @@ def import_module(path):
         return result
     except (AttributeError, ValueError) as err:
         raise ImportError(path) from err
-
-
-def split_camelcase(str):
-    """Split WordLikeThis to ["Word", "Like", "This"]."""
-    words = [[str[0]]]
-
-    for char in str[1:]:
-        if not words[-1][-1].isupper() and char.isupper():
-            words.append(list(char))
-        else:
-            words[-1].append(char)
-
-    return ["".join(word) for word in words]
