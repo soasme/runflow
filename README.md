@@ -1,4 +1,6 @@
-# Runflow
+<h1 align="center">
+  <img alt="Runflow" src="https://github.com/soasme/runflow/raw/main/docs/.vuepress/public/logo.png">
+</h1>
 
 <p align="center">
   <a href="https://github.com/soasme/runflow/releases">
@@ -18,7 +20,6 @@
   </a>
 </p>
 
-![Logo](docs/.vuepress/public/logo.png)
 
 ## What Runflow is?
 
