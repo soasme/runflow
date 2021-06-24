@@ -1,15 +1,18 @@
-<h1>
-<div style="background-image: url('/logo.svg'); background-position: 0 -185px; background-repeat: no-repeat; height: 125px;"></div>
+<h1 align="center">
+  <img alt="Runflow" src="/logo.png">
 </h1>
 
-Welcome to Runflow's documentation.
+<div align="center">
 
 [![Stars](https://img.shields.io/github/stars/soasme/runflow?style=social)](https://github.com/soasme/runflow)
 [![Pypi](https://img.shields.io/pypi/v/runflow?style=social)](https://pypi.org/project/runflow/)
 [![License](https://img.shields.io/github/license/soasme/runflow?style=social)](https://github.com/soasme/runflow/blob/main/LICENSE)
 
+</div>
 
 ## Getting Started
+
+Welcome to Runflow's documentation.
 
 * Get started with [Installation](installation.md).
 * Get an overview with the [Quick Start](quickstart.md).
