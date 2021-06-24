@@ -169,6 +169,24 @@ flow "hello-world" {
     with pytest.raises(runflow.RunflowSyntaxError):
         runflow.runflow(flow, vars={'out': out})
 
+def test_implicit_depends_on_wrong_task_type(tmpdir):
+    flow = tmpdir / "test.hcl"
+    out = tmpdir / "out.txt"
+    flow.write("""
+flow "hello-world" {
+  task "bash_run" "out1" {
+    command = "echo ${task.file_read.out2.content} > ${var.out}"
+  }
+  task "bash_run" "out2" {
+    command = "echo hello world2"
+  }
+}
+    """)
+
+    with pytest.raises(runflow.RunflowSyntaxError):
+        runflow.runflow(flow, vars={'out': out})
+
+
 def test_implicit_depends_on(tmpdir):
     flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"

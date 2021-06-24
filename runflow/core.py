@@ -286,7 +286,7 @@ class Flow:
         for var_spec in vars_spec:
             var_name = next(iter(var_spec.keys()))
             var_value_spec = next(iter(var_spec.values()))
-            var_default_value = var_value_spec.get("default", [])
+            var_default_value = var_value_spec.get("default", None)
             try:
                 var_value = (
                     config(f"RUNFLOW_VAR_{var_name}", default=None)
@@ -316,7 +316,7 @@ class Flow:
 
         for ext in extensions:
             self.load_flow_imported_tasks(ext.get("tasks", []))
-            self.load_flow_imported_functions(ext.get("functions", []))
+            self.load_flow_imported_functions(ext.get("functions", {}))
 
     def load_flow_spec_body(self, spec):
         """Load the body of a flow block."""
