@@ -8,22 +8,48 @@ sidebar: auto
 
 To build the package, run
 
-```
+```bash
 $ python -mbuild
 ```
 
-## Test
+## Auto-format
 
-To test the project, run
+To auto-format the code, run
 
-```
-$ make test
+```bash
+$ make style
 ```
 
 ## Lint
 
 To perform code quality check, run
 
-```
+```bash
 $ make lint
+```
+
+## Test
+
+To test the project, run
+
+```bash
+$ make test
+```
+
+The default make command is equivalent to `make style lint test`:
+
+```bash
+$ make
+```
+
+## Modify Lark Grammar
+
+If the lark grammar file `runflow/hcl2.lark` is modified, please re-generate the parser module:
+
+```bash
+$ make hcl2
+
+$ git add runflow/hcl2.lark
+$ git add runflow/hcl2_parser.py
+$ git commit -m'hcl2: which part of grammar is change?'
 ```

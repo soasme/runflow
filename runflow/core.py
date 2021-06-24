@@ -5,11 +5,11 @@ import inspect
 import logging
 import traceback
 
-import lark
 import networkx
 from decouple import config
 
 from . import hcl2, utils
+from .hcl2_parser import LarkError
 from .errors import (
     RunflowAcyclicTasksError,
     RunflowReferenceError,
@@ -182,7 +182,7 @@ class Flow:
         """Load flow from a .hcl file content."""
         try:
             flow = hcl2.loads(source)
-        except lark.exceptions.LarkError as err:
+        except LarkError as err:
             raise RunflowSyntaxError(str(err)) from err
 
         assert "flow" in flow, "Need a flow block"
