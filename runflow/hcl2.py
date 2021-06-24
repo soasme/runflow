@@ -586,7 +586,7 @@ class AstTransformer(Transformer):
         return value
 
 
-GRAMMAR_FILE = os.path.join(dirname(__file__), "hcl2_grammar.lark")
+GRAMMAR_FILE = os.path.join(dirname(__file__), "hcl2.lark")
 with open(GRAMMAR_FILE) as f:
     hcl2 = Lark(
         f.read(),
