@@ -9,13 +9,13 @@ import networkx
 from decouple import config
 
 from . import hcl2, utils
-from .hcl2_parser import LarkError
 from .errors import (
     RunflowAcyclicTasksError,
     RunflowReferenceError,
     RunflowSyntaxError,
-    RunflowTaskTypeError,
 )
+from .hcl2_parser import LarkError
+from .registry import get_task_class, register_task_class
 
 logger = logging.getLogger(__name__)
 
@@ -148,27 +148,12 @@ class SequentialRunner:
 class Flow:
     """Flow object manages the flow graph and the order of task executions."""
 
-    default_tasks = {
-        "runflow.contribs.bash:BashRunTask",
-        "runflow.contribs.docker:DockerRunTask",
-        "runflow.contribs.local_file:FileReadTask",
-        "runflow.contribs.local_file:FileWriteTask",
-        "runflow.contribs.template:Hcl2TemplateTask",
-        "runflow.contribs.http:HttpRequestTask",
-        "runflow.contribs.sql:SqlExecTask",
-        "runflow.contribs.sql:SqlRowTask",
-        "runflow.contribs.flow:FlowRunTask",
-    }
-
     def __init__(self, name, runner_cls=None):
         self.name = name
         self.graph = networkx.DiGraph()
         self.runner = (runner_cls or SequentialRunner)(self)
         self.vars = {}
-
-        self.exts = {}
         self.functions = {}
-        self.load_default_tasks()
 
     def __iter__(self):
         """Iterate through all tasks in a dependent order."""
@@ -214,38 +199,17 @@ class Flow:
         """Set default value for variable."""
         self.vars[name] = value
 
-    def load_task(self, import_string):
-        """Load the imoprted tasks into task type namespace."""
-        task_class = utils.import_module(import_string)
-        task_class_name = task_class.__name__
-        assert task_class_name != "Task" and task_class_name.endswith("Task")
-        task_type_chunks = utils.split_camelcase(task_class_name)
-        assert task_type_chunks[-1] == "Task"
-        task_type = "_".join(task_type_chunks[:-1]).lower()
-        self.exts[task_type] = task_class
-
-    def load_default_tasks(self):
-        """Load default task types."""
-        for mod in self.default_tasks:
-            self.load_task(mod)
-
-    def load_function(self, import_string):
+    def load_function(self, func_name, import_string):
         """Load the imported function to task func namespace."""
         function = utils.import_module(import_string)
-        func_name = import_string.split(":")[-1].replace(".", "_")
         self.functions[func_name] = function
 
+    # pylint: disable=no-self-use
     def load_flow_tasks_from_spec(self, tasks_spec):
         """Load the `task` blocks."""
         for task_spec in tasks_spec:
             for task_type in task_spec:
-                if task_type not in self.exts:
-                    raise RunflowTaskTypeError(
-                        f"unknown task type {task_type}"
-                    )
-
-                task_class = self.exts[task_type]
-
+                task_class = get_task_class(task_type)
                 for task_name in task_spec[task_type]:
                     task_payload = dict(task_spec[task_type][task_name])
                     yield Task(task_type, task_class, task_name, task_payload)
@@ -334,15 +298,16 @@ class Flow:
                 ) from err
             self.set_default_var(var_name, var_value)
 
+    # pylint: disable=no-self-use
     def load_flow_imported_tasks(self, tasks):
         """Load the `import.tasks` attribute."""
-        for task in tasks:
-            self.load_task(task)
+        for task_name, task_impl in tasks.items():
+            register_task_class(task_name, task_impl)
 
     def load_flow_imported_functions(self, functions):
         """Load the `import.functions` attribute."""
-        for function in functions:
-            self.load_function(function)
+        for func_name, func_import in functions.items():
+            self.load_function(func_name, func_import)
 
     def load_flow_extensions(self, extensions):
         """Load the `import` block."""

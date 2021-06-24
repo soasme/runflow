@@ -23,3 +23,7 @@ class RunflowTaskError(RunflowError):
 
 class RunflowAcyclicTasksError(RunflowError):
     """The task has circular dependency."""
+
+
+class RunflowReadOnlyError(RunflowError):
+    """Attempt to write something but it is read-only."""
