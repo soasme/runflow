@@ -2,7 +2,15 @@
 
 ## Not Yet Released
 
-[Code Changes](https://github.com/soasme/runflow/compare/v0.5.1..HEAD).
+[Code Changes](https://github.com/soasme/runflow/compare/v0.6.0..HEAD).
+
+## v0.6.0, 24 Jun, 2021
+
+[Code Changes](https://github.com/soasme/runflow/compare/v0.5.1..v0.6.0).
+
+* Enhancement: `import` block now supports setting the task names and function names. Please check the updated [documentation](https://runflow.org/extend-runflow.html). [#35](https://github.com/soasme/runflow/pull/35).
+* Performance Enhancement: use lark standalone parser. [#34](https://github.com/soasme/runflow/pull/34).
+
 
 ## v0.5.1, 23 Jun, 2021
 
