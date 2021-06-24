@@ -12,20 +12,20 @@ You will need to write some Python code and hook it up in a Runflow spec.
 
 ## Example Usage
 
-You class name must end with `Task`.
+The Task class must accept task payload as keyword arguments.
 
-The Task class has a constructor `__init__` method, which accepts the
-task payload.
-
-It has `def run(self, context)` or `async def run(self, context)` method,
+It must has `def run(self, context)` or `async def run(self, context)` method,
 which performs the actual task work.
+
+The example below shows how to write something into a file.
 
 <<< @/examples/extensions.py
 
-To load it in the Runflow spec, use `import`:
+To load it in the Runflow spec, use `import`.
 
 <<< @/examples/custom_task_type.hcl
 
+::: details Click me to view the run output
 Run:
 
 ```
@@ -36,6 +36,7 @@ $ runflow run custom_task_type.hcl --var out=/tmp/out.txt
 $ cat /tmp/out.txt
 Bingo, it is VANILLA-95
 ```
+:::
 
 Tips:
 
