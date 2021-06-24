@@ -12,12 +12,12 @@ To build the package, run
 $ python -mbuild
 ```
 
-## Test
+## Auto-format
 
-To test the project, run
+To auto-format the code, run
 
 ```
-$ make test
+$ make style
 ```
 
 ## Lint
@@ -26,4 +26,12 @@ To perform code quality check, run
 
 ```
 $ make lint
+```
+
+## Test
+
+To test the project, run
+
+```
+$ make test
 ```
