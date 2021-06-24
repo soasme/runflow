@@ -35,3 +35,15 @@ To test the project, run
 ```
 $ make test
 ```
+
+## Modify Lark Grammar
+
+If the lark grammar file `runflow/hcl2.lark` is modified, please re-generate the parser module:
+
+```
+$ make hcl2
+
+$ git add runflow/hcl2.lark
+$ git add runflow/hcl2_parser.py
+$ git commit -m'hcl2: which part of grammar is change?'
+```
