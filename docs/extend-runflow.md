@@ -2,7 +2,7 @@
 sidebar: auto
 ---
 
-# Develop Your Own Task
+# Bring-Your-Own Task
 
 It's impossible Runflow can provide all kinds of tasks you need.
 When that happens, you can develop your own task and let Runflow
@@ -40,9 +40,7 @@ Bingo, it is VANILLA-95
 
 Tips:
 
-* The Python code for the task must be in sys.path. Ideally, the code should
-  be packaged. Learn how to package a Python project:
-  [link](https://packaging.python.org/tutorials/packaging-projects/).
+* The Python code for the task must be in sys.path.
 
 ## Register New Task Class
 
@@ -173,7 +171,7 @@ $ python -mpip install runflow_vanilla_example-0.1.0-py3-none-any.whl
 ```
 
 After `runflow_vanilla_example` gets installed, Runflow is able to automatically
-pick it up and recognize `vanilla_run` as a valid task type.
+pick it up and recognizes `vanilla_run` as a valid task type.
 
 Hooray!! 🎉
 

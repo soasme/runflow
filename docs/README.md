@@ -45,7 +45,7 @@ Tasks:
 ## Advanced Usage
 
 * Advanced Usage: Use [Python API](python-api.md).
-* Advanced Usage: [Develop your own Task](customize-task.md).
+* Advanced Usage: [Extend Runflow](extend-runflow.md).
 * Advanced Usage: [Integrate with APScheduler](integrations/apscheduler.md).
 * Advanced Usage: [Handle DateTime Objects](integrations/datetime.md).
 * Internal: [Development](dev.md).
