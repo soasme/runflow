@@ -3,11 +3,9 @@
 - [ ] docs: internal - technical overview.
 - [ ] docs: integrate with celery.
 - [ ] docs: integrate with python-rq.
-- [ ] docs: integrate with pex.
 - [ ] docs: a flow app following 12-factor principle.
 - [ ] cli: support `runflow visualize xxx.rf`.
 - [ ] cli: support `runflow run --var-file`.
-- [ ] ci: code quality check: pylint.
 - [ ] task: dynamodb.
 - [ ] task: cloudwatch.
 - [ ] task: s3.
@@ -26,15 +24,15 @@
 - [ ] core: foreach map tasks.
 - [ ] core: conditional (braching) tasks.
 - [ ] core: retry running failed tasks.
-- [ ] cli: runflow show order of task executions.
 - [ ] hcl2: support any callable for `call()`.
-- [ ] hcl2: more test cases.
 - [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
 - [ ] hcl2: variable type constraints.
-- [ ] task: flow_run: support exporting a value.
-- [ ] task: download flows to a local vendor dir.
+- [ ] task: flow_run: support `export` block.
 - [ ] task: call another remote flow (using http link)
+- [x] hcl2: more test cases.
+- [x] ~~task: download flows to a local vendor dir.~~ this can be down through `pip install some-package`. v0.5.2
 - [x] support runflow.tasks: v0.5.2.
+- [x] ci: code quality check: pylint. v0.5.1.
 - [x] ci: code quality check: flake8. v0.5.1.
 - [x] task: mysql. through sqlalchemy. v0.5.0
 - [x] task: postgres. through sqlalchemy. v0.5.0.
