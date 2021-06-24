@@ -18,19 +18,18 @@ Some reasons not using python-hcl2:
 import itertools
 import json
 import operator
-import os
 import re
 import textwrap
 from datetime import datetime
 from functools import singledispatch
-from os.path import dirname
 from typing import Any, Dict, List, Set, Union
 
 from dateutil.parser import parse as parse_datetime
-from lark import Discard, Lark, Transformer
+from lark import Discard, Transformer
 
 from runflow.errors import RunflowReferenceError
 from runflow.utils import import_module
+from runflow.hcl2_parser import Lark_StandAlone
 
 HEREDOC_PATTERN = re.compile(
     r"<<-?([a-zA-Z][a-zA-Z0-9._-]+)\n((.|\n)*?)\n\s*\1", re.S
@@ -586,26 +585,14 @@ class AstTransformer(Transformer):
         return value
 
 
-GRAMMAR_FILE = os.path.join(dirname(__file__), "hcl2.lark")
-with open(GRAMMAR_FILE) as f:
-    hcl2 = Lark(
-        f.read(),
-        parser="lalr",
-        lexer="standard",
-        start=[
-            "module",
-            "eval",
-        ],
-    )
+hcl2 = Lark_StandAlone(transformer=AstTransformer())
 
 
 def loads(source, start="module"):
     if start == "module":
         source = source + "\n"
 
-    tree = hcl2.parse(source, start=start)
-    transformer = AstTransformer()
-    return transformer.transform(tree)
+    return hcl2.parse(source, start)
 
 
 @singledispatch
