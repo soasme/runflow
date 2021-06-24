@@ -237,7 +237,7 @@ flow "hello-world" {
 }
     """)
 
-    with pytest.raises(runflow.RunflowTaskTypeError):
+    with pytest.raises(ValueError):
         runflow.runflow(flow)
 
 def test_jinja_replacement(tmpdir):

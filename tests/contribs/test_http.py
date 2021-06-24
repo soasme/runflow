@@ -24,4 +24,4 @@ def test_http_post(tmpdir, capsys):
         flow.write(f.read())
     runflow.runflow(flow, vars={'out': out})
 
-    assert '<h1>' in out.read()
+    assert '<h1 align="center">' in out.read()
