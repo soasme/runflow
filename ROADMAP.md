@@ -4,6 +4,7 @@
 - [ ] docs: integrate with celery.
 - [ ] docs: integrate with python-rq.
 - [ ] docs: a flow app following 12-factor principle.
+- [ ] docs: call another remote flow (use http_request + flow_run) .
 - [ ] cli: support `runflow visualize xxx.rf`.
 - [ ] cli: support `runflow run --var-file`.
 - [ ] task: dynamodb.
@@ -19,6 +20,7 @@
 - [ ] task: command: integrate pexpect.
 - [ ] task: command: support sending stdin.
 - [ ] task: command: cap_stdout, cap_stderr.
+- [ ] task: support running tasks concurrently other than the sequential runner.
 - [ ] core: cache flow results locally in a file ".state".
 - [ ] core: conditions: all_passed, all_failed, all_done, any_passed, any_failed, any_done.
 - [ ] core: foreach map tasks.
@@ -28,7 +30,7 @@
 - [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
 - [ ] hcl2: variable type constraints.
 - [ ] task: flow_run: support `export` block.
-- [ ] task: call another remote flow (using http link)
+- [ ] task: define task using attr.
 - [x] hcl2: more test cases.
 - [x] ~~task: download flows to a local vendor dir.~~ this can be down through `pip install some-package`. v0.5.2
 - [x] support runflow.tasks: v0.5.2.
