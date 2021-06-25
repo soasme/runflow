@@ -1,5 +1,9 @@
 # ROAD MAP
 
+- [ ] FEATURES FOR BETA RELEASE
+- [ ] task: do argument validations.
+- [ ] task: define task using attr.
+- [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
 - [ ] docs: internal - technical overview.
 - [ ] docs: integrate with celery.
 - [ ] docs: integrate with python-rq.
@@ -7,9 +11,9 @@
 - [ ] docs: call another remote flow (use http_request + flow_run) .
 - [ ] cli: support `runflow visualize xxx.rf`.
 - [ ] cli: support `runflow run --var-file`.
+- [ ] task: s3.
 - [ ] task: dynamodb.
 - [ ] task: cloudwatch.
-- [ ] task: s3.
 - [ ] task: redis.
 - [ ] task: prometheus.
 - [ ] task: influxdb.
@@ -27,13 +31,11 @@
 - [ ] core: conditional (braching) tasks.
 - [ ] core: retry running failed tasks.
 - [ ] hcl2: support any callable for `call()`.
-- [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
 - [ ] hcl2: variable type constraints.
-- [ ] task: flow_run: support `export` block.
-- [ ] task: define task using attr.
+- [x] task: flow_run: support `export` block. v0.6.1
 - [x] hcl2: more test cases.
-- [x] ~~task: download flows to a local vendor dir.~~ this can be down through `pip install some-package`. v0.5.2
-- [x] support runflow.tasks: v0.5.2.
+- [x] ~~task: download flows to a local vendor dir.~~ this can be down through `pip install some-package`. v0.6.0
+- [x] support runflow.tasks: v0.6.0.
 - [x] ci: code quality check: pylint. v0.5.1.
 - [x] ci: code quality check: flake8. v0.5.1.
 - [x] task: mysql. through sqlalchemy. v0.5.0
