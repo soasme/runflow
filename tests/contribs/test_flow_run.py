@@ -36,3 +36,9 @@ def test_subflow_vars(tmpdir, capsys):
     runflow.runflow(path='./examples/subflow_vars.hcl', vars={})
     out, err = capsys.readouterr()
     assert out == 'hello 世界\n'
+
+
+def test_flow_exports(capsys):
+    runflow.runflow(path='./examples/flow_exports.hcl', vars={})
+    out, err = capsys.readouterr()
+    assert out == 'hello world\nhello world\n'
