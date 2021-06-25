@@ -343,4 +343,5 @@ class Flow:
     async def run(self, vars=None):
         """Run a flow."""
         context = self.make_run_context(vars)
-        return await self.runner.run(context)
+        await self.runner.run(context)
+        return context
