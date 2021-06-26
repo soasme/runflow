@@ -89,7 +89,7 @@ Comparing it to `hello-vars.hcl`:
 
 1. First we replace `greeter` to a task with command `xxd -l16 -ps /dev/urandom`. If you're curious what this would do, try it on your console - it will display some random alphabet digits.
 2. Next we replace `${var.greeter}` to `${task.bash_run.greeter.stdout}`. It chains the greeter command's stdout to the `echo` command.
-3. At last we add a `depends_on` parameter, which explicitly declares the `echo` command depends on `task.bash_run.greeter`. It makes sure `echo` command only run after `greeter` is successfully run.
+3. At last we add a `_depends_on` parameter, which explicitly declares the `echo` command depends on `task.bash_run.greeter`. It makes sure `echo` command only run after `greeter` is successfully run.
 
 Let's run it with `runflow run`:
 
@@ -108,7 +108,7 @@ As your can see in the output above, despite of `greeter` being declared beneath
 
 To make your life easier, Runflow is smart enough to detect the implicit task dependencies if task references are used in other tasks.
 
-For example, `hello-deps.hcl` does not need `depends_on` block at all, because the template variable `${task.bash_run.greeter.stdout}` makes it very clear that task "echo" relies on task "greeter".
+For example, `hello-deps.hcl` does not need `_depends_on` block at all, because the template variable `${task.bash_run.greeter.stdout}` makes it very clear that task "echo" relies on task "greeter".
 
 <<< @/examples/hello-implicit-deps.hcl
 
