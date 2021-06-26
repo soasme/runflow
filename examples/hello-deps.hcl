@@ -2,7 +2,7 @@
 flow "hello-deps" {
   task "bash_run" "echo" {
     command = "echo 'hello ${task.bash_run.greeter.stdout}'"
-    depends_on = [
+    _depends_on = [
       task.bash_run.greeter
     ]
   }

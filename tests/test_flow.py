@@ -139,7 +139,7 @@ def test_explicit_depends_on(tmpdir):
 flow "hello-world" {
   task "bash_run" "out1" {
     command = "cat ${var.out2} > ${var.out1}"
-    depends_on = [task.bash_run.out2]
+    _depends_on = [task.bash_run.out2]
   }
   task "bash_run" "out2" {
     command = "echo hello world2 > ${var.out2}"
@@ -213,7 +213,7 @@ def test_depends_on_must_be_a_task(tmpdir):
 flow "hello-world" {
   task "bash_run" "out1" {
     command = "cat ${var.out2} > ${var.out1}"
-    depends_on = [var.out2]
+    _depends_on = [var.out2]
   }
   task "bash_run" "out2" {
     command = "echo hello world2 > ${var.out2}"
@@ -232,7 +232,7 @@ def test_depends_on_must_be_a_reference(tmpdir):
 flow "hello-world" {
   task "bash_run" "out1" {
     command = "cat ${var.out2} > ${var.out1}"
-    depends_on = ["/path/to/${task.bash_run.out2}"]
+    _depends_on = ["/path/to/${task.bash_run.out2}"]
   }
   task "bash_run" "out2" {
     command = "echo hello world2 > ${var.out2}"
@@ -251,7 +251,7 @@ def test_depends_on_task_type_must_match(tmpdir):
 flow "hello-world" {
   task "bash_run" "out1" {
     command = "cat ${var.out2} > ${var.out1}"
-    depends_on = ["${task.container.out2}"]
+    _depends_on = ["${task.container.out2}"]
   }
   task "bash_run" "out2" {
     command = "echo hello world2 > ${var.out2}"
@@ -434,11 +434,11 @@ def test_acyclic_deps(tmpdir):
 flow "hello-world" {
   task "bash_run" "echo1" {
     command = "echo ${ task.bash_run.echo2.stdout }"
-    depends_on = [task.bash_run.echo2]
+    _depends_on = [task.bash_run.echo2]
   }
   task "bash_run" "echo2" {
     command = "echo ${ task.bash_run.echo1.stdout }"
-    depends_on = [task.bash_run.echo1]
+    _depends_on = [task.bash_run.echo1]
   }
 }
     """)
