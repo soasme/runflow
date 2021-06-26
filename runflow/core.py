@@ -128,6 +128,7 @@ class SequentialRunner:
 
     def __init__(self, flow):
         self.flow = flow
+        self.results = {}
 
     async def run(self, context):
         """Run flow tasks."""
@@ -140,12 +141,17 @@ class SequentialRunner:
                 )
                 continue
 
+            context["task"][task.type][task.name] = dict()
+            context["task"][task.type][task.name].update(task.payload)
+
             task_result = await task.run(context)
+            self.results[task] = task_result
+
             if task_result.status == TaskStatus.FAILED:
                 runnable = False
                 continue
 
-            context["task"][task.type][task.name] = task_result.result
+            context["task"][task.type][task.name].update(task_result.result or {})
 
 
 class Flow:
@@ -321,14 +327,15 @@ class Flow:
             self.load_flow_imported_tasks(ext.get("tasks", []))
             self.load_flow_imported_functions(ext.get("functions", {}))
 
+    def load_flow_tasks(self, tasks):
+        for task in self.load_flow_tasks_from_spec(tasks):
+            self.add_task(task)
+
     def load_flow_spec_body(self, spec):
         """Load the body of a flow block."""
         self.load_flow_extensions(spec.get("import", []))
         self.load_flow_default_vars(spec.get("variable", []))
-
-        for task in self.load_flow_tasks_from_spec(spec.get("task", [])):
-            self.add_task(task)
-
+        self.load_flow_tasks(spec.get("task", []))
         self.set_tasks_dependencies()
 
     def make_run_context(self, vars=None):
