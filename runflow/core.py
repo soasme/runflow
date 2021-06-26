@@ -20,6 +20,9 @@ from .registry import get_task_class, register_task_class
 logger = logging.getLogger(__name__)
 
 
+DEPENDS_ON_KEY = "_depends_on"
+
+
 class TaskStatus(enum.Enum):
     """Task execution status."""
 
@@ -101,7 +104,7 @@ class Task:
 
         _payload = dict(payload)
         # this is handled by runflow, not by runner.
-        _payload.pop("depends_on", None)
+        _payload.pop(DEPENDS_ON_KEY, None)
 
         task = self.runner(**_payload)
 
@@ -218,14 +221,14 @@ class Flow:
         """Find task by a reference like `task.TASK_TYPE.TASK_NAME`."""
         if not isinstance(depends_on, hcl2.Interpolation):
             raise RunflowSyntaxError(
-                f'Task parameter "depends_on" should '
+                f'Task parameter "{DEPENDS_ON_KEY}" should '
                 f"refer to a valid task: {depends_on}"
             )
 
         task_key = depends_on.expr.attr_chain
         if task_key[0] != "task":
             raise RunflowSyntaxError(
-                'Task parameter "depends_on" should refer '
+                f'Task parameter "{DEPENDS_ON_KEY}" should refer '
                 f"to a valid task: {depends_on}"
             )
 
@@ -234,7 +237,7 @@ class Flow:
         )
         if task_dependency.type != task_key[1]:
             raise RunflowSyntaxError(
-                f'Task parameter "depends_on" {depends_on}, '
+                f'Task parameter "{DEPENDS_ON_KEY}" {depends_on}, '
                 f"but task {task_key[2]} is of type {task_key[1]}"
             )
 
@@ -242,14 +245,14 @@ class Flow:
 
     def load_flow_explicit_tasks_dependencies(self, task):
         """Find task explicit dependencies."""
-        for depends_on in task.payload.get("depends_on", []):
+        for depends_on in task.payload.get(DEPENDS_ON_KEY, []):
             yield self.load_task_by_task_reference(depends_on)
 
     def load_flow_implicit_tasks_dependencies(self, task):
         """Find task implicit dependencies."""
         deps_set = set()
         for key, value in task.payload.items():
-            if key == "depends_on":
+            if key == DEPENDS_ON_KEY:
                 continue
             hcl2.resolve_deps(value, deps_set)
         for task_key in deps_set:
@@ -264,7 +267,7 @@ class Flow:
             )
             if not task_dependency:
                 raise RunflowSyntaxError(
-                    f"Task depends_on {task_key} "
+                    f"Task depends on {task_key} "
                     f"but the dependent task does not exist"
                 )
 
