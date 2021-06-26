@@ -31,8 +31,10 @@
 - [ ] core: conditional (braching) tasks.
 - [ ] core: retry running failed tasks.
 - [ ] hcl2: support any callable for `call()`.
+- [ ] hcl2: support `args()` and `kwargs()`.
 - [ ] hcl2: variable type constraints.
-- [x] task: flow_run: support `export` block. v0.6.1
+- [x] core: underscore for private task argument. v0.6.1.
+- [x] task: flow_run: support `exports` block. v0.6.1
 - [x] hcl2: more test cases.
 - [x] ~~task: download flows to a local vendor dir.~~ this can be down through `pip install some-package`. v0.6.0
 - [x] support runflow.tasks: v0.6.0.
