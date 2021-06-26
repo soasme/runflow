@@ -104,6 +104,10 @@ hello aff8e7f9b236ef1f436c9f5ce4b9d532
 
 As your can see in the output above, despite of `greeter` being declared beneath `echo` block, it gets executed first.
 
+:::tip
+Any argument starts with an underscore (`_`) is used by Runflow, not by the task.
+:::
+
 ## Implicit Task Dependency
 
 To make your life easier, Runflow is smart enough to detect the implicit task dependencies if task references are used in other tasks.
