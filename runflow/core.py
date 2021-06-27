@@ -223,46 +223,9 @@ class Flow:
                     task_payload = dict(task_spec[task_type][task_name])
                     yield Task(task_type, task_class, task_name, task_payload)
 
-    def load_task_by_task_reference(self, depends_on):
-        """Find task by a reference like `task.TASK_TYPE.TASK_NAME`."""
-        if not isinstance(depends_on, hcl2.Interpolation):
-            raise RunflowSyntaxError(
-                f'Task parameter "{DEPENDS_ON_KEY}" should '
-                f"refer to a valid task: {depends_on}"
-            )
-
-        task_key = depends_on.expr.attr_chain
-        if task_key[0] != "task":
-            raise RunflowSyntaxError(
-                f'Task parameter "{DEPENDS_ON_KEY}" should refer '
-                f"to a valid task: {depends_on}"
-            )
-
-        task_dependency = next(
-            t for t in self.graph.nodes if t.name == task_key[2]
-        )
-        if task_dependency.type != task_key[1]:
-            raise RunflowSyntaxError(
-                f'Task parameter "{DEPENDS_ON_KEY}" {depends_on}, '
-                f"but task {task_key[2]} is of type {task_key[1]}"
-            )
-
-        return task_dependency
-
-    def load_flow_explicit_tasks_dependencies(self, task):
-        """Find task explicit dependencies."""
-        for depends_on in task.payload.get(DEPENDS_ON_KEY, []):
-            yield self.load_task_by_task_reference(depends_on)
-
-    def load_flow_implicit_tasks_dependencies(self, task):
-        """Find task implicit dependencies."""
-        deps_set = set()
-        for key, value in task.payload.items():
-            if key == DEPENDS_ON_KEY:
-                continue
-            hcl2.resolve_deps(value, deps_set)
-        for task_key in deps_set:
-            task_key = task_key.split(".")
+    def load_flow_dependencies_from_keys(self, keys):
+        for key in keys:
+            task_key = key.split(".")
             task_dependency = next(
                 (
                     t
@@ -278,6 +241,20 @@ class Flow:
                 )
 
             yield task_dependency
+
+    def load_flow_explicit_tasks_dependencies(self, task):
+        """Find task explicit dependencies."""
+        deps_set = set()
+        hcl2.resolve_deps(task.payload.get(DEPENDS_ON_KEY, []), deps_set)
+        yield from self.load_flow_dependencies_from_keys(deps_set)
+
+    def load_flow_implicit_tasks_dependencies(self, task):
+        """Find task implicit dependencies."""
+        deps_set = set()
+        for key, value in task.payload.items():
+            if key != DEPENDS_ON_KEY:
+                hcl2.resolve_deps(value, deps_set)
+        yield from self.load_flow_dependencies_from_keys(deps_set)
 
     def set_tasks_dependencies(self):
         """Walk the task graph and sort out the task dependencies."""
@@ -296,15 +273,10 @@ class Flow:
             var_name = next(iter(var_spec.keys()))
             var_value_spec = next(iter(var_spec.values()))
             var_default_value = var_value_spec.get("default", None)
-            try:
-                var_value = (
-                    config(f"RUNFLOW_VAR_{var_name}", default=None)
-                    or var_default_value
-                )
-            except IndexError as err:
-                raise RunflowReferenceError(
-                    f"var.{var_name} is not provided."
-                ) from err
+            var_value = (
+                config(f"RUNFLOW_VAR_{var_name}", default=None)
+                or var_default_value
+            )
             self.set_default_var(var_name, var_value)
 
     # pylint: disable=no-self-use
