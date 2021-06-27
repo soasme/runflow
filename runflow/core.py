@@ -11,7 +11,6 @@ from decouple import config
 from . import hcl2, utils
 from .errors import (
     RunflowAcyclicTasksError,
-    RunflowReferenceError,
     RunflowSyntaxError,
 )
 from .hcl2_parser import LarkError
@@ -102,9 +101,9 @@ class Task:
 
         task_result = TaskResult(TaskStatus.PENDING)
 
-        _payload = dict(payload)
-        # this is handled by runflow, not by runner.
-        _payload.pop(DEPENDS_ON_KEY, None)
+        # remove variable starting with underscore.
+        # this is preserved by Runflow.
+        _payload = {k: v for k, v in payload.items() if not k.startswith("_")}
 
         task = self.runner(**_payload)
 
@@ -151,7 +150,9 @@ class SequentialRunner:
                 runnable = False
                 continue
 
-            context["task"][task.type][task.name].update(task_result.result or {})
+            context["task"][task.type][task.name].update(
+                task_result.result or {}
+            )
 
 
 class Flow:

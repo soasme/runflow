@@ -623,9 +623,11 @@ def _(iterable, id_count=1):
 def resolve_deps(value: Any, deps: Set):
     pass
 
+
 @resolve_deps.register
 def _(value: Interpolation, deps: set):
     resolve_deps(value.expr, deps)
+
 
 @resolve_deps.register(GetAttr)
 @resolve_deps.register(GetIndex)
@@ -634,10 +636,12 @@ def _(value, deps: set):
     if task_keys and task_keys[0] == "task" and len(task_keys) >= 3:
         deps.add(".".join(task_keys[:3]))
 
+
 @resolve_deps.register
 def _(value: JoinedStr, deps: Set):
     for element in value.elements:
         resolve_deps(element, deps)
+
 
 @resolve_deps.register
 def _(value: list, deps: Set):
