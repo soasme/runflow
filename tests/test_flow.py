@@ -228,6 +228,58 @@ flow "hello-world" {
     assert out2.read().strip() == 'hello world2'
     assert out1.read().strip() == 'hello world2'
 
+def test_trigger_task_run_if_depends_on_truthy_value(tmpdir):
+    flow = tmpdir / "test.hcl"
+    out1 = tmpdir / "out1.txt"
+    out1.write('')
+    out2 = tmpdir / "out2.txt"
+    out2.write('yes, something is here')
+
+    flow.write("""
+flow "hello-world" {
+  task "file_write" "out1" {
+    filename = str(var.out1)
+    content = "hello world"
+    _depends_on = [
+      task.file_read.out2.content
+    ]
+  }
+  task "file_read" "out2" {
+    filename = str(var.out2)
+  }
+}
+    """)
+
+    runflow.runflow(flow, vars={'out1': out1, 'out2': out2})
+    assert out2.read().strip() == 'yes, something is here'
+    assert out1.read().strip() == 'hello world'
+
+def test_cancel_task_run_if_depends_on_falsy_value(tmpdir):
+    flow = tmpdir / "test.hcl"
+    out1 = tmpdir / "out1.txt"
+    out1.write('')
+    out2 = tmpdir / "out2.txt"
+    out2.write('')
+
+    flow.write("""
+flow "hello-world" {
+  task "file_write" "out1" {
+    filename = str(var.out1)
+    content = "hello world"
+    _depends_on = [
+      task.file_read.out2.content
+    ]
+  }
+  task "file_read" "out2" {
+    filename = str(var.out2)
+  }
+}
+    """)
+
+    runflow.runflow(flow, vars={'out1': out1, 'out2': out2})
+    assert out2.read().strip() == ''
+    assert out1.read().strip() == ''
+
 def test_depends_on_can_be_a_reference(tmpdir):
     flow = tmpdir / "test.hcl"
     out1 = tmpdir / "out1.txt"
