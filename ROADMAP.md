@@ -1,7 +1,7 @@
 # ROAD MAP
 
 - [ ] FEATURES FOR BETA RELEASE
-- [ ] task: do argument validations.
+- [ ] task: validate arguments.
 - [ ] task: define task using attr.
 - [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
 - [ ] docs: internal - technical overview.
@@ -28,11 +28,12 @@
 - [ ] core: cache flow results locally in a file ".state".
 - [ ] core: conditions: all_passed, all_failed, all_done, any_passed, any_failed, any_done.
 - [ ] core: foreach map tasks.
-- [ ] core: conditional (braching) tasks.
-- [ ] core: retry running failed tasks.
 - [ ] hcl2: support any callable for `call()`.
 - [ ] hcl2: support `args()` and `kwargs()`.
 - [ ] hcl2: variable type constraints.
+- [ ] core: retry running failed tasks.
+- [ ] core: error recovering.
+- [x] core: run tasks when some checks are passed. v0.6.1.
 - [x] core: underscore for private task argument. v0.6.1.
 - [x] task: flow_run: support `exports` block. v0.6.1
 - [x] hcl2: more test cases.
