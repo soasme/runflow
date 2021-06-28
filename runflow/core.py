@@ -11,7 +11,6 @@ from decouple import config
 from . import hcl2, utils
 from .errors import (
     RunflowAcyclicTasksError,
-    RunflowReferenceError,
     RunflowSyntaxError,
 )
 from .hcl2_parser import LarkError
@@ -113,14 +112,12 @@ class Task:
             )
             return TaskResult(TaskStatus.CANCELED)
 
-        payload = hcl2.evaluate(self.payload, context)
+        _payload = hcl2.evaluate(
+            {k: v for k, v in self.payload.items() if not k.startswith("_")},
+            context,
+        )
 
         task_result = TaskResult(TaskStatus.PENDING)
-
-        _payload = dict(payload)
-        # this is handled by runflow, not by runner.
-        _payload.pop(DEPENDS_ON_KEY, None)
-
         task = self.runner(**_payload)
 
         try:
@@ -245,11 +242,7 @@ class Flow:
     def load_task_by_task_reference(self, depends_on):
         """Find task by a reference like `task.TASK_TYPE.TASK_NAME`."""
         task_key = depends_on.split(".")
-        if task_key[0] != "task":
-            raise RunflowSyntaxError(
-                f'Task parameter "{DEPENDS_ON_KEY}" should refer '
-                f"to a valid task: {depends_on}"
-            )
+        assert len(task_key) == 3 and task_key[0] == "task"
 
         task_dependency = next(
             (
@@ -290,16 +283,9 @@ class Flow:
         for var_spec in vars_spec:
             var_name = next(iter(var_spec.keys()))
             var_value_spec = next(iter(var_spec.values()))
-            var_default_value = var_value_spec.get("default", None)
-            try:
-                var_value = (
-                    config(f"RUNFLOW_VAR_{var_name}", default=None)
-                    or var_default_value
-                )
-            except IndexError as err:
-                raise RunflowReferenceError(
-                    f"var.{var_name} is not provided."
-                ) from err
+            var_value = config(
+                f"RUNFLOW_VAR_{var_name}", default=None
+            ) or var_value_spec.get("default", None)
             self.set_default_var(var_name, var_value)
 
     # pylint: disable=no-self-use
