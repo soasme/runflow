@@ -230,13 +230,7 @@ class Flow:
 
     def load_task_by_task_reference(self, depends_on):
         """Find task by a reference like `task.TASK_TYPE.TASK_NAME`."""
-        if not isinstance(depends_on, hcl2.Interpolation):
-            raise RunflowSyntaxError(
-                f'Task parameter "{DEPENDS_ON_KEY}" should '
-                f"refer to a valid task: {depends_on}"
-            )
-
-        task_key = depends_on.expr.attr_chain
+        task_key = depends_on.split(".")
         if task_key[0] != "task":
             raise RunflowSyntaxError(
                 f'Task parameter "{DEPENDS_ON_KEY}" should refer '
@@ -244,55 +238,37 @@ class Flow:
             )
 
         task_dependency = next(
-            t for t in self.graph.nodes if t.name == task_key[2]
+            (
+                t
+                for t in self.graph.nodes
+                if t.type == task_key[1] and t.name == task_key[2]
+            ),
+            None,
         )
-        if task_dependency.type != task_key[1]:
+
+        if not task_dependency:
             raise RunflowSyntaxError(
-                f'Task parameter "{DEPENDS_ON_KEY}" {depends_on}, '
-                f"but task {task_key[2]} is of type {task_key[1]}"
+                f"Task depends on {task_key} "
+                f"but the dependent task does not exist"
             )
 
         return task_dependency
 
-    def load_flow_explicit_tasks_dependencies(self, task):
-        """Find task explicit dependencies."""
-        for depends_on in task.payload.get(DEPENDS_ON_KEY, []):
-            yield self.load_task_by_task_reference(depends_on)
-
-    def load_flow_implicit_tasks_dependencies(self, task):
-        """Find task implicit dependencies."""
+    def load_flow_tasks_dependencies(self, task):
+        """Find task dependencies."""
         deps_set = set()
         for key, value in task.payload.items():
-            if key == DEPENDS_ON_KEY:
-                continue
+            hcl2.resolve_deps(key, deps_set)
             hcl2.resolve_deps(value, deps_set)
-        for task_key in deps_set:
-            task_key = task_key.split(".")
-            task_dependency = next(
-                (
-                    t
-                    for t in self.graph.nodes
-                    if t.name == task_key[2] and t.type == task_key[1]
-                ),
-                None,
-            )
-            if not task_dependency:
-                raise RunflowSyntaxError(
-                    f"Task depends on {task_key} "
-                    f"but the dependent task does not exist"
-                )
 
-            yield task_dependency
+        for dep in deps_set:
+            yield self.load_task_by_task_reference(dep)
 
     def set_tasks_dependencies(self):
         """Walk the task graph and sort out the task dependencies."""
         for task in self.graph.nodes:
-            explicit_deps = self.load_flow_explicit_tasks_dependencies(task)
+            explicit_deps = self.load_flow_tasks_dependencies(task)
             for dep in explicit_deps:
-                self.set_dependency(task, dep)
-
-            implicit_deps = self.load_flow_implicit_tasks_dependencies(task)
-            for dep in implicit_deps:
                 self.set_dependency(task, dep)
 
     def load_flow_default_vars(self, vars_spec):
