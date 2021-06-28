@@ -205,7 +205,7 @@ flow "hello-world" {
 
     assert out.read() == 'hello world2\n'
 
-def test_depends_on_must_be_a_task(tmpdir):
+def test_depends_on_can_be_a_task(tmpdir):
     flow = tmpdir / "test.hcl"
     out1 = tmpdir / "out1.txt"
     out2 = tmpdir / "out2.txt"
@@ -213,7 +213,10 @@ def test_depends_on_must_be_a_task(tmpdir):
 flow "hello-world" {
   task "bash_run" "out1" {
     command = "cat ${var.out2} > ${var.out1}"
-    _depends_on = [var.out2]
+    _depends_on = [
+      var.out2,
+      task.bash_run.out2,
+    ]
   }
   task "bash_run" "out2" {
     command = "echo hello world2 > ${var.out2}"
@@ -221,10 +224,11 @@ flow "hello-world" {
 }
     """)
 
-    with pytest.raises(runflow.RunflowSyntaxError):
-        runflow.runflow(flow, vars={'out1': out1, 'out2': out2})
+    runflow.runflow(flow, vars={'out1': out1, 'out2': out2})
+    assert out2.read().strip() == 'hello world2'
+    assert out1.read().strip() == 'hello world2'
 
-def test_depends_on_must_be_a_reference(tmpdir):
+def test_depends_on_can_be_a_reference(tmpdir):
     flow = tmpdir / "test.hcl"
     out1 = tmpdir / "out1.txt"
     out2 = tmpdir / "out2.txt"
@@ -240,8 +244,9 @@ flow "hello-world" {
 }
     """)
 
-    with pytest.raises(runflow.RunflowSyntaxError):
-        runflow.runflow(flow, vars={'out1': out1, 'out2': out2})
+    runflow.runflow(flow, vars={'out1': out1, 'out2': out2})
+    assert out2.read().strip() == 'hello world2'
+    assert out1.read().strip() == 'hello world2'
 
 def test_depends_on_task_type_must_match(tmpdir):
     flow = tmpdir / "test.hcl"
