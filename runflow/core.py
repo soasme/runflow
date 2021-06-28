@@ -29,6 +29,7 @@ class TaskStatus(enum.Enum):
     PENDING = enum.auto()
     SUCCESS = enum.auto()
     FAILED = enum.auto()
+    CANCELED = enum.auto()
 
 
 class TaskResult:
@@ -115,6 +116,7 @@ class Task:
                 if inspect.iscoroutinefunction(task.run)
                 else await utils.to_thread(task.run, context)
             )
+            task_result.result.update(_payload)
             logger.info('"task.%s.%s" is successful.', self.type, self.name)
         except Exception as err:  # pylint: disable=broad-except
             task_result.exception = err
@@ -128,24 +130,33 @@ class SequentialRunner:
 
     def __init__(self, flow):
         self.flow = flow
+        self.results = {}
+
+    def check_depends_on(self, task):
+        for upstream_task in self.flow.graph.successors(task):
+            if self.results[upstream_task].status in (
+                TaskStatus.FAILED,
+                TaskStatus.CANCELED,
+            ):
+                return False
+        return True
 
     async def run(self, context):
         """Run flow tasks."""
-        runnable = True
         for task in self.flow:
-            if not runnable:
+            if not self.check_depends_on(task):
                 logger.info(
                     '"%s" is canceled due to previous task failed run.',
                     f"task.{task.type}.{task.name}",
                 )
+                self.results[task] = TaskResult(TaskStatus.CANCELED)
                 continue
 
             task_result = await task.run(context)
-            if task_result.status == TaskStatus.FAILED:
-                runnable = False
-                continue
+            self.results[task] = task_result
 
-            context["task"][task.type][task.name] = task_result.result
+            if task_result.status == TaskStatus.SUCCESS:
+                context["task"][task.type][task.name] = task_result.result
 
 
 class Flow:

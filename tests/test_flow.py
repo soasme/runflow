@@ -392,7 +392,26 @@ flow "hello-world" {
     runflow.runflow(flow, vars={'out': str(out)})
     assert out.read() == 'hello world\n'
 
-def test_command_failed_canceling_the_next_task(tmpdir, capsys):
+def test_command_failed_will_cancel_dependency(tmpdir, capsys):
+    flow = tmpdir / "test.hcl"
+    out = tmpdir / "out.txt"
+    out.write('definitely not hello world')
+    flow.write("""
+flow "hello-world" {
+  variable "out" { default = "" }
+  task "bash_run" "echo" {
+    command = "/__path__/to/echo hello world"
+  }
+  task "bash_run" "echo2" {
+    command = "echo ${task.bash_run.echo.stdout} > ${var.out}"
+  }
+}
+    """)
+
+    runflow.runflow(flow, vars={'out': str(out)})
+    assert out.read() == 'definitely not hello world'
+
+def test_command_failed_will_not_cancel_independent_task(tmpdir, capsys):
     flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
     out.write('definitely not hello world')
@@ -409,7 +428,7 @@ flow "hello-world" {
     """)
 
     runflow.runflow(flow, vars={'out': str(out)})
-    assert out.read() == 'definitely not hello world'
+    assert out.read() == 'hello world\n'
 
 def test_default_variable(tmpdir):
     flow = tmpdir / "test.hcl"
