@@ -126,7 +126,7 @@ class Task:
                 await task.run(context)
                 if inspect.iscoroutinefunction(task.run)
                 else await utils.to_thread(task.run, context)
-            )
+            ) or {}
             task_result.result.update(_payload)
             logger.info('"task.%s.%s" is successful.', self.type, self.name)
         except Exception as err:  # pylint: disable=broad-except
