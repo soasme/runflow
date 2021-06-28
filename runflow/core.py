@@ -91,6 +91,12 @@ class Task:
     def __eq__(self, o):
         return self.type == o.type and self.name == o.name
 
+    def should_run(self, context):
+        return all(
+            hcl2.evaluate(depends_on, context)
+            for depends_on in self.payload.get(DEPENDS_ON_KEY, [])
+        )
+
     async def run(self, context):
         """Run a task."""
         if self.type == "hcl2_template":
@@ -98,6 +104,14 @@ class Task:
                 context,
                 **hcl2.evaluate(self.payload.get("context", {}), context),
             )
+
+        if not self.should_run(context):
+            logger.info(
+                '"task.%s.%s" is canceled due to falsy deps.',
+                self.type,
+                self.name,
+            )
+            return TaskResult(TaskStatus.CANCELED)
 
         payload = hcl2.evaluate(self.payload, context)
 
