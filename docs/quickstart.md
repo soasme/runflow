@@ -127,6 +127,40 @@ hello bbd43baa501af05103cdd1ea2e6d9ffa
 [2021-06-07 16:11:56,806] Task "echo" is successful.
 ```
 
+## Conditional Trigger
+
+The values in task argument `_depends_on` can be not just task references but also any values that can be tested with bool.
+
+If any of the values in task argument `_depends_on` is falsy, then the task will be canceled.
+
+For example, the flow below only output `pyproject.toml` only when version is greater than or equal to "0.6.0".
+
+<<< @/examples/conditional_trigger.hcl
+
+::: details Click me to view the run output
+Run (passed):
+```
+$ runflow run examples/conditional_trigger.hcl  --var version=0.1.0
+[2021-06-28 17:18:14,226] "task.file_read.read" is started.
+[2021-06-28 17:18:14,227] "task.file_read.read" is successful.
+[2021-06-28 17:18:14,227] "task.file_write.echo" is started.
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+[2021-06-28 17:18:14,227] "task.file_write.echo" is successful.
+```
+
+Run (canceled):
+```bash
+$ runflow run examples/conditional_trigger.hcl  --var version=0.1.0
+[2021-06-28 17:15:58,011] "task.file_read.read" is started.
+[2021-06-28 17:15:58,012] "task.file_read.read" is successful.
+[2021-06-28 17:15:58,012] "task.file_write.echo" is canceled due to falsy deps.
+```
+
 ## Next to Read
 
 * [Concepts](concepts.md)
