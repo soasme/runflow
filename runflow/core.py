@@ -116,12 +116,13 @@ class Task:
             {k: v for k, v in self.payload.items() if not k.startswith("_")},
             context,
         )
+        context["task"][self.type][self.name].update(_payload)
 
         task_result = TaskResult(TaskStatus.PENDING)
-        task = self.runner(**_payload)
 
         try:
             logger.info('"task.%s.%s" is started.', self.type, self.name)
+            task = self.runner(**_payload)
             task_result.result = (
                 await task.run(context)
                 if inspect.iscoroutinefunction(task.run)
@@ -152,22 +153,25 @@ class SequentialRunner:
                 return False
         return True
 
+    async def run_task(self, task, context):
+        if not self.check_depends_on(task):
+            logger.info(
+                '"%s" is canceled due to previous task failed run.',
+                f"task.{task.type}.{task.name}",
+            )
+            return TaskResult(TaskStatus.CANCELED)
+
+        task_result = await task.run(context)
+
+        if task_result.status == TaskStatus.SUCCESS:
+            context["task"][task.type][task.name] = task_result.result
+
+        return task_result
+
     async def run(self, context):
         """Run flow tasks."""
         for task in self.flow:
-            if not self.check_depends_on(task):
-                logger.info(
-                    '"%s" is canceled due to previous task failed run.',
-                    f"task.{task.type}.{task.name}",
-                )
-                self.results[task] = TaskResult(TaskStatus.CANCELED)
-                continue
-
-            task_result = await task.run(context)
-            self.results[task] = task_result
-
-            if task_result.status == TaskStatus.SUCCESS:
-                context["task"][task.type][task.name] = task_result.result
+            self.results[task] = await self.run_task(task, context)
 
 
 class Flow:
@@ -186,6 +190,17 @@ class Flow:
             return reversed(list(networkx.topological_sort(self.graph)))
         except networkx.exception.NetworkXUnfeasible as err:
             raise RunflowAcyclicTasksError(str(err)) from err
+
+    @property
+    def exception(self):
+        return next(
+            (
+                task_result.exception
+                for task_result in self.runner.results.values()
+                if task_result.status == TaskStatus.FAILED
+            ),
+            None,
+        )
 
     @classmethod
     def from_spec(cls, source):
@@ -278,7 +293,7 @@ class Flow:
             for dep in explicit_deps:
                 self.set_dependency(task, dep)
 
-    def load_flow_default_vars(self, vars_spec):
+    def load_flow_variables(self, vars_spec):
         """Load the `variable` block."""
         for var_spec in vars_spec:
             var_name = next(iter(var_spec.keys()))
@@ -299,23 +314,21 @@ class Flow:
         for func_name, func_import in functions.items():
             self.load_function(func_name, func_import)
 
-    def load_flow_extensions(self, extensions):
+    def load_flow_imports(self, imports):
         """Load the `import` block."""
-        if not extensions:
-            return
+        for _import in imports:
+            self.load_flow_imported_tasks(_import.get("tasks", []))
+            self.load_flow_imported_functions(_import.get("functions", {}))
 
-        for ext in extensions:
-            self.load_flow_imported_tasks(ext.get("tasks", []))
-            self.load_flow_imported_functions(ext.get("functions", {}))
+    def load_flow_tasks(self, tasks):
+        for task in self.load_flow_tasks_from_spec(tasks):
+            self.add_task(task)
 
     def load_flow_spec_body(self, spec):
         """Load the body of a flow block."""
-        self.load_flow_extensions(spec.get("import", []))
-        self.load_flow_default_vars(spec.get("variable", []))
-
-        for task in self.load_flow_tasks_from_spec(spec.get("task", [])):
-            self.add_task(task)
-
+        self.load_flow_imports(spec.get("import", []))
+        self.load_flow_variables(spec.get("variable", []))
+        self.load_flow_tasks(spec.get("task", []))
         self.set_tasks_dependencies()
 
     def make_run_context(self, vars=None):
@@ -327,7 +340,7 @@ class Flow:
         }
         for task in self:
             context["task"].setdefault(task.type, {})
-            context["task"][task.type][task.name] = task.payload
+            context["task"][task.type].setdefault(task.name, {})
         return context
 
     async def run(self, vars=None):
