@@ -22,15 +22,17 @@ def test_flow_run_by_source(tmpdir, capsys):
     out, err = capsys.readouterr()
     assert out == 'hello world\n'
 
-def test_flow_not_exist(tmpdir):
+def test_flow_not_exist(tmpdir, capsys):
     subflow = tmpdir / "subflow.hcl"
     flow = tmpdir / "test.hcl"
 
     with open('./examples/flow_by_path.hcl') as f:
         flow.write(f.read().replace('./examples/hello.hcl', str(subflow)))
 
-    with pytest.raises(OSError):
-        runflow.runflow(path=flow, vars={})
+    runflow.runflow(path=flow, vars={})
+
+    out, err = capsys.readouterr()
+    assert 'FileNotFoundError' in err
 
 def test_subflow_vars(tmpdir, capsys):
     runflow.runflow(path='./examples/subflow_vars.hcl', vars={})

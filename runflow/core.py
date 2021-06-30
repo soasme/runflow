@@ -96,6 +96,12 @@ class Task:
             for depends_on in self.payload.get(DEPENDS_ON_KEY, [])
         )
 
+    def eval_payload(self, context):
+        return hcl2.evaluate(
+            {k: v for k, v in self.payload.items() if not k.startswith("_")},
+            context,
+        )
+
     async def run(self, context):
         """Run a task."""
         if self.type == "hcl2_template":
@@ -112,10 +118,7 @@ class Task:
             )
             return TaskResult(TaskStatus.CANCELED)
 
-        _payload = hcl2.evaluate(
-            {k: v for k, v in self.payload.items() if not k.startswith("_")},
-            context,
-        )
+        _payload = self.eval_payload(context)
         context["task"][self.type][self.name].update(_payload)
 
         task_result = TaskResult(TaskStatus.PENDING)
@@ -134,6 +137,7 @@ class Task:
             task_result.exception = err
             logger.info('"task.%s.%s" is failed.', self.type, self.name)
             traceback.print_exc()
+
         return task_result
 
 
@@ -213,11 +217,10 @@ class Flow:
         assert "flow" in flow, "Need a flow block"
         assert len(flow["flow"]) == 1, "Runflow spec should have only one flow"
 
-        flow = flow["flow"][0]
-        flow_name, flow_spec_body = next(iter(flow.items()))
-
+        flow_spec = flow["flow"][0]
+        flow_name, flow_body = next(iter(flow_spec.items()))
         flow = cls(name=flow_name)
-        flow.load_flow_spec_body(flow_spec_body)
+        flow.load_flow_spec_body(flow_body)
         return flow
 
     @classmethod
@@ -259,22 +262,16 @@ class Flow:
         task_key = depends_on.split(".")
         assert len(task_key) == 3 and task_key[0] == "task"
 
-        task_dependency = next(
-            (
-                t
-                for t in self.graph.nodes
-                if t.type == task_key[1] and t.name == task_key[2]
-            ),
-            None,
+        _, task_type, task_name = task_key
+
+        for task in self.graph.nodes:
+            if task.type == task_type and task.name == task_name:
+                return task
+
+        raise RunflowSyntaxError(
+            f"Task depends on {task_key} "
+            f"but the dependent task does not exist"
         )
-
-        if not task_dependency:
-            raise RunflowSyntaxError(
-                f"Task depends on {task_key} "
-                f"but the dependent task does not exist"
-            )
-
-        return task_dependency
 
     def load_flow_tasks_dependencies(self, task):
         """Find task dependencies."""
