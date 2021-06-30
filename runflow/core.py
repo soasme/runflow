@@ -7,6 +7,15 @@ import traceback
 
 import networkx
 from decouple import config
+from tenacity import (
+    retry,
+    stop_after_delay,
+    stop_after_attempt,
+    wait_fixed,
+    wait_random,
+    wait_exponential,
+    wait_chain,
+)
 
 from . import hcl2, utils
 from .errors import (
@@ -96,6 +105,49 @@ class Task:
             for depends_on in self.payload.get(DEPENDS_ON_KEY, [])
         )
 
+    def should_rerun(self, task, context):  # pylint: disable=too-many-branches
+        if "_retry" not in self.payload:
+            return task.run
+
+        _retry = hcl2.evaluate(self.payload.get("_retry", {}), context)
+        _retry_params = {}
+
+        for stop_after in _retry.get("stop", []):
+            if "after_attempt" in stop_after:
+                stoper = stop_after_attempt(stop_after["after_attempt"])
+            elif "after_delay" in stop_after:
+                stoper = stop_after_delay(stop_after["after_delay"])
+            else:
+                raise ValueError(f"invalid _retry.stop argument: {stop_after}")
+            if "stop" not in _retry_params:
+                _retry_params["stop"] = stoper
+            else:
+                _retry_params["stop"] |= stoper
+
+        waiters = []
+        for wait in _retry.get("wait", []):
+            if "fixed" in wait:
+                waiter = wait_fixed(wait["fixed"])
+            elif "random" in wait:
+                waiter = wait_random(
+                    min=wait["random"][0], max=wait["random"][1]
+                )
+            elif "multiplier" in wait:
+                waiter = wait_exponential(
+                    wait["multiplier"],
+                    min=wait.get("min", 1),
+                    max=wait.get("max", 1),
+                )
+            else:
+                raise ValueError(f"invalid _retry.wait argument: {wait}")
+            waiters.append(waiter)
+
+        if waiters:
+            _retry_params["wait"] = wait_chain(waiters)
+
+        _retry_params["reraise"] = True
+        return retry(**_retry_params)(task.run)
+
     def eval_payload(self, context):
         return hcl2.evaluate(
             {k: v for k, v in self.payload.items() if not k.startswith("_")},
@@ -126,10 +178,11 @@ class Task:
         try:
             logger.info('"task.%s.%s" is started.', self.type, self.name)
             task = self.runner(**_payload)
+            task_run = self.should_rerun(task, context)
             task_result.result = (
-                await task.run(context)
+                await task_run(context)
                 if inspect.iscoroutinefunction(task.run)
-                else await utils.to_thread(task.run, context)
+                else await utils.to_thread(task_run, context)
             ) or {}
             task_result.result.update(_payload)
             logger.info('"task.%s.%s" is successful.', self.type, self.name)
