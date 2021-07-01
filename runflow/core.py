@@ -13,10 +13,6 @@ from tenacity import (
     retry,
     stop_after_delay,
     stop_after_attempt,
-    wait_fixed,
-    wait_random,
-    wait_exponential,
-    wait_chain,
 )
 
 from . import hcl2, utils
@@ -115,18 +111,18 @@ class Task:
         _retry_params = {}
         stop_after = _retry.get("stop_after", "1 times")
         stopers = []
-        for _stop_after in stop_after.split('|'):
+        for _stop_after in stop_after.split("|"):
             _stop_after = _stop_after.strip()
             if not _stop_after:
                 continue
-            if 'times' in _stop_after:
-                attempts = int(_stop_after.replace('times', '').strip())
+            if "times" in _stop_after:
+                attempts = int(_stop_after.replace("times", "").strip())
                 stoper = stop_after_attempt(attempts)
-            elif 'seconds' in _stop_after:
-                seconds = float(_stop_after.replace('seconds', '').strip())
+            elif "seconds" in _stop_after:
+                seconds = float(_stop_after.replace("seconds", "").strip())
                 stoper = stop_after_delay(seconds)
             else:
-                raise ValueError(f'invalid _retry.stop_after: {_stop_after}')
+                raise ValueError(f"invalid _retry.stop_after: {_stop_after}")
             stopers.append(stoper)
 
         _retry_params["stop"] = reduce(lambda a, b: a | b, stopers)

@@ -881,5 +881,5 @@ FUNCS = {
     "wait_random": wait_random,
     "wait_exponential": wait_exponential,
     "wait_random_exponential": wait_random_exponential,
-    "wait_chain": lambda s: wait_chain(*s)
+    "wait_chain": lambda s: wait_chain(*s),
 }
