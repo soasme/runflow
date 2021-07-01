@@ -559,3 +559,45 @@ def test_load_extension(tmpdir):
     runflow.runflow(flow, vars={'out': str(out)})
 
     assert out.read().startswith("Bingo, it is VANILLA-")
+
+def test_retry_stop_after_attempts(tmpdir):
+    out = tmpdir / "out.txt"
+    runflow.runflow(source="""
+flow "retry_stop_after_attempts" {
+    task "bash_run" "this" {
+        command = "echo 1 >> ${var.out}; /__path__/to/echo hello world"
+        _retry = {
+            stop_after = "3 times"
+        }
+    }
+}
+    """, vars={"out": str(out)})
+    assert out.read() == "1\n1\n1\n"
+
+def test_retry_stop_after_delay(tmpdir):
+    out = tmpdir / "out.txt"
+    runflow.runflow(source="""
+flow "retry_stop_after_attempts" {
+    task "bash_run" "this" {
+        command = "echo 1 >> ${var.out}; /__path__/to/echo hello world"
+        _retry = {
+            stop_after = "0.1 seconds"
+        }
+    }
+}
+    """, vars={"out": str(out)})
+    assert out.read().splitlines() # well, we don't actually know how many of ONEs it will be.
+
+def test_retry_stop_after_delay_or_attempts(tmpdir):
+    out = tmpdir / "out.txt"
+    runflow.runflow(source="""
+flow "retry_stop_after_attempts" {
+    task "bash_run" "this" {
+        command = "echo 1 >> ${var.out}; /__path__/to/echo hello world"
+        _retry = {
+            stop_after = "0.1 seconds | 1 times"
+        }
+    }
+}
+    """, vars={"out": str(out)})
+    assert out.read() == "1\n"

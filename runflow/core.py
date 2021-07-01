@@ -4,10 +4,12 @@ import enum
 import inspect
 import logging
 import traceback
+from functools import reduce
 
 import networkx
 from decouple import config
 from tenacity import (
+    after_log,
     retry,
     stop_after_delay,
     stop_after_attempt,
@@ -111,41 +113,30 @@ class Task:
 
         _retry = hcl2.evaluate(self.payload.get("_retry", {}), context)
         _retry_params = {}
+        stop_after = _retry.get("stop_after", "1 times")
+        stopers = []
+        for _stop_after in stop_after.split('|'):
+            _stop_after = _stop_after.strip()
+            if not _stop_after:
+                continue
+            if 'times' in _stop_after:
+                attempts = int(_stop_after.replace('times', '').strip())
+                stoper = stop_after_attempt(attempts)
+            elif 'seconds' in _stop_after:
+                seconds = float(_stop_after.replace('seconds', '').strip())
+                stoper = stop_after_delay(seconds)
+            else:
+                raise ValueError(f'invalid _retry.stop_after: {_stop_after}')
+            stopers.append(stoper)
 
-        for stop_after in _retry.get("stop", []):
-            if "after_attempt" in stop_after:
-                stoper = stop_after_attempt(stop_after["after_attempt"])
-            elif "after_delay" in stop_after:
-                stoper = stop_after_delay(stop_after["after_delay"])
-            else:
-                raise ValueError(f"invalid _retry.stop argument: {stop_after}")
-            if "stop" not in _retry_params:
-                _retry_params["stop"] = stoper
-            else:
-                _retry_params["stop"] |= stoper
+        _retry_params["stop"] = reduce(lambda a, b: a | b, stopers)
 
         waiters = []
-        for wait in _retry.get("wait", []):
-            if "fixed" in wait:
-                waiter = wait_fixed(wait["fixed"])
-            elif "random" in wait:
-                waiter = wait_random(
-                    min=wait["random"][0], max=wait["random"][1]
-                )
-            elif "multiplier" in wait:
-                waiter = wait_exponential(
-                    wait["multiplier"],
-                    min=wait.get("min", 1),
-                    max=wait.get("max", 1),
-                )
-            else:
-                raise ValueError(f"invalid _retry.wait argument: {wait}")
-            waiters.append(waiter)
-
         if waiters:
             _retry_params["wait"] = wait_chain(waiters)
 
         _retry_params["reraise"] = True
+        _retry_params["after"] = after_log(logger, logging.DEBUG)
         return retry(**_retry_params)(task.run)
 
     def eval_payload(self, context):
