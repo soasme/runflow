@@ -130,11 +130,7 @@ class Task:
             stopers.append(stoper)
 
         _retry_params["stop"] = reduce(lambda a, b: a | b, stopers)
-
-        waiters = []
-        if waiters:
-            _retry_params["wait"] = wait_chain(waiters)
-
+        _retry_params["wait"] = _retry.get("wait", None)
         _retry_params["reraise"] = True
         _retry_params["after"] = after_log(logger, logging.DEBUG)
         return retry(**_retry_params)(task.run)
