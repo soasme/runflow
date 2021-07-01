@@ -12,7 +12,7 @@ Some reasons not using python-hcl2:
     a=b[*].1 => {'a': Tree('full_splat_expr_term', ['b', 1])}
   * It turns attribute values to a list: a = 1 => "a": [1].
 
-* I want something like `$datetime:datetime(year, month, date)` in HCL2.
+* I want the parser can import and call Python functions in HCL2.
 """
 
 import itertools
