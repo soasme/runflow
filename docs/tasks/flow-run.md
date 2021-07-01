@@ -67,7 +67,7 @@ hello 世界
 
 ## Export Flow Context
 
-You can set an optional argument `exports` to bring the values in the inner
+You can set an optional argument `export` to bring the values in the inner
 flow run context to the outer flow context.
 
 <<< @/examples/flow_exports.hcl
@@ -95,7 +95,7 @@ The following arguments are supported:
 * `module` - (Optional, str) The import module to the `".hcl"` module.
 * `source` - (Optional, str) The source of Runflow spec.
 * `vars` - (Optional, map) The variables for running a flow.
-* `exports` - (Optional, map) The export variables. The key will be used as task attribute name, and the value should be a valid reference in the inner flow run.
+* `export` - (Optional, block) The exported variables. The key will be used as task attribute name, and the value should be a valid reference in the inner flow run.
 
 ## Attributes Reference
 
