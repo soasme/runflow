@@ -601,3 +601,51 @@ flow "retry_stop_after_attempts" {
 }
     """, vars={"out": str(out)})
     assert out.read() == "1\n"
+
+def test_retry_wait_fixed_seconds(tmpdir):
+    out = tmpdir / "out.txt"
+    runflow.runflow(source="""
+flow "retry_stop_after_attempts" {
+    task "bash_run" "this" {
+        command = "echo `date +%s` >> ${var.out}; /__path__/to/echo hello world"
+        _retry = {
+            stop_after = "2 times"
+            wait = wait_fixed(1)
+        }
+    }
+}
+    """, vars={"out": str(out)})
+    ts = [int(x) for x in out.read().splitlines()]
+    assert ts[1] - ts[0] == 1
+
+def test_retry_wait_random_seconds(tmpdir):
+    out = tmpdir / "out.txt"
+    runflow.runflow(source="""
+flow "retry_stop_after_attempts" {
+    task "bash_run" "this" {
+        command = "echo `date +%s` >> ${var.out}; /__path__/to/echo hello world"
+        _retry = {
+            stop_after = "2 times"
+            wait = wait_random(0, 1)
+        }
+    }
+}
+    """, vars={"out": str(out)})
+    ts = [int(x) for x in out.read().splitlines()]
+    assert ts[1] - ts[0] <= 1
+
+def test_retry_wait_fixed_plus_jitter(tmpdir):
+    out = tmpdir / "out.txt"
+    runflow.runflow(source="""
+flow "retry_stop_after_attempts" {
+    task "bash_run" "this" {
+        command = "echo `date +%s` >> ${var.out}; /__path__/to/echo hello world"
+        _retry = {
+            stop_after = "2 times"
+            wait = wait_fixed(0.5) + wait_random(0, 0.49)
+        }
+    }
+}
+    """, vars={"out": str(out)})
+    ts = [int(x) for x in out.read().splitlines()]
+    assert ts[1] - ts[0] <= 1

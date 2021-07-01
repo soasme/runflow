@@ -26,6 +26,10 @@ from typing import Any, Dict, List, Set, Union
 
 from dateutil.parser import parse as parse_datetime
 from lark import Discard, Transformer
+from tenacity import (
+    wait_fixed,
+    wait_random,
+)
 
 from runflow.errors import RunflowReferenceError
 from runflow.utils import import_module
@@ -870,4 +874,6 @@ FUNCS = {
     "call": lambda obj, meth, args=None, kwargs=None: (
         getattr(obj, meth)(*(args or []), **(kwargs or {}))
     ),
+    "wait_fixed": wait_fixed,
+    "wait_random": wait_random,
 }
