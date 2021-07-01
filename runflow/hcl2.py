@@ -29,6 +29,9 @@ from lark import Discard, Transformer
 from tenacity import (
     wait_fixed,
     wait_random,
+    wait_exponential,
+    wait_random_exponential,
+    wait_chain,
 )
 
 from runflow.errors import RunflowReferenceError
@@ -876,4 +879,7 @@ FUNCS = {
     ),
     "wait_fixed": wait_fixed,
     "wait_random": wait_random,
+    "wait_exponential": wait_exponential,
+    "wait_random_exponential": wait_random_exponential,
+    "wait_chain": lambda s: wait_chain(*s)
 }
