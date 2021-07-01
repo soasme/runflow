@@ -31,8 +31,8 @@
 - [ ] hcl2: support any callable for `call()`.
 - [ ] hcl2: support `args()` and `kwargs()`.
 - [ ] hcl2: variable type constraints.
-- [ ] core: retry running failed tasks.
 - [ ] core: error recovering.
+- [x] core: retry running failed tasks. v0.6.1.
 - [x] core: run tasks when some checks are passed. v0.6.1.
 - [x] core: underscore for private task argument. v0.6.1.
 - [x] task: flow_run: support `exports` block. v0.6.1
