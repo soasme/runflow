@@ -2,7 +2,16 @@
 
 ## Not Yet Released
 
-[Code Changes](https://github.com/soasme/runflow/compare/v0.6.0..HEAD).
+[Code Changes](https://github.com/soasme/runflow/compare/v0.7.0..HEAD).
+
+## v0.7.0, 2 Jul, 2021
+
+[Code Changes](https://github.com/soasme/runflow/compare/v0.6.0..v0.7.0).
+
+* Enhancement: Support `_retry` for all tasks. [#41](https://github.com/soasme/runflow/pull/41), [#43](https://github.com/soasme/runflow/pull/43).
+* Enhancement: Task `flow_run` can now export variables through `export` blocks. [#36](https://github.com/soasme/runflow/pull/36), [#42](https://github.com/soasme/runflow/pull/42).
+* Enhancement: Task private arguments are now starting with an underscore `_`. [#37](https://github.com/soasme/runflow/pull/37).
+* Enhancement: Task can now keep running if all of its upstream are successful. [#38](https://github.com/soasme/runflow/pull/38).
 
 ## v0.6.0, 24 Jun, 2021
 
