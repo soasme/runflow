@@ -161,6 +161,35 @@ $ runflow run examples/conditional_trigger.hcl  --var version=0.1.0
 [2021-06-28 17:15:58,012] "task.file_write.echo" is canceled due to falsy deps.
 ```
 
+## Retry
+
+A task can have an optional argument `_retry` to control the retry behavior in case of execution failure.
+
+To stop the retry after several attempts or several seconds, use `_retry.stop_after`. The value of `stop_after` is a string in form of `M seconds`, or `N times`, or `M seconds | N times` (either M seconds or N times).
+
+To control the waiting periods between each retry, use `_retry.wait`. The value of `wait` should be like function calls below:
+
+* `wait_fixed(N)`: wait fixed amount of seconds.
+* `wait_random(M, N)`: wait random amount of seconds.
+* `wait_fixed(N) + wait_random(M, N)`: wait fixed amount of seconds plus some jitter seconds.
+* `wait_exponential(M, N, O)`: wait 2 ^ x * N seconds between each retry starting with N seconds, then up to O seconds, then O seconds afterwards.
+* `wait_chain([wait_fixed(N), wait_random(M, N), ...])`: chain various wait behavior for each retry.
+
+Example usage:
+
+<<< @/examples/retry.hcl
+
+::: details Click me to view the run output
+Run:
+
+```bash
+$ runflow run examples/retry.hcl
+[2021-07-02 11:40:10,640] "task.http_request.this" is started.
+[2021-07-02 11:40:22,793] "task.http_request.this" is failed.
+... (truncated)
+httpx.ConnectError: All connection attempts failed
+```
+
 ## Next to Read
 
 * [Concepts](concepts.md)
