@@ -649,3 +649,19 @@ flow "retry_stop_after_attempts" {
     """, vars={"out": str(out)})
     ts = [int(x) for x in out.read().splitlines()]
     assert ts[1] - ts[0] <= 1
+
+def test_wait_chain(tmpdir):
+    out = tmpdir / "out.txt"
+    runflow.runflow(source="""
+flow "retry_stop_after_attempts" {
+    task "bash_run" "this" {
+        command = "echo `date +%s` >> ${var.out}; /__path__/to/echo hello world"
+        _retry = {
+            stop_after = "2 times"
+            wait = wait_chain([wait_fixed(0.5), wait_exponential(1,0.1,1)])
+        }
+    }
+}
+    """, vars={"out": str(out)})
+    ts = [int(x) for x in out.read().splitlines()]
+    assert ts[1] - ts[0] <= 2
