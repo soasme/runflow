@@ -4,10 +4,10 @@ flow "flow_exports" {
   task "flow_run" "echo" {
     path = "./examples/hello.hcl"
 
-    # You can set as many custom fields in `exports`,
-    # as long as the values in map are valid variable references
+    # You can set as many custom fields in `export` block,
+    # as long as the values in block are valid variable references
     # in the flow `./examples/hello.hcl`.
-    exports = {
+    export {
 
       # In this example, since `task "bash_run" "echo" {...}`
       # has attribute `stdout`, you can export the stdout value
