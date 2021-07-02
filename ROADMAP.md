@@ -20,6 +20,33 @@
 - [ ] task: influxdb.
 - [ ] task: elasticsearch.
 - [ ] task: papermill.
+- [ ] tutorial: handle ML workflow d6tflow.
+- [ ] server: api token.
+- [ ] server: oauth2.
+- [ ] server: ldap.
+- [ ] server: saml.
+- [ ] server: internal user database.
+- [ ] server: support loading flow from remote services.
+- [ ] server: provide openapi spec for api.
+- [ ] server: use rq simple worker for cpu bound flow.
+- [ ] server: add thread worker for IO bound flow.
+- [ ] server: provide example docker-compose yaml file.
+- [ ] ci: publish server containers to docker hub.
+- [ ] server: new front-end project for web.
+- [ ] server: add entry for api.
+- [ ] server: add entry for scheduler.
+- [ ] server: add entry for worker.
+- [ ] core: save pickled task result.
+- [ ] jupyter notebook extension: hcl2.
+- [ ] core: preview all task execution statuses in ascii chars.
+- [ ] core: get all task execution statuses.
+- [ ] core: remove context from Task.run signature.
+- [ ] core: `_timeout`.
+- [ ] tutorial: debug: inspect data with a notebook.
+- [ ] bugfix: visualize: the arrow in the output is reversed.
+- [ ] bugfix: resolve deps failed when implicit deps is in inner map.
+- [ ] core: add docstring for all modules.
+- [ ] docs: generate module references using pdoc.
 - [ ] FEATURES FOR ALPHA RELEASE
 - [ ] docs: internal - technical overview.
 - [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
