@@ -1,5 +1,6 @@
 # ROAD MAP
 
+- [ ] core: foreach map tasks.
 - [ ] task: validate arguments.
 - [ ] task: define task using attr.
 - [ ] hcl2: variable type constraints.
@@ -21,10 +22,9 @@
 - [ ] task: influxdb.
 - [ ] task: elasticsearch.
 - [ ] task: papermill.
-- [ ] task: file_write: b64_content for binary data.
 - [ ] task: support running tasks concurrently other than the sequential runner.
-- [ ] core: foreach map tasks.
 - [ ] hcl2: support `...`.
+- [x] task: file_write: b64_content for binary data. v0.8.0.
 - [x] cli: support `runflow run --var-file`. v0.8.0.
 - [x] cli: support `runflow visualize xxx.rf`. v0.8.0.
 - [x] core: error recovering. v0.7.0.
