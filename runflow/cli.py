@@ -54,8 +54,8 @@ def cli_parser():
     )
     visualize_parser.add_argument(
         "--output",
-        default='visualize.svg',
-        help="The output of the flow graph visualization file."
+        default="visualize.svg",
+        help="The output of the flow graph visualization file.",
     )
 
     return parser
@@ -81,9 +81,9 @@ def cli_subcommand_run(args):
     """Command: `runflow run`."""
     vars = {}
     for varfile in args.varfiles or []:
-        with open(varfile) as f:
+        with open(varfile) as file:
             ctx = {}
-            for key, value in hcl2.loads(f.read()).items():
+            for key, value in hcl2.loads(file.read()).items():
                 eval_value = hcl2.evaluate(value, ctx)
                 ctx[key] = eval_value
                 vars[key] = eval_value
