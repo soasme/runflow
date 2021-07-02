@@ -32,6 +32,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        sudo apt-get install -y graphviz
         python3 -mpip install -r requirements-dev.txt
         python3 -mpip install -e .[docker]
 
