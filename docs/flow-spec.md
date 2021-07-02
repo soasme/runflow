@@ -198,6 +198,23 @@ set the value for attribute `content` with expression
 Runflow execution engine provides some additional built-in functions,
 such as `lower()`, `upper()`, `split()`, etc.
 
+If the final argument is list and followed by `...`, the final argument is expanded as Python star args.
+
+```
+str(value, ["utf-8", "strict"]...)
+
+# equivalent to Python `str(value, *["utf-8", "strict"])`
+```
+
+
+If the final argument is dict and followed by `...`, the final argument is expanded as Python double-star kwargs. For example:
+
+```
+tojson(value, {indent=2}...)
+
+# equivalent to Python `json.dumps(value, **{"indent": 2})`
+```
+
 For a full list of available functions, see the
 [function reference](builtin-functions.md).
 
