@@ -30,7 +30,7 @@ flow "hello-world" {
     assert out.read() == 'hello world\n'
 
 def test_invalid_cli_option(tmpdir):
-    flow = tmpdir / "test.rf"
+    flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"
     flow.write("""
 flow "hello-world" {
@@ -43,3 +43,20 @@ flow "hello-world" {
     with pytest.raises(SystemExit):
         cli(['run', '--var', f'out-2', str(flow)])
 
+
+def test_visualize(tmpdir):
+    flow = tmpdir / "test.hcl"
+    flow.write("""
+flow "visualize" {
+  task "bash_run" "echo" {
+    command = "echo hello world"
+  }
+}
+    """)
+    output = tmpdir / "visualize.svg"
+
+    cli(['visualize', '--output', str(output), str(flow)])
+
+    svg = output.read()
+    assert "task.bash_run.echo" in svg
+    assert "</svg>" in svg
