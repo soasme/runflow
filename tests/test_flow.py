@@ -616,7 +616,7 @@ flow "retry_stop_after_attempts" {
 }
     """, vars={"out": str(out)})
     ts = [int(x) for x in out.read().splitlines()]
-    assert ts[1] - ts[0] == 1
+    assert ts[1] - ts[0] >= 1
 
 def test_retry_wait_random_seconds(tmpdir):
     out = tmpdir / "out.txt"
@@ -642,7 +642,7 @@ flow "retry_stop_after_attempts" {
         command = "echo `date +%s` >> ${var.out}; /__path__/to/echo hello world"
         _retry = {
             stop_after = "2 times"
-            wait = wait_fixed(0.5) + wait_random(0, 0.49)
+            wait = wait_fixed(0.1) + wait_random(0, 0.1)
         }
     }
 }
