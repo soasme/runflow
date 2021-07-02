@@ -6,6 +6,7 @@ import sys
 
 from networkx.drawing.nx_agraph import to_agraph
 
+from . import hcl2
 from .run import loadflow, runflow
 
 
@@ -36,7 +37,13 @@ def cli_parser():
         "--var",
         dest="vars",
         action="append",
-        help="Provide variables for a Runflow job run",
+        help="A variable key-value pair",
+    )
+    run_parser.add_argument(
+        "--var-file",
+        dest="varfiles",
+        action="append",
+        help="Path to a file including variables",
     )
 
     visualize_parser = subparsers.add_parser(
@@ -47,8 +54,8 @@ def cli_parser():
     )
     visualize_parser.add_argument(
         "--output",
-        default='visualize.svg',
-        help="The output of the flow graph visualization file."
+        default="visualize.svg",
+        help="The output of the flow graph visualization file.",
     )
 
     return parser
@@ -72,15 +79,24 @@ def _load_specfile(specfile):
 
 def cli_subcommand_run(args):
     """Command: `runflow run`."""
-    vars = []
+    vars = {}
+    for varfile in args.varfiles or []:
+        with open(varfile) as file:
+            ctx = {}
+            for key, value in hcl2.loads(file.read()).items():
+                eval_value = hcl2.evaluate(value, ctx)
+                ctx[key] = eval_value
+                vars[key] = eval_value
+
     for var in args.vars or []:
         try:
-            vars.append(cli_parser_var(var))
+            key, value = cli_parser_var(var)
+            vars[key] = value
         except ValueError:
             cli_abort(f"Invalid --var option: {var}")
 
     loader = _load_specfile(args.specfile)
-    runflow(vars=dict(vars), **loader)
+    runflow(vars=vars, **loader)
 
 
 def cli_subcommand_visualize(args):

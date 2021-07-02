@@ -29,6 +29,26 @@ flow "hello-world" {
 
     assert out.read() == 'hello world\n'
 
+def test_cli_varfile(tmpdir):
+    flow = tmpdir / "test.hcl"
+    out = tmpdir / "out.txt"
+    varfile = tmpdir / "vars.hcl"
+    flow.write("""
+flow "hello-world" {
+  task "bash_run" "echo" {
+    command = "echo hello world > ${var.out}"
+  }
+}
+    """)
+    varfile.write(f"""
+    out = "{out}"
+    """)
+
+
+    cli(['run', '--var-file', str(varfile), str(flow)])
+
+    assert out.read() == 'hello world\n'
+
 def test_invalid_cli_option(tmpdir):
     flow = tmpdir / "test.hcl"
     out = tmpdir / "out.txt"

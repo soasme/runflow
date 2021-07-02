@@ -12,7 +12,6 @@
 - [ ] task: validate arguments.
 - [ ] task: define task using attr.
 - [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
-- [ ] cli: support `runflow visualize xxx.rf`.
 - [ ] task: s3.
 - [ ] task: dynamodb.
 - [ ] task: cloudwatch.
@@ -23,10 +22,11 @@
 - [ ] task: papermill.
 - [ ] task: file_write: b64_content for binary data.
 - [ ] task: support running tasks concurrently other than the sequential runner.
-- [ ] cli: support `runflow run --var-file`.
 - [ ] core: foreach map tasks.
 - [ ] hcl2: support `...`.
 - [ ] hcl2: variable type constraints.
+- [x] cli: support `runflow run --var-file`. v0.8.0.
+- [x] cli: support `runflow visualize xxx.rf`. v0.8.0.
 - [x] core: error recovering. v0.7.0.
 - [x] core: retry running failed tasks. v0.7.0.
 - [x] core: run tasks when some checks are passed. v0.7.0.
