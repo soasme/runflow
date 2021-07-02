@@ -36,10 +36,10 @@ jobs:
         python3 -mpip install -r requirements-dev.txt
         python3 -mpip install -e .[docker,pygraphviz]
 
-    - name: Run Flake8
+    - name: Run Lint
       run: |
-        flake8 runflow
+        make lint
 
     - name: Run tests
       run: |
-        pytest --cov=runflow --cov-report=term --cov-report=html tests
+        make test
