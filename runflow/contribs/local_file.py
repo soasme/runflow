@@ -22,8 +22,14 @@ class FileWriteTask:
             print(str(self.content))
             return
 
-        with self.filesystem.open(self.filename, "w+") as file:
-            file.write(self.content)
+        content = (
+            self.content
+            if isinstance(self.content, bytes)
+            else self.content.encode("utf-8")
+        )
+
+        with self.filesystem.open(self.filename, "wb") as file:
+            file.write(content)
 
 
 class FileReadTask:
@@ -37,5 +43,5 @@ class FileReadTask:
             content = file.read()
             return {
                 "content": content.decode("utf-8"),
-                "b64content": b64encode(content),
+                "b64content": b64encode(content).decode("utf-8"),
             }
