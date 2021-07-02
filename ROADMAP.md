@@ -1,5 +1,6 @@
 # ROAD MAP
 
+- [ ] FEATURES FOR BETA RELEASE
 - [ ] core: foreach map tasks.
 - [ ] task: validate arguments.
 - [ ] task: define task using attr.
@@ -11,9 +12,6 @@
 - [ ] docs: integrate with python-rq.
 - [ ] docs: call another remote flow (use http_request + flow_run) .
 - [ ] docs: a flow app following 12-factor principle.
-- [ ] FEATURES FOR BETA RELEASE
-- [ ] docs: internal - technical overview.
-- [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
 - [ ] task: s3.
 - [ ] task: dynamodb.
 - [ ] task: cloudwatch.
@@ -22,8 +20,11 @@
 - [ ] task: influxdb.
 - [ ] task: elasticsearch.
 - [ ] task: papermill.
+- [ ] FEATURES FOR ALPHA RELEASE
+- [ ] docs: internal - technical overview.
+- [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
 - [ ] task: support running tasks concurrently other than the sequential runner.
-- [ ] hcl2: support `...`.
+- [x] hcl2: support `...`. v0.8.0.
 - [x] task: file_write: b64_content for binary data. v0.8.0.
 - [x] cli: support `runflow run --var-file`. v0.8.0.
 - [x] cli: support `runflow visualize xxx.rf`. v0.8.0.
