@@ -4,7 +4,9 @@ import argparse
 import logging
 import sys
 
-from .run import runflow
+from networkx.drawing.nx_agraph import to_agraph
+
+from .run import loadflow, runflow
 
 
 def cli_abort(message):
@@ -36,6 +38,19 @@ def cli_parser():
         action="append",
         help="Provide variables for a Runflow job run",
     )
+
+    visualize_parser = subparsers.add_parser(
+        "visualize", help="Visualize a Runflow spec file"
+    )
+    visualize_parser.add_argument(
+        "specfile", help="Path to a Runflow spec file"
+    )
+    visualize_parser.add_argument(
+        "--output",
+        default='visualize.svg',
+        help="The output of the flow graph visualization file."
+    )
+
     return parser
 
 
@@ -43,6 +58,16 @@ def cli_parser_var(var):
     """Parse runflow `--var` value."""
     key, value = var.split("=")
     return key.strip(), value.strip()
+
+
+def _load_specfile(specfile):
+    if specfile.endswith(".hcl"):
+        return {"path": specfile}
+
+    if specfile == "-":
+        return {"source": sys.stdin.read()}
+
+    return {"module": specfile}
 
 
 def cli_subcommand_run(args):
@@ -54,12 +79,22 @@ def cli_subcommand_run(args):
         except ValueError:
             cli_abort(f"Invalid --var option: {var}")
 
-    if args.specfile.endswith(".hcl"):
-        runflow(path=args.specfile, vars=dict(vars))
-    elif args.specfile == "-":
-        runflow(source=sys.stdin.read(), vars=dict(vars))
-    else:
-        runflow(module=args.specfile, vars=dict(vars))
+    loader = _load_specfile(args.specfile)
+    runflow(vars=dict(vars), **loader)
+
+
+def cli_subcommand_visualize(args):
+    """Command: `runflow visualize`."""
+    flow = loadflow(**_load_specfile(args.specfile))
+    agraph = to_agraph(flow.graph)
+    agraph.layout("dot")
+    agraph.draw(args.output)
+
+
+SUBCOMMANDS = dict(
+    run=cli_subcommand_run,
+    visualize=cli_subcommand_visualize,
+)
 
 
 def cli(argv=None):
@@ -70,7 +105,7 @@ def cli(argv=None):
     logging_format = "[%(asctime)-15s] %(message)s"
     logging.basicConfig(level=args.log_level, format=logging_format)
 
-    if args.subparser_name == "run":
-        cli_subcommand_run(args)
+    if args.subparser_name in SUBCOMMANDS:
+        SUBCOMMANDS[args.subparser_name](args)
     else:
         parser.print_help()
