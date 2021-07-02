@@ -2,7 +2,12 @@
 
 ## Not Yet Released
 
-[Code Changes](https://github.com/soasme/runflow/compare/v0.7.0..HEAD).
+[Code Changes](https://github.com/soasme/runflow/compare/v0.8.0..HEAD).
+
+
+## v0.8.0, 2 Jul, 2021
+
+[Code Changes](https://github.com/soasme/runflow/compare/v0.7.0..v0.8.0).
 
 * Enhancement: HCL parser support star args and double-star args using `...`. [#47](https://github.com/soasme/runflow/pull/47).
 * Enhancement: New argument `b64content` for task type `file_write`. [#46](https://github.com/soasme/runflow/pull/46).
