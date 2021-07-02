@@ -40,6 +40,25 @@ build-backend = \"setuptools.build_meta\"
 ```
 :::
 
+## Read Base64-Encoded Content
+
+You can use `b64content` to get the base64-encoded content.
+
+<<< @/examples/file_read_b64.hcl
+
+::: details Click me to view the run output
+Run:
+```
+$ runflow run file_read_b64.hcl
+[2021-07-02 14:38:57,059] "task.file_read.this" is started.
+[2021-07-02 14:38:57,060] "task.file_read.this" is successful.
+[2021-07-02 14:38:57,060] "task.bash_run.this" is started.
+bW2J1aWxkLXN5c3RlbV0KcmVxdWlyZXMgPSBbCiAgICAic2V0dXB0b29scz49NDIiLAogICAgIndoZWVsIgpdCmJ1aWxkLWJhY2tlbmQgPSAic2V0dXB0b29scy5idWlsZF9tZXRhIgo=
+[2021-07-02 14:38:57,069] "task.bash_run.this" is successful.
+```
+:::
+
+
 ## File Not Found
 
 If `filename` is not a file or not found, an error occurs.
@@ -230,3 +249,4 @@ flow "hello_world" {
 The following attributes are supported:
 
 * `content` - The file content.
+* `b64content` - The file content encoded in base64 format.

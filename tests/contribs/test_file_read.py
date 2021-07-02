@@ -1,3 +1,5 @@
+from base64 import b64decode
+
 import docker
 import pytest
 
@@ -8,6 +10,11 @@ def test_file_read(capsys):
     runflow.runflow(module='examples.file_read:flow', vars={})
     out, err = capsys.readouterr()
     assert 'setuptools' in out
+
+def test_file_read_b64(capsys):
+    runflow.runflow(module='examples.file_read_b64:flow', vars={})
+    out, err = capsys.readouterr()
+    assert 'setuptools' in b64decode(out).decode('utf-8')
 
 def test_file_read_failed(capsys):
     runflow.runflow(module='examples.file_read_failed:flow', vars={})
