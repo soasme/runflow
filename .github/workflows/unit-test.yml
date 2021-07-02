@@ -32,8 +32,9 @@ jobs:
 
     - name: Install dependencies
       run: |
+        sudo apt-get install -y graphviz graphviz-dev
         python3 -mpip install -r requirements-dev.txt
-        python3 -mpip install -e .[docker]
+        python3 -mpip install -e .[docker,pygraphviz]
 
     - name: Run Flake8
       run: |

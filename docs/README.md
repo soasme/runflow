@@ -26,6 +26,7 @@ Welcome to Runflow's documentation.
 
 Flow:
 
+* References: [Command-Line Interface](cli.md)
 * References: [Runflow Specification](flow-spec.md).
 * References: [Built-In Functions](builtin-functions.md).
 
