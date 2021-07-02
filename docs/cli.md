@@ -24,6 +24,14 @@ $ runflow run /path/to/flow_spec.hcl --var 'key=value'
 
 ## Visualize
 
+:::tip
+This feature requires `pygraphviz`.
+
+```bash
+$ pip install runflow[pygraphviz]
+```
+:::
+
 Command `runflow visualize` generates a graph representation of a flow spec file.
 
 Generate a PNG file.
