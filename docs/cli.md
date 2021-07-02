@@ -27,6 +27,16 @@ $ runflow run /path/to/flow_spec.hcl --var 'key=value'
 :::tip
 This feature requires `pygraphviz`.
 
+Install `graphviz`:
+```bash
+$ sudo apt-get install graphviz-dev # Debian/Ubuntu user.
+
+$ sudo yum install graphviz-devel # RedHat/CentOS user.
+
+$ brew install graphviz # Mac user.
+```
+
+Then, install `pygraphviz`:
 ```bash
 $ pip install runflow[pygraphviz]
 ```
