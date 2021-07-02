@@ -19,7 +19,17 @@ $ runflow run path.to.package.module.flow_spec:flow
 Run with variables.
 
 ```bash
-$ runflow run /path/to/flow_spec.hcl --var 'key=value'
+$ runflow run /path/to/flow_spec.hcl --var 'key=value' --var 'key2=value2'
+```
+
+Run with variable  files.
+
+```bash
+$ cat vars.hcl
+key = "value"
+key2 = "${ key }2"
+
+$ runflow run /path/to/flow_spec.hcl --var-file vars.hcl
 ```
 
 ## Visualize
