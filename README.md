@@ -85,12 +85,13 @@ $ vi example.hcl
 
 ```
 # File: example.hcl
+
 flow "example" {
   variable "content" {
     default = "Hello World!"
   }
 
-  task "command" "echo" {
+  task "bash_run" "echo" {
     command = "echo ${var.content}"
   }
 }
@@ -110,13 +111,13 @@ Hello Runflow!
 
 ### What’s Next? 
 
-From this point, you have run a minimal example using Runflow. You can head to the Tutorial section for further examples or the How-to guides section for some common tasks in using and configuring Runflow.
+From this point, you have run a minimal example using Runflow.
 
-Please read the full [documentation](https://runflow.org).
+For more information, please head to the full [documentation](https://runflow.org).
 
 ## Test
 
-To run all of the test cases, please run: `make test`.
+To run all of the test cases, please run: `make lint test`.
 
 ## Get in Touch
 

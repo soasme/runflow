@@ -1,5 +1,8 @@
 # ROAD MAP
 
+- [ ] task: validate arguments.
+- [ ] task: define task using attr.
+- [ ] hcl2: variable type constraints.
 - [ ] task: command: cap_stdout, cap_stderr.
 - [ ] task: command: support sending stdin.
 - [ ] task: command: integrate pexpect.
@@ -9,8 +12,6 @@
 - [ ] docs: a flow app following 12-factor principle.
 - [ ] FEATURES FOR BETA RELEASE
 - [ ] docs: internal - technical overview.
-- [ ] task: validate arguments.
-- [ ] task: define task using attr.
 - [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
 - [ ] task: s3.
 - [ ] task: dynamodb.
@@ -24,7 +25,6 @@
 - [ ] task: support running tasks concurrently other than the sequential runner.
 - [ ] core: foreach map tasks.
 - [ ] hcl2: support `...`.
-- [ ] hcl2: variable type constraints.
 - [x] cli: support `runflow run --var-file`. v0.8.0.
 - [x] cli: support `runflow visualize xxx.rf`. v0.8.0.
 - [x] core: error recovering. v0.7.0.
