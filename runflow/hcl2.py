@@ -508,11 +508,12 @@ class AstTransformer(Transformer):
     def function_call(self, args: List) -> Call:
         args = strip_new_line_tokens(args)
         func_name = str(args[0])
+
         if len(args) == 1:
             return Call(func_name, [], {})
-        else:
-            func_args, func_kwargs = args[1]
-            return Call(func_name, func_args, func_kwargs)
+
+        func_args, func_kwargs = args[1]
+        return Call(func_name, func_args, func_kwargs)
 
     def kwarg(self, args: List):
         return Kwargs()
