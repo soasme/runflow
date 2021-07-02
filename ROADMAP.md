@@ -1,16 +1,18 @@
 # ROAD MAP
 
+- [ ] task: command: cap_stdout, cap_stderr.
+- [ ] task: command: support sending stdin.
+- [ ] task: command: integrate pexpect.
+- [ ] docs: integrate with celery.
+- [ ] docs: integrate with python-rq.
+- [ ] docs: call another remote flow (use http_request + flow_run) .
+- [ ] docs: a flow app following 12-factor principle.
 - [ ] FEATURES FOR BETA RELEASE
+- [ ] docs: internal - technical overview.
 - [ ] task: validate arguments.
 - [ ] task: define task using attr.
 - [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
-- [ ] docs: internal - technical overview.
-- [ ] docs: integrate with celery.
-- [ ] docs: integrate with python-rq.
-- [ ] docs: a flow app following 12-factor principle.
-- [ ] docs: call another remote flow (use http_request + flow_run) .
 - [ ] cli: support `runflow visualize xxx.rf`.
-- [ ] cli: support `runflow run --var-file`.
 - [ ] task: s3.
 - [ ] task: dynamodb.
 - [ ] task: cloudwatch.
@@ -19,19 +21,13 @@
 - [ ] task: influxdb.
 - [ ] task: elasticsearch.
 - [ ] task: papermill.
-- [ ] task: python: eval python code.
 - [ ] task: file_write: b64_content for binary data.
-- [ ] task: command: integrate pexpect.
-- [ ] task: command: support sending stdin.
-- [ ] task: command: cap_stdout, cap_stderr.
 - [ ] task: support running tasks concurrently other than the sequential runner.
-- [ ] core: cache flow results locally in a file ".state".
-- [ ] core: conditions: all_passed, all_failed, all_done, any_passed, any_failed, any_done.
+- [ ] cli: support `runflow run --var-file`.
 - [ ] core: foreach map tasks.
-- [ ] hcl2: support any callable for `call()`.
-- [ ] hcl2: support `args()` and `kwargs()`.
+- [ ] hcl2: support `...`.
 - [ ] hcl2: variable type constraints.
-- [ ] core: error recovering.
+- [x] core: error recovering. v0.7.0.
 - [x] core: retry running failed tasks. v0.7.0.
 - [x] core: run tasks when some checks are passed. v0.7.0.
 - [x] core: underscore for private task argument. v0.7.0.
