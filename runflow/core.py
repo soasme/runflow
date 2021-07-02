@@ -91,6 +91,9 @@ class Task:
             f"payload={self.payload})"
         )
 
+    def __str__(self):
+        return f"task.{self.type}.{self.name}"
+
     def __hash__(self):
         return hash(repr(self))
 
