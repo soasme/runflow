@@ -63,6 +63,32 @@ Examples:
 "{\"key\": \"value\"}"
 ```
 
+`tojson()` supports more controlling parameters using `...` syntax.
+
+Examples:
+
+Set indentation `indent`:
+
+```
+> tojson({ key = "value" }, { indent = 2 }...)
+"{\n  \"key\": \"value\"\n}"
+```
+
+Set separators `separators`:
+
+```
+> tojson([1,2,3], {separators=[",  ", ":  "]}...)
+"[1,  2,  3]"
+```
+
+Sort keys `sort_keys`:
+
+```
+> tojson({ "k2": 2, "k1": 1 }, { sort_keys = true }...)
+"{\"k1\": 1, \"k2\": 2}"
+```
+
+
 ## `concat()`
 
 `concat()` concats multiple lists.

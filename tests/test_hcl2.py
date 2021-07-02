@@ -88,11 +88,11 @@ def test_full_splat():
 
 def test_func_call():
     assert hcl2.loads('a = randint()') == {'a': hcl2.Interpolation(
-        hcl2.Call('randint', [])
+        hcl2.Call('randint', [], {})
     )}
     assert hcl2.loads('shouty_message = upper(message)') == {
         'shouty_message': hcl2.Interpolation(
-            hcl2.Call('upper', [hcl2.Identifier('message')])
+            hcl2.Call('upper', [hcl2.Identifier('message')], {})
         )
     }
 
@@ -361,4 +361,26 @@ def test_eval():
     }
     assert hcl2.evaluate(hcl2.loads('a = call("xyz.abc", "replace", ["abc", "ABC"], {})'), {}) == {
         'a': "xyz.ABC"
+    }
+
+    assert hcl2.evaluate(hcl2.loads('''a = tojson({
+        k2 = 2
+        k1 = 1
+    }, {indent=2}...)'''), {}) == {
+        'a': """{
+  "k2": 2,
+  "k1": 1
+}"""
+    }
+    assert hcl2.evaluate(hcl2.loads('''a = tojson({
+        k2 = 2
+        k1 = 1
+    }, {sort_keys=true}...)'''), {}) == {
+        'a': """{"k1": 1, "k2": 2}"""
+    }
+    assert hcl2.evaluate(hcl2.loads('''a = tojson({
+        k1 = 1
+        k2 = 2
+    }, {separators=[", ", ":  "]}...)'''), {}) == {
+        'a': """{"k1":  1, "k2":  2}"""
     }
