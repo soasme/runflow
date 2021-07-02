@@ -229,10 +229,16 @@ class Splat:
         )
 
 
+class Kwargs:
+    def __init__(self, args=None):
+        self.args = args
+
+
 class Call:
-    def __init__(self, func_name, args):
+    def __init__(self, func_name, args, kwargs):
         self.func_name = func_name
         self.args = args
+        self.kwargs = kwargs
 
     def __repr__(self):
         return "%s(%s)" % (self.func_name, ",".join(str(a) for a in self.args))
@@ -502,11 +508,19 @@ class AstTransformer(Transformer):
     def function_call(self, args: List) -> Call:
         args = strip_new_line_tokens(args)
         func_name = str(args[0])
-        func_args = args[1] if len(args) > 1 else []
-        return Call(func_name, func_args)
+        if len(args) == 1:
+            return Call(func_name, [], {})
+        else:
+            func_args, func_kwargs = args[1]
+            return Call(func_name, func_args, func_kwargs)
+
+    def kwarg(self, args: List):
+        return Kwargs()
 
     def arguments(self, args: List) -> List:
-        return args
+        if args and isinstance(args[-1], Kwargs):
+            return (args[:-2], args[-2])
+        return (args, [])
 
     def conditional(self, args: List) -> Conditional:
         args = strip_new_line_tokens(args)
@@ -804,7 +818,6 @@ def _(ast: Conditional, env):
 
 @evaluate.register
 def _(ast: Call, env):
-    args = evaluate(ast.args, env)
     func_name = str(ast.func_name)
     if ":" in func_name:
         func = import_module(func_name)
@@ -816,7 +829,20 @@ def _(ast: Call, env):
         func = env["func"][func_name]
     else:
         raise NameError(f"function {ast.func_name} is not defined")
-    return func(*args)
+
+    args = evaluate(ast.args, env)
+    kwargs = evaluate(ast.kwargs, env)
+    if isinstance(kwargs, dict):
+        _args = args
+        _kwargs = kwargs
+    elif isinstance(kwargs, list):
+        _args = args + kwargs
+        _kwargs = {}
+    else:
+        _args = args + [kwargs]
+        _kwargs = {}
+
+    return func(*_args, **_kwargs)
 
 
 OPERATORS = {
