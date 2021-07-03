@@ -205,6 +205,161 @@ flow "hello-world" {
 
     assert out.read() == 'hello world2\n'
 
+def test_implicit_depends_on_in_nested_map(tmpdir, capsys):
+    flow = tmpdir / "test.hcl"
+    flow.write("""
+flow "hello-world" {
+  task "file_write" "out3" {
+    filename = "/dev/stdout"
+    content = task.hcl2_template.out1.content
+  }
+  task "hcl2_template" "out1" {
+    source = "${a.b.c}2"
+    context = {
+      a = {
+        b = {
+          c = task.bash_run.out2.stdout
+        }
+      }
+    }
+  }
+  task "bash_run" "out2" {
+    command = "echo hello world"
+  }
+}
+    """)
+
+    runflow.runflow(flow, vars={})
+    out, err = capsys.readouterr()
+    assert out == 'hello world\nhello world2\n'
+
+def test_implicit_depends_on_in_function_call(tmpdir, capsys):
+    flow = tmpdir / "test.hcl"
+    flow.write("""
+flow "hello-world" {
+  task "file_write" "out2" {
+    filename = "/dev/stdout"
+    content = tojson(task.bash_run.out2.stdout)
+  }
+  task "bash_run" "out2" {
+    command = "echo hello world"
+  }
+}
+    """)
+
+    runflow.runflow(flow, vars={})
+    out, err = capsys.readouterr()
+    assert out == 'hello world\n"hello world"\n'
+
+def test_implicit_depends_on_splat(tmpdir, capsys):
+    flow = tmpdir / "test.hcl"
+    flow.write("""
+flow "hello-world" {
+  task "file_write" "out2" {
+    filename = "/dev/stdout"
+    content = task.hcl2_template.out2.content.*.a
+  }
+  task "hcl2_template" "out2" {
+    source = [{a=1},{a=2}]
+  }
+}
+    """)
+
+    runflow.runflow(flow, vars={})
+    out, err = capsys.readouterr()
+    assert out == '[1, 2]\n'
+
+def test_implicit_depends_on_condition(tmpdir, capsys):
+    flow = tmpdir / "test.hcl"
+    flow.write("""
+flow "hello-world" {
+  task "file_write" "out2" {
+    filename = "/dev/stdout"
+    content = task.hcl2_template.out2.content ? "hello world" : "hello world2"
+  }
+  task "hcl2_template" "out2" {
+    source = true
+  }
+}
+    """)
+
+    runflow.runflow(flow, vars={})
+    out, err = capsys.readouterr()
+    assert out == 'hello world\n'
+
+def test_implicit_depends_on_operation(tmpdir, capsys):
+    flow = tmpdir / "test.hcl"
+    flow.write("""
+flow "hello-world" {
+  task "file_write" "out2" {
+    filename = "/dev/stdout"
+    content = 1 + task.hcl2_template.out2.content
+  }
+  task "hcl2_template" "out2" {
+    source = 1
+  }
+}
+    """)
+
+    runflow.runflow(flow, vars={})
+    out, err = capsys.readouterr()
+    assert out == '2\n'
+
+def test_implicit_depends_on_list_expr(tmpdir, capsys):
+    flow = tmpdir / "test.hcl"
+    flow.write("""
+flow "hello-world" {
+  task "file_write" "out2" {
+    filename = "/dev/stdout"
+    content = [for x in task.hcl2_template.out2.content: x]
+  }
+  task "hcl2_template" "out2" {
+    source = [1,2]
+  }
+}
+    """)
+
+    runflow.runflow(flow, vars={})
+    out, err = capsys.readouterr()
+    assert out == '[1, 2]\n'
+
+def test_implicit_depends_on_dict_expr(tmpdir, capsys):
+    flow = tmpdir / "test.hcl"
+    flow.write("""
+flow "hello-world" {
+  task "file_write" "out2" {
+    filename = "/dev/stdout"
+    content = {for k, v in task.hcl2_template.out2.content: k => v }
+  }
+  task "hcl2_template" "out2" {
+    source = { k = 1 }
+  }
+}
+    """)
+
+    runflow.runflow(flow, vars={})
+    out, err = capsys.readouterr()
+    assert out == "{'k': 1}\n"
+
+def test_implicit_depends_on_not_expr(tmpdir, capsys):
+    flow = tmpdir / "test.hcl"
+    flow.write("""
+flow "hello-world" {
+  task "file_write" "out2" {
+    filename = "/dev/stdout"
+    content = !task.hcl2_template.out2.content
+  }
+  task "hcl2_template" "out2" {
+    source = true
+  }
+}
+    """)
+
+    runflow.runflow(flow, vars={})
+    out, err = capsys.readouterr()
+    assert out == "False\n"
+
+
 def test_depends_on_can_be_a_task(tmpdir):
     flow = tmpdir / "test.hcl"
     out1 = tmpdir / "out1.txt"
