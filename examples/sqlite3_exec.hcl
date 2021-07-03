@@ -40,5 +40,9 @@ flow "sqlite3_exec" {
         value = "v3"
       }
     }
+
+    _depends_on = [
+      task.sql_exec.create_table,
+    ]
   }
 }

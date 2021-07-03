@@ -62,7 +62,7 @@
 - [ ] core: support task argument `_timeout`.
 - [ ] core: preview all task execution statuses in ascii chars.
 - [ ] core: get all task execution statuses.
-- [ ] bugfix: visualize: the arrow in the output is reversed.
+- [x] bugfix: visualize: the arrow in the output is reversed. v0.8.1.
 - [x] core: remove context from Task.run signature. v0.8.1.
 - [x] bugfix: resolve deps failed when implicit deps is in inner map. v0.8.1.
 - [x] FEATURES FOR ALPHA RELEASE

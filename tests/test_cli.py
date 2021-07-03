@@ -80,3 +80,13 @@ flow "visualize" {
     svg = output.read()
     assert "task.bash_run.echo" in svg
     assert "</svg>" in svg
+
+def test_visualize_dot(tmpdir):
+    output = tmpdir / "visualize.dot"
+    cli(['visualize', '--output', str(output), 'examples/hello-deps.hcl'])
+    assert '"task.bash_run.greeter" -> "task.bash_run.echo"' in output.read()
+
+def test_visualize_dot2(tmpdir):
+    output = tmpdir / "visualize.dot"
+    cli(['visualize', '--output', str(output), 'examples/hello-implicit-deps.hcl'])
+    assert '"task.bash_run.greeter" -> "task.bash_run.echo"' in output.read()
