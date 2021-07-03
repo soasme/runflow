@@ -9,7 +9,7 @@ class BashRunTask:
         env = env or {}
         self.env = {k: str(v) for k, v in env.items()}
 
-    async def run(self, context):
+    async def run(self):
         proc = await asyncio.create_subprocess_shell(
             self.command,
             stdout=asyncio.subprocess.PIPE,

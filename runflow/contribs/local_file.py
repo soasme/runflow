@@ -17,7 +17,7 @@ class FileWriteTask:
                 "at least one of `content` / `b64content` must have value"
             )
 
-    async def run(self, context):
+    async def run(self):
         if self.filename == "/dev/stdout":
             print(str(self.content))
             return
@@ -38,7 +38,7 @@ class FileReadTask:
         self.filesystem = fsspec.filesystem(**fs)
         self.filename = filename
 
-    async def run(self, contenxt):
+    async def run(self):
         with self.filesystem.open(self.filename, "rb") as file:
             content = file.read()
             return {

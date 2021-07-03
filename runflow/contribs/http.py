@@ -35,7 +35,7 @@ class HttpRequestTask:
         self.timeout = timeout
         self.raise_for_status = raise_for_status
 
-    async def run(self, context):
+    async def run(self):
         async with httpx.AsyncClient() as client:
             response = await client.request(
                 method=self.method,
