@@ -62,9 +62,9 @@
 - [ ] core: support task argument `_timeout`.
 - [ ] core: preview all task execution statuses in ascii chars.
 - [ ] core: get all task execution statuses.
-- [ ] core: remove context from Task.run signature.
 - [ ] bugfix: visualize: the arrow in the output is reversed.
-- [ ] bugfix: resolve deps failed when implicit deps is in inner map.
+- [x] core: remove context from Task.run signature. v0.8.1.
+- [x] bugfix: resolve deps failed when implicit deps is in inner map. v0.8.1.
 - [x] FEATURES FOR ALPHA RELEASE
 - [x] hcl2: support `...`. v0.8.0.
 - [x] task: file_write: b64_content for binary data. v0.8.0.

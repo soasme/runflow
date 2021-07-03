@@ -14,7 +14,7 @@ You will need to write some Python code and hook it up in a Runflow spec.
 
 The Task class must accept task payload as keyword arguments.
 
-It must has `def run(self, context)` or `async def run(self, context)` method,
+It must has `def run(self)` or `async def run(self)` method,
 which performs the actual task work.
 
 The example below shows how to write something into a file.
@@ -88,7 +88,7 @@ class GuessIceCreamTask:
         self.name = name
         self.output = output
 
-    async def run(self, context):
+    async def run(self):
         with open(self.output, 'w') as f:
             f.write(f"Bingo, it is {self.name}")
 ```
