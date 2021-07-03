@@ -188,7 +188,7 @@ class SequentialRunner:
         self.results = {}
 
     def check_depends_on(self, task):
-        for upstream_task in self.flow.graph.successors(task):
+        for upstream_task in self.flow.graph.predecessors(task):
             if self.results[upstream_task].status in (
                 TaskStatus.FAILED,
                 TaskStatus.CANCELED,
@@ -230,7 +230,7 @@ class Flow:
     def __iter__(self):
         """Iterate through all tasks in a dependent order."""
         try:
-            return reversed(list(networkx.topological_sort(self.graph)))
+            yield from networkx.topological_sort(self.graph)
         except networkx.exception.NetworkXUnfeasible as err:
             raise RunflowAcyclicTasksError(str(err)) from err
 
@@ -274,8 +274,12 @@ class Flow:
         self.graph.add_node(task)
 
     def set_dependency(self, task, depends_on):
-        """Let `task` depends on `depends_on`."""
-        self.graph.add_edge(task, depends_on)
+        """Let `task` depends on `depends_on`,
+
+        e.g. `depends_on` is a predecessor edge of `task`.
+
+        """
+        self.graph.add_edge(depends_on, task)
 
     def set_default_var(self, name, value):
         """Set default value for variable."""
