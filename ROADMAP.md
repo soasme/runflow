@@ -1,10 +1,8 @@
 # ROAD MAP
 
 - [ ] FEATURES FOR BETA RELEASE
-- [ ] core: foreach map tasks.
 - [ ] task: validate arguments.
 - [ ] task: define task using attr.
-- [ ] hcl2: variable type constraints.
 - [ ] task: command: cap_stdout, cap_stderr.
 - [ ] task: command: support sending stdin.
 - [ ] task: command: integrate pexpect.
@@ -20,37 +18,54 @@
 - [ ] task: influxdb.
 - [ ] task: elasticsearch.
 - [ ] task: papermill.
-- [ ] tutorial: handle ML workflow d6tflow.
-- [ ] server: api token.
-- [ ] server: oauth2.
-- [ ] server: ldap.
-- [ ] server: saml.
-- [ ] server: internal user database.
+- [ ] tutorial: handle ML workflow like d6tflow.
 - [ ] server: support loading flow from remote services.
-- [ ] server: provide openapi spec for api.
-- [ ] server: use rq simple worker for cpu bound flow.
-- [ ] server: add thread worker for IO bound flow.
+- [ ] server: provide openapi spec for worker.
+- [ ] server: crud for job.
 - [ ] server: provide example docker-compose yaml file.
+- [ ] server: provide example k8s helm charts yaml files.
 - [ ] ci: publish server containers to docker hub.
-- [ ] server: new front-end project for web.
-- [ ] server: add entry for api.
-- [ ] server: add entry for scheduler.
-- [ ] server: add entry for worker.
+- [ ] server: write a technical overview of overall server design - components:ui,api,worker,db.backend_authentication:ldap,saml,oauth2,internal_user_database.authentication:internal_user_database,api_token.internal:pg,SKIP LOCKED.
 - [ ] core: save pickled task result.
 - [ ] jupyter notebook extension: hcl2.
+- [ ] tutorial: debug: inspect data with a notebook.
+- [ ] core: add docstring for all modules.
+- [ ] docs: generate module references using pdoc.
+- [ ] docs: internal - technical overview.
+- [ ] task: docker_run: provide some general flows for various programming languages.
+- [ ] hcl2: variable `required = true`. if not provided, cli will prompt for a value.
+- [ ] core: file_read can parse file content from various file formats, such as json, csv, etc.
+- [ ] cli: json.loads envvar if it's not a string.
+- [ ] hcl2: variable type constraints.
+- [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
+- [ ] hcl2: specify software requirements for a flow.
+- [ ] hcl2: flow spec: `_version`. Let user specify the version for a flow.
+- [ ] hcl2: flow spec: `_maintainers`. Let user specify the maintainers for a flow.
+- [ ] hcl2: flow spec: `_license`. Let user specify the license for a flow.
+- [ ] hcl2: flow spec: `_doc`. Let user specify the doc for a flow.
+- [ ] hcl2: task argument `_cache.key`, `_cache.target`. if arguments have not changed, task will not run.
+- [ ] cli option: enable/disable importing HCL2 flows.
+- [ ] cli option: enable/disable importing Python functions/tasks.
+- [ ] core: can run a task in a subprocess rather than in a thread.
+- [ ] core: support running tasks concurrently other than the sequential runner.
+- [ ] task: jsonrpc_request.
+- [ ] task: grpc_request.
+- [ ] builtin: xml data extraction like huginn using xpath.
+- [ ] docs: make flow spec v1.0 specification.
+- [ ] core: add namespace in the log for tasks within a flow_run.
+- [ ] core: `import.tasks` support `Flow` as task.
+- [ ] hcl2: support task argument `_foreach` to map an array of inputs to a task.
+- [ ] cli: `runflow worker` can download flow package and put it in tmpdir for execution.
+- [ ] cli: `runflow register`: register a flow and extra resources (pycode, dep flows, etc)to db.
+- [ ] cli: `runflow worker`: pull flow schedules from db and schedule executions locally.
+- [ ] core: support task argument `_schedule`. `runflow run` just ignores it. `runflow worker` can recognize them and schedule executions.
+- [ ] core: support task argument `_timeout`.
 - [ ] core: preview all task execution statuses in ascii chars.
 - [ ] core: get all task execution statuses.
 - [ ] core: remove context from Task.run signature.
-- [ ] core: `_timeout`.
-- [ ] tutorial: debug: inspect data with a notebook.
 - [ ] bugfix: visualize: the arrow in the output is reversed.
 - [ ] bugfix: resolve deps failed when implicit deps is in inner map.
-- [ ] core: add docstring for all modules.
-- [ ] docs: generate module references using pdoc.
-- [ ] FEATURES FOR ALPHA RELEASE
-- [ ] docs: internal - technical overview.
-- [ ] hcl2: more built-in functions like https://www.terraform.io/docs/language/functions/index.html.
-- [ ] task: support running tasks concurrently other than the sequential runner.
+- [x] FEATURES FOR ALPHA RELEASE
 - [x] hcl2: support `...`. v0.8.0.
 - [x] task: file_write: b64_content for binary data. v0.8.0.
 - [x] cli: support `runflow run --var-file`. v0.8.0.
