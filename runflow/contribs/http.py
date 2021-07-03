@@ -32,7 +32,9 @@ class HttpRequestTask:
         self.json = json
         self.auth = auth
         self.allow_redirects = allow_redirects
-        self.timeout = timeout
+        self.timeout = (
+            httpx.Timeout(**timeout) if isinstance(timeout, dict) else timeout
+        )
         self.raise_for_status = raise_for_status
 
     async def run(self):
