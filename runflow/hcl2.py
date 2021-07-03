@@ -652,6 +652,51 @@ def _(value: Interpolation, deps: Set):
 
 
 @resolve_deps.register
+def _(value: Call, deps: Set):
+    resolve_deps(value.args, deps)
+    resolve_deps(value.kwargs, deps)
+
+
+@resolve_deps.register
+def _(value: Splat, deps: Set):
+    resolve_deps(value.array, deps)
+
+
+@resolve_deps.register
+def _(value: Conditional, deps: Set):
+    resolve_deps(value.predicate, deps)
+    resolve_deps(value.true_expr, deps)
+    resolve_deps(value.false_expr, deps)
+
+
+@resolve_deps.register
+def _(value: ListExpr, deps: Set):
+    resolve_deps(value.array, deps)
+    resolve_deps(value.element, deps)
+    resolve_deps(value.condition, deps)
+
+
+@resolve_deps.register
+def _(value: DictExpr, deps: Set):
+    resolve_deps(value.array, deps)
+    resolve_deps(value.key, deps)
+    resolve_deps(value.value, deps)
+    resolve_deps(value.condition, deps)
+
+
+@resolve_deps.register
+def _(value: Not, deps: Set):
+    resolve_deps(value.expr, deps)
+
+
+@resolve_deps.register
+def _(value: Operation, deps: Set):
+    for index, elem in enumerate(value.elements):
+        if index % 2 == 0:
+            resolve_deps(elem, deps)
+
+
+@resolve_deps.register
 def _(value: GetAttr, deps: Set):
     task_keys = list(value.attr_chain)
     if task_keys and task_keys[0] == "task" and len(task_keys) >= 3:
