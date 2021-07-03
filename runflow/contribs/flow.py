@@ -12,7 +12,7 @@ class FlowRunTask:
         self.vars = vars or {}
         self.export = export or []
 
-    async def run(self, context):
+    async def run(self):
         flow = loadflow(path=self.path, source=self.source, module=self.module)
         flow_context = await flow.run(vars=self.vars)
 

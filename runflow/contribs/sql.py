@@ -8,7 +8,7 @@ class SqlExecTask:
         self.parameters = parameters or []
         self.autocommit = autocommit
 
-    def run(self, context):
+    def run(self):
         with self.engine.begin() as conn:
             conn = conn.execution_options(autocommit=self.autocommit)
             for sql in self.sqls:
@@ -28,7 +28,7 @@ class SqlRowTask:
         self.sql = sql[0]
         self.parameters = parameters or []
 
-    def run(self, context):
+    def run(self):
         with self.engine.begin() as conn:
             statement = text(self.sql["statement"])
             parameters = self.sql.get("parameters") or None

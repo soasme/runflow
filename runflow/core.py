@@ -166,9 +166,9 @@ class Task:
             task = self.runner(**_payload)
             task_run = self.should_rerun(task, context)
             task_result.result = (
-                await task_run(context)
+                await task_run()
                 if inspect.iscoroutinefunction(task.run)
-                else await utils.to_thread(task_run, context)
+                else await utils.to_thread(task_run)
             ) or {}
             task_result.result.update(_payload)
             logger.info('"task.%s.%s" is successful.', self.type, self.name)

@@ -6,6 +6,6 @@ class GuessIceCreamTask:
         self.name = name
         self.output = output
 
-    async def run(self, context):
+    async def run(self):
         with open(self.output, 'w') as f:
             f.write(f"Bingo, it is {self.name}")

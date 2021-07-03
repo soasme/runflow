@@ -14,7 +14,7 @@ class DockerRunTask:
         self.args = kwargs
         self.client = docker.from_env()
 
-    async def run(self, context):
+    async def run(self):
         stdout = await to_thread(
             self.client.containers.run,
             image=self.image,
