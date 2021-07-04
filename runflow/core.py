@@ -85,6 +85,7 @@ class Task:
         self.runner = runner
         self.name = name
         self.payload = payload
+        self.namespace = ""
 
     def __repr__(self):
         return (
@@ -94,13 +95,19 @@ class Task:
         )
 
     def __str__(self):
-        return f"task.{self.type}.{self.name}"
+        return (
+            f"{self.namespace}{self.namespace and ' > ' or ''}"
+            f"task.{self.type}.{self.name}"
+        )
 
     def __hash__(self):
         return hash(repr(self))
 
     def __eq__(self, o):
         return self.type == o.type and self.name == o.name
+
+    def set_namespace(self, namespace):
+        self.namespace = namespace
 
     def should_run(self, context):
         return all(
@@ -125,8 +132,6 @@ class Task:
         stopers = []
         for _stop_after in stop_after.split("|"):
             _stop_after = _stop_after.strip()
-            if not _stop_after:
-                continue
             if "times" in _stop_after:
                 attempts = int(_stop_after.replace("times", "").strip())
                 stoper = stop_after_attempt(attempts)
@@ -158,11 +163,7 @@ class Task:
             )
 
         if not self.should_run(context):
-            logger.info(
-                '"task.%s.%s" is canceled due to falsy deps.',
-                self.type,
-                self.name,
-            )
+            logger.info('"%s" is canceled due to falsy deps.', str(self))
             return TaskResult(TaskStatus.CANCELED)
 
         _payload = self.eval_payload(context)
@@ -171,7 +172,7 @@ class Task:
         task_result = TaskResult(TaskStatus.PENDING)
 
         try:
-            logger.info('"task.%s.%s" is started.', self.type, self.name)
+            logger.info('"%s" is started.', str(self))
             if isinstance(self.runner, Flow):
                 task = self.runner.as_task(_payload)
             else:
@@ -188,10 +189,10 @@ class Task:
                 or {}
             )
             task_result.result.update(_payload)
-            logger.info('"task.%s.%s" is successful.', self.type, self.name)
+            logger.info('"%s" is successful.', str(self))
         except Exception as err:  # pylint: disable=broad-except
             task_result.exception = err
-            logger.info('"task.%s.%s" is failed.', self.type, self.name)
+            logger.info('"%s" is failed.', str(self))
             traceback.print_exc()
 
         return task_result
