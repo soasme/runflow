@@ -826,3 +826,9 @@ def test_timeout(tmpdir, capsys):
     runflow.runflow(path="examples/timeout.hcl", vars={})
     out, err = capsys.readouterr()
     assert 'TimeoutError' in err
+
+
+def test_flow_as_task(capsys):
+    runflow.runflow(path="examples/flow_as_task.hcl", vars={'globals': 42})
+    out, err = capsys.readouterr()
+    assert out == "42\n42\n42\n42\n42\n"

@@ -23,6 +23,7 @@ from .errors import (
 )
 from .hcl2_parser import LarkError
 from .registry import get_task_class, register_task_class
+from .utils import import_module
 
 logger = logging.getLogger(__name__)
 
@@ -171,7 +172,11 @@ class Task:
 
         try:
             logger.info('"task.%s.%s" is started.', self.type, self.name)
-            task = self.runner(**_payload)
+            if isinstance(self.runner, Flow):
+                task = self.runner.as_task(_payload)
+            else:
+                task = self.runner(**_payload)
+
             task_run = self.should_rerun(task, context)
             task_result.result = (
                 await asyncio.wait_for(
@@ -190,6 +195,42 @@ class Task:
             traceback.print_exc()
 
         return task_result
+
+
+class FlowRunTask:
+    def __init__(
+        self,
+        path=None,
+        source=None,
+        module=None,
+        flow=None,
+        vars=None,
+        export=None,
+    ):
+        self.path = path
+        self.source = source
+        self.module = module
+        self.flow = flow
+        self.vars = vars or {}
+        self.export = export or []
+
+    async def run(self):
+        flow = Flow.load(
+            path=self.path,
+            source=self.source,
+            module=self.module,
+            flow=self.flow,
+        )
+        flow_context = await flow.run(vars=self.vars)
+
+        if flow.exception:
+            raise flow.exception
+
+        return {
+            key: hcl2.evaluate(hcl2.loads(value, "eval"), flow_context)
+            for export in self.export
+            for key, value in export.items()
+        }
 
 
 class SequentialRunner:
@@ -229,6 +270,7 @@ class SequentialRunner:
             self.results[task] = await self.run_task(task, context)
 
 
+# pylint: disable=too-many-public-methods
 class Flow:
     """Flow object manages the flow graph and the order of task executions."""
 
@@ -280,6 +322,19 @@ class Flow:
         with open(path) as file:
             flow_spec = file.read()
         return cls.from_spec(flow_spec)
+
+    @classmethod
+    def load(cls, path=None, source=None, module=None, flow=None):
+        if path:
+            return Flow.from_specfile(path)
+
+        if source:
+            return Flow.from_spec(source)
+
+        if module:
+            return import_module(module)
+
+        return flow
 
     def add_task(self, task):
         """Add task to flow graph."""
@@ -394,6 +449,9 @@ class Flow:
             context["task"].setdefault(task.type, {})
             context["task"][task.type].setdefault(task.name, {})
         return context
+
+    def as_task(self, vars=None):
+        return FlowRunTask(flow=self, vars=vars)
 
     async def run(self, vars=None):
         """Run a flow."""

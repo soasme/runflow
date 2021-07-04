@@ -4,7 +4,7 @@ from .utils import import_module
 
 task_implementations = {
     "flow_run": {
-        "class": "runflow.contribs.flow:FlowRunTask",
+        "class": "runflow.core:FlowRunTask",
     },
     "bash_run": {
         "class": "runflow.contribs.bash:BashRunTask",
