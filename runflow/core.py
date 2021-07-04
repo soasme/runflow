@@ -4,6 +4,7 @@ import enum
 import inspect
 import logging
 import traceback
+import asyncio
 from functools import reduce
 
 import networkx
@@ -106,6 +107,13 @@ class Task:
             for depends_on in self.payload.get(DEPENDS_ON_KEY, [])
         )
 
+    def should_timeout(self, task, context):
+        if "_timeout" not in self.payload:
+            return None
+        _timeout = hcl2.evaluate(self.payload["_timeout"], context)
+        assert isinstance(_timeout, (int, float))
+        return _timeout
+
     def should_rerun(self, task, context):  # pylint: disable=too-many-branches
         if "_retry" not in self.payload:
             return task.run
@@ -166,10 +174,14 @@ class Task:
             task = self.runner(**_payload)
             task_run = self.should_rerun(task, context)
             task_result.result = (
-                await task_run()
-                if inspect.iscoroutinefunction(task.run)
-                else await utils.to_thread(task_run)
-            ) or {}
+                await asyncio.wait_for(
+                    task_run()
+                    if inspect.iscoroutinefunction(task.run)
+                    else utils.to_thread(task_run),
+                    timeout=self.should_timeout(task, context),
+                )
+                or {}
+            )
             task_result.result.update(_payload)
             logger.info('"task.%s.%s" is successful.', self.type, self.name)
         except Exception as err:  # pylint: disable=broad-except

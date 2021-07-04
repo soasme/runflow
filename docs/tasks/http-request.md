@@ -69,7 +69,12 @@ The following arguments are supported:
 * `headers` - (Optional, map) The HTTP request headers.
 * `json` - (Optional, map) The HTTP request JSON data. Must not be used with `data`.
 * `data` - (Optional, map) The HTTP request form data. Must not be used with `json`.
-* `timeout` - (Optional, int) The timeout on HTTP connection.
+* `timeout` - (Optional, int, float or map) The timeout on HTTP connection. It may be a number, or a map like `{ "timeout" : 10, "connect": 2, "read": 4, "write": 4, "pool": 1}`. In the map,
+  * The `timeout` specifies an overall timeout.
+  * The `connect` timeout specifies the maximum amount of time to wait until a socket connection to the requested host is established.
+  * The `read` timeout specifies the maximum duration to wait for a chunk of data to be received.
+  * The `write` timeout specifies the maximum duration to wait for a chunk of data to be sent.
+  * The `pool` timeout specifies the maximum duration to wait for acquiring a connection from the connection pool.
 
 ## Attributes Reference
 

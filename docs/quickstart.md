@@ -190,6 +190,31 @@ $ runflow run examples/retry.hcl
 httpx.ConnectError: All connection attempts failed
 ```
 
+## Timeout
+
+A task can have an optional argument `_timeout` to control the maximum execution time. The task will wait until the execution is actually canceled, so the total wait time may exceed the `_timeout`.
+
+The value should be a number.
+
+Example usage:
+
+<<< @/examples/timeout.hcl
+
+::: details Click me to view the run output
+Run:
+
+```bash
+$ runflow run examples/timeout.hcl
+[2021-07-04 11:18:30,344] "task.http_request.this" is started.
+[2021-07-04 11:18:30,404] "task.http_request.this" is failed.
+... (truncated)
+asyncio.exceptions.TimeoutError
+```
+
+Some task types support fine tuning timeouts.
+For example, `http_request` can set argument `timeout` to a map.
+For those task types don't have timeout arguments, the generic `_timeout` should be used.
+
 ## Next to Read
 
 * [Concepts](concepts.md)

@@ -820,3 +820,9 @@ flow "retry_stop_after_attempts" {
     """, vars={"out": str(out)})
     ts = [int(x) for x in out.read().splitlines()]
     assert ts[1] - ts[0] <= 2
+
+
+def test_timeout(tmpdir, capsys):
+    runflow.runflow(path="examples/timeout.hcl", vars={})
+    out, err = capsys.readouterr()
+    assert 'TimeoutError' in err
