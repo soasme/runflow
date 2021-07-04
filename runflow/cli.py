@@ -7,7 +7,8 @@ import sys
 from networkx.drawing.nx_agraph import to_agraph
 
 from . import hcl2
-from .run import loadflow, runflow
+from .core import Flow
+from .run import runflow
 
 
 def cli_abort(message):
@@ -101,7 +102,7 @@ def cli_subcommand_run(args):
 
 def cli_subcommand_visualize(args):
     """Command: `runflow visualize`."""
-    flow = loadflow(**_load_specfile(args.specfile))
+    flow = Flow.load(**_load_specfile(args.specfile))
     agraph = to_agraph(flow.graph)
     agraph.layout("dot")
     agraph.draw(args.output)
