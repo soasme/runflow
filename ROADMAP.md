@@ -53,15 +53,15 @@
 - [ ] builtin: xml data extraction like huginn using xpath.
 - [ ] docs: make flow spec v1.0 specification.
 - [ ] core: add namespace in the log for tasks within a flow_run.
-- [ ] core: `import.tasks` support `Flow` as task.
 - [ ] hcl2: support task argument `_foreach` to map an array of inputs to a task.
 - [ ] cli: `runflow worker` can download flow package and put it in tmpdir for execution.
 - [ ] cli: `runflow register`: register a flow and extra resources (pycode, dep flows, etc)to db.
 - [ ] cli: `runflow worker`: pull flow schedules from db and schedule executions locally.
 - [ ] core: support task argument `_schedule`. `runflow run` just ignores it. `runflow worker` can recognize them and schedule executions.
-- [ ] core: support task argument `_timeout`.
 - [ ] core: preview all task execution statuses in ascii chars.
 - [ ] core: get all task execution statuses.
+- [x] core: `import.tasks` support `Flow` as task. v0.8.1.
+- [x] core: support task argument `_timeout`. v0.8.1.
 - [x] bugfix: visualize: the arrow in the output is reversed. v0.8.1.
 - [x] core: remove context from Task.run signature. v0.8.1.
 - [x] bugfix: resolve deps failed when implicit deps is in inner map. v0.8.1.
