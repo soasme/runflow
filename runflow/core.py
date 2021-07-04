@@ -178,6 +178,9 @@ class Task:
             else:
                 task = self.runner(**_payload)
 
+            if isinstance(task, FlowRunTask):
+                task.namespace = str(self)
+
             task_run = self.should_rerun(task, context)
             task_result.result = (
                 await asyncio.wait_for(
@@ -214,6 +217,7 @@ class FlowRunTask:
         self.flow = flow
         self.vars = vars or {}
         self.export = export or []
+        self.namespace = ""
 
     async def run(self):
         flow = Flow.load(
@@ -222,6 +226,9 @@ class FlowRunTask:
             module=self.module,
             flow=self.flow,
         )
+        for task in flow:
+            task.set_namespace(self.namespace)
+
         flow_context = await flow.run(vars=self.vars)
 
         if flow.exception:
