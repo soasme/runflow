@@ -19,11 +19,11 @@ Run:
 
 ```bash
 $ runflow run examples/flow_by_path.hcl
-[2021-06-25 11:54:41,276] "task.flow_run.echo" is started.
-[2021-06-25 11:54:41,277] "task.bash_run.echo" is started.
+[2021-07-04 17:01:58,735] "task.flow_run.echo" is started.
+[2021-07-04 17:01:58,737] "task.flow_run.echo > task.bash_run.echo" is started.
 hello world
-[2021-06-25 11:54:41,289] "task.bash_run.echo" is successful.
-[2021-06-25 11:54:41,289] "task.flow_run.echo" is successful.
+[2021-07-04 17:01:58,745] "task.flow_run.echo > task.bash_run.echo" is successful.
+[2021-07-04 17:01:58,746] "task.flow_run.echo" is successful.
 ```
 :::
 
@@ -38,11 +38,11 @@ Run:
 
 ```bash
 $ runflow run examples/flow_by_module.hcl
-[2021-06-25 11:55:00,770] "task.flow_run.echo" is started.
-[2021-06-25 11:55:00,770] "task.bash_run.echo" is started.
+[2021-07-04 17:02:37,230] "task.flow_run.echo" is started.
+[2021-07-04 17:02:37,235] "task.flow_run.echo > task.bash_run.echo" is started.
 hello world
-[2021-06-25 11:55:00,781] "task.bash_run.echo" is successful.
-[2021-06-25 11:55:00,781] "task.flow_run.echo" is successful.
+[2021-07-04 17:02:37,244] "task.flow_run.echo > task.bash_run.echo" is successful.
+[2021-07-04 17:02:37,244] "task.flow_run.echo" is successful.
 ```
 :::
 
@@ -57,11 +57,11 @@ Run:
 
 ```bash
 $ runflow run examples/subflow_vars.hcl
-[2021-06-25 11:53:28,932] "task.flow_run.this" is started.
-[2021-06-25 11:53:28,932] "task.bash_run.echo" is started.
+[2021-07-04 17:02:53,064] "task.flow_run.this" is started.
+[2021-07-04 17:02:53,068] "task.flow_run.this > task.bash_run.echo" is started.
 hello 世界
-[2021-06-25 11:53:28,944] "task.bash_run.echo" is successful.
-[2021-06-25 11:53:28,945] "task.flow_run.this" is successful.
+[2021-07-04 17:02:53,078] "task.flow_run.this > task.bash_run.echo" is successful.
+[2021-07-04 17:02:53,078] "task.flow_run.this" is successful.
 ```
 :::
 
@@ -76,14 +76,15 @@ flow run context to the outer flow context.
 Run:
 
 ```
-[2021-06-25 11:43:21,154] "task.flow_run.echo" is started.
-[2021-06-25 11:43:21,154] "task.bash_run.echo" is started.
+$ runflow run examples/flow_exports.hcl
+[2021-07-04 17:03:11,601] "task.flow_run.echo" is started.
+[2021-07-04 17:03:11,603] "task.flow_run.echo > task.bash_run.echo" is started.
 hello world
-[2021-06-25 11:43:21,164] "task.bash_run.echo" is successful.
-[2021-06-25 11:43:21,165] "task.flow_run.echo" is successful.
-[2021-06-25 11:43:21,167] "task.file_write.re-echo" is started.
+[2021-07-04 17:03:11,613] "task.flow_run.echo > task.bash_run.echo" is successful.
+[2021-07-04 17:03:11,614] "task.flow_run.echo" is successful.
+[2021-07-04 17:03:11,614] "task.file_write.re-echo" is started.
 hello world
-[2021-06-25 11:43:21,167] "task.file_write.re-echo" is successful.
+[2021-07-04 17:03:11,617] "task.file_write.re-echo" is successful.
 ```
 :::
 

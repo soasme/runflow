@@ -2,7 +2,7 @@
 sidebar: auto
 ---
 
-# Bring-Your-Own Task
+# Extend Runflow
 
 It's impossible Runflow can provide all kinds of tasks you need.
 When that happens, you can develop your own task and let Runflow
@@ -10,18 +10,39 @@ load it before a task run.
 
 You will need to write some Python code and hook it up in a Runflow spec.
 
+## Import Flow
+
+If you want to use a flow as part of a new flow, the best way is to import the flow directly.
+
+Say we have a flow `examples/template.hcl`:
+
+::: details Click me to view the flow `examples/template.hcl`
+<<< @/examples/template.hcl
+:::
+
+Now, we can import it using `import.tasks`. The import string for the `.hcl` file should be a valid Python import string ending with `:flow`. The key for the import string will be the task type.
+
+For example, the flow below registers `examples.template:flow` as task type `custom_flow_run`. The payloads of the task body becomes the variables for the reused flow:
+
+<<< @/examples/flow_as_task.hcl
+
+::: details Click me to view the output
+```bash
+$ runflow run examples/flow_as_task.hcl
+```
+:::
+
 ## Import Task and Function
 
-The Task class must accept task payload as keyword arguments.
+You can import a custom Task class. The Task class must accept task payload as keyword arguments.
 
-It must has `def run(self)` or `async def run(self)` method,
-which performs the actual task work.
+It must has `def run(self)` or `async def run(self)` method, which performs the actual task work.
 
 The example below shows how to write something into a file.
 
 <<< @/examples/extensions.py
 
-To load it in the Runflow spec, use `import`.
+To load it in the Runflow spec, use `import.tasks`.
 
 <<< @/examples/custom_task_type.hcl
 
@@ -42,7 +63,7 @@ Tips:
 
 * The Python code for the task must be in sys.path.
 
-## Register New Task Class
+## Install as Python Package
 
 The other approach to register a new task class is through
 the `entry_points` facility provided by
@@ -164,14 +185,18 @@ runflow_vanilla_example-0.1.0-py3-none-any.whl
 
 In the directory `dist/`, two new package files are created.
 
-We can now install the package file to the env (or actually to the env of your project):
+We can publish the package files to [pypi.org](https://pypi.org) using
+[twine](https://twine.readthedocs.io/en/latest/). The package will be
+then open to the world.
+
+But for now, let's skip the publish step and just install the package from a local file file to the venv.
 
 ```bash
 $ python -mpip install runflow_vanilla_example-0.1.0-py3-none-any.whl
 ```
 
 After `runflow_vanilla_example` gets installed, Runflow is able to automatically
-pick it up and recognizes `vanilla_run` as a valid task type.
+pick it up and recognizes `guess_ice_cream` as a valid task type.
 
 Hooray!! 🎉
 

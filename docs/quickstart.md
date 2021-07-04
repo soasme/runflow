@@ -236,16 +236,17 @@ For example, the flow below registers `examples.template:flow` as task type `cus
 
 ::: details Click me to view the output
 ```bash
+$ runflow run examples/flow_as_task.hcl
 [2021-07-04 15:57:24,513] "task.custom_flow_run.this" is started.
-[2021-07-04 15:57:24,513] "task.hcl2_template.this" is started.
-[2021-07-04 15:57:24,513] "task.hcl2_template.this" is successful.
-[2021-07-04 15:57:24,514] "task.file_write.this" is started.
+[2021-07-04 15:57:24,513] "task.custom_flow_run.this > task.hcl2_template.this" is started.
+[2021-07-04 15:57:24,513] "task.custom_flow_run.this > task.hcl2_template.this" is successful.
+[2021-07-04 15:57:24,514] "task.custom_flow_run.this > task.file_write.this" is started.
 42
 42
 42
 42
 42
-[2021-07-04 15:57:24,517] "task.file_write.this" is successful.
+[2021-07-04 15:57:24,517] "task.custom_flow_run.this > task.file_write.this" is successful.
 [2021-07-04 15:57:24,517] "task.custom_flow_run.this" is successful.
 ```
 :::
