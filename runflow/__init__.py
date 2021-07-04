@@ -4,7 +4,6 @@ runflow - a tool to define an run your workflows.
 __all__ = [
     "Flow",
     "Task",
-    "loadflow",
     "runflow",
     "runflow_async",
     "cli",
@@ -44,7 +43,7 @@ from .registry import (
     register_task_class,
     get_task_class,
 )
-from .run import loadflow, runflow, runflow_async
+from .run import runflow, runflow_async
 
 
 if entry_points is not None:
