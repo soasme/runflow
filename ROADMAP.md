@@ -1,6 +1,36 @@
 # ROAD MAP
 
+- [ ] ui: expand flow graph.
 - [ ] FEATURES FOR BETA RELEASE
+- [ ] community: airtable.
+- [ ] community: trello.
+- [ ] community: slack.
+- [ ] community: pagerduty.
+- [ ] community: sns.
+- [ ] community: ses.
+- [ ] community: sqs.
+- [ ] community: s3.
+- [ ] community: dynamodb.
+- [ ] community: lambda.
+- [ ] community: papermill.
+- [ ] community: cloudwatch.
+- [ ] community: redis.
+- [ ] community: prometheus.
+- [ ] community: influxdb.
+- [ ] community: elasticsearch.
+- [ ] community: telegram.
+- [ ] community: discord.
+- [ ] community: reddit.
+- [ ] community: hackernews.
+- [ ] worker: expose metrics.
+- [ ] send logging to s3.
+- [ ] trigger: receive email through IMAP server.
+- [ ] trigger: receive webhook requests through HTTP server.
+- [ ] trigger: receive JSONRPC requests through HTTP server.
+- [ ] trigger: receive SSE events from HTTP server.
+- [ ] trigger: receive websocket events from WS server.
+- [ ] builtin: merge nested data structure.
+- [ ] task: read from RSS feeds.
 - [ ] task: validate arguments.
 - [ ] task: define task using attr.
 - [ ] task: command: cap_stdout, cap_stderr.
@@ -10,14 +40,13 @@
 - [ ] docs: integrate with python-rq.
 - [ ] docs: call another remote flow (use http_request + flow_run) .
 - [ ] docs: a flow app following 12-factor principle.
-- [ ] task: s3.
-- [ ] task: dynamodb.
-- [ ] task: cloudwatch.
-- [ ] task: redis.
-- [ ] task: prometheus.
-- [ ] task: influxdb.
-- [ ] task: elasticsearch.
-- [ ] task: papermill.
+- [ ] task: venv.
+- [ ] task: send email.
+- [ ] task: run remote commands using SSH/paramiko.
+- [ ] task: create iCalendar event file.
+- [ ] docs: write zip/gzip archive.
+- [ ] task: hmac/hash/sign a string using cryptography.
+- [ ] docs: datetime processing: update supported `todatetime` string formats.
 - [ ] tutorial: handle ML workflow like d6tflow.
 - [ ] server: support loading flow from remote services.
 - [ ] server: provide openapi spec for worker.
@@ -25,7 +54,7 @@
 - [ ] server: provide example docker-compose yaml file.
 - [ ] server: provide example k8s helm charts yaml files.
 - [ ] ci: publish server containers to docker hub.
-- [ ] server: write a technical overview of overall server design - components:ui,api,worker,db.backend_authentication:ldap,saml,oauth2,internal_user_database.authentication:internal_user_database,api_token.internal:pg,SKIP LOCKED.
+- [ ] server: write a technical overview of overall server design - components:ui+api+worker,db.backend_authentication:ldap,saml,oauth2,internal_user_database.authentication:internal_user_database,api_token.internal:pg,SKIP LOCKED.
 - [ ] core: save pickled task result.
 - [ ] jupyter notebook extension: hcl2.
 - [ ] tutorial: debug: inspect data with a notebook.
@@ -44,6 +73,8 @@
 - [ ] hcl2: flow spec: `_license`. Let user specify the license for a flow.
 - [ ] hcl2: flow spec: `_doc`. Let user specify the doc for a flow.
 - [ ] hcl2: task argument `_cache.key`, `_cache.target`. if arguments have not changed, task will not run.
+- [ ] core: `_depends_on` supports `ignore_error(task.TYPE.NAME)`. Regardless if task.TYPE.NAME is successful or failed, the dependent task will be run.
+- [ ] core: `_depends_on` supports `catch_error(task.TYPE.NAME)`. If provided, when task.TYPE.NAME is failed, the error will be caught and the dependent task will be run. Otherwise, the task will be canceled.
 - [ ] cli option: enable/disable importing HCL2 flows.
 - [ ] cli option: enable/disable importing Python functions/tasks.
 - [ ] core: can run a task in a subprocess rather than in a thread.
@@ -52,6 +83,7 @@
 - [ ] task: graphql_request.
 - [ ] task: jsonrpc_request.
 - [ ] task: grpc_request.
+- [ ] builtin: html data extraction using pyquery.
 - [ ] builtin: xml data extraction like huginn using xpath.
 - [ ] docs: make flow spec v1.0 specification.
 - [ ] hcl2: support task argument `_foreach` to map an array of inputs to a task.
