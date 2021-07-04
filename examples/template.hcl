@@ -1,5 +1,5 @@
 # File: template.hcl
-flow "render-template" {
+flow "template" {
 
   variable "global" {
     default = "global"
