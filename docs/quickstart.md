@@ -160,6 +160,7 @@ $ runflow run examples/conditional_trigger.hcl  --var version=0.1.0
 [2021-06-28 17:15:58,012] "task.file_read.read" is successful.
 [2021-06-28 17:15:58,012] "task.file_write.echo" is canceled due to falsy deps.
 ```
+:::
 
 ## Retry
 
@@ -189,6 +190,7 @@ $ runflow run examples/retry.hcl
 ... (truncated)
 httpx.ConnectError: All connection attempts failed
 ```
+:::
 
 ## Timeout
 
@@ -210,10 +212,43 @@ $ runflow run examples/timeout.hcl
 ... (truncated)
 asyncio.exceptions.TimeoutError
 ```
+:::
 
 Some task types support fine tuning timeouts.
 For example, `http_request` can set argument `timeout` to a map.
 For those task types don't have timeout arguments, the generic `_timeout` should be used.
+
+## Import Another Flow
+
+If you want to use a flow as part of a new flow, the best way is to import it.
+
+Say we have a flow `examples/template.hcl`:
+
+::: details Click me to view the flow `examples/template.hcl`
+<<< @/examples/template.hcl
+:::
+
+Now, we can import it using `import.tasks`. The import string for the `.hcl` file should be a valid Python import string ending with `:flow`. The key for the import string will be the task type.
+
+For example, the flow below registers `examples.template:flow` as task type `custom_flow_run`. The payloads of the task body becomes the variables for the reused flow:
+
+<<< @/examples/flow_as_task.hcl
+
+::: details Click me to view the output
+```bash
+[2021-07-04 15:57:24,513] "task.custom_flow_run.this" is started.
+[2021-07-04 15:57:24,513] "task.hcl2_template.this" is started.
+[2021-07-04 15:57:24,513] "task.hcl2_template.this" is successful.
+[2021-07-04 15:57:24,514] "task.file_write.this" is started.
+42
+42
+42
+42
+42
+[2021-07-04 15:57:24,517] "task.file_write.this" is successful.
+[2021-07-04 15:57:24,517] "task.custom_flow_run.this" is successful.
+```
+:::
 
 ## Next to Read
 
