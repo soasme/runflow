@@ -48,11 +48,12 @@
 - [ ] cli option: enable/disable importing Python functions/tasks.
 - [ ] core: can run a task in a subprocess rather than in a thread.
 - [ ] core: support running tasks concurrently other than the sequential runner.
+- [ ] docs: add docs/tests for all file_read/file_write supported file systems.
+- [ ] task: graphql_request.
 - [ ] task: jsonrpc_request.
 - [ ] task: grpc_request.
 - [ ] builtin: xml data extraction like huginn using xpath.
 - [ ] docs: make flow spec v1.0 specification.
-- [ ] core: add namespace in the log for tasks within a flow_run.
 - [ ] hcl2: support task argument `_foreach` to map an array of inputs to a task.
 - [ ] cli: `runflow worker` can download flow package and put it in tmpdir for execution.
 - [ ] cli: `runflow register`: register a flow and extra resources (pycode, dep flows, etc)to db.
@@ -60,6 +61,7 @@
 - [ ] core: support task argument `_schedule`. `runflow run` just ignores it. `runflow worker` can recognize them and schedule executions.
 - [ ] core: preview all task execution statuses in ascii chars.
 - [ ] core: get all task execution statuses.
+- [x] core: add namespace in the log for tasks within a flow_run. v0.8.1.
 - [x] core: `import.tasks` support `Flow` as task. v0.8.1.
 - [x] core: support task argument `_timeout`. v0.8.1.
 - [x] bugfix: visualize: the arrow in the output is reversed. v0.8.1.
