@@ -4,7 +4,6 @@
 - [ ] FEATURES FOR BETA RELEASE
 - [ ] community: airtable.
 - [ ] community: trello.
-- [ ] community: slack.
 - [ ] community: pagerduty.
 - [ ] community: sns.
 - [ ] community: ses.
@@ -93,6 +92,7 @@
 - [ ] core: support task argument `_schedule`. `runflow run` just ignores it. `runflow worker` can recognize them and schedule executions.
 - [ ] core: preview all task execution statuses in ascii chars.
 - [ ] core: get all task execution statuses.
+- [x] community: slack. v0.8.1.
 - [x] core: add namespace in the log for tasks within a flow_run. v0.8.1.
 - [x] core: `import.tasks` support `Flow` as task. v0.8.1.
 - [x] core: support task argument `_timeout`. v0.8.1.
