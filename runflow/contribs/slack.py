@@ -15,16 +15,24 @@ except ImportError:
 
 class SlackApiCallTask:
     def __init__(self, client: dict, api_method: str, **kwargs):
-        if not AsyncWebClient:
-            raise ImportError("Package slack-sdk is not installed.")
-        self.client = AsyncWebClient(**client)
+        self.client = client
         self.api_method = api_method
         self.kwargs = kwargs
 
     async def run(self):
         try:
-            api_call = getattr(self.client, self.api_method.replace(".", "_"))
+            client = AsyncWebClient(**self.client)
+        except TypeError as err:
+            err = (
+                "Package slack-sdk is not installed"
+                if not AsyncWebClient
+                else str(err)
+            )
+            return {"response": {"ok": False, "error": err}}
+
+        try:
+            api_call = getattr(client, self.api_method.replace(".", "_"))
             response = await api_call(**self.kwargs)
             return {"response": response}
-        except SlackApiError as err: # pylint: disable=broad-except
+        except SlackApiError as err:  # pylint: disable=broad-except
             return {"response": err.response}
