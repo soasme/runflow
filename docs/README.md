@@ -30,7 +30,7 @@ Flow:
 * References: [Runflow Specification](flow-spec.md).
 * References: [Built-In Functions](builtin-functions.md).
 
-Tasks:
+Core Tasks:
 
 * References: [Bash Run](tasks/bash-run.md) Task.
 * References: [Docker Run](tasks/docker-run.md) Task.
@@ -41,6 +41,10 @@ Tasks:
 * References: [Http Request](tasks/http-request.md) Task.
 * References: [Sql Exec](tasks/sql-exec.md) Task. Runflow supports these databases: SQLite3, MySQL, PostgreSQL, MSSQL, Oracle, etc.
 * References: [Sql Row](tasks/sql-row.md) Task. Runflow supports these databases: SQLite3, MySQL, PostgreSQL, MSSQL, Oracle, etc.
+
+Community Tasks:
+
+* References: [Slack API Call](tasks/slack-api-call.md) Task.
 
 
 ## Advanced Usage
