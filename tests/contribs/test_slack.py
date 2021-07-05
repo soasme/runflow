@@ -78,3 +78,43 @@ flow "send_slack_message" {
     runflow(source=source, vars={})
     out, err = capsys.readouterr()
     assert 'TypeError' in err
+
+
+def test_slack_api_call_invalid_client(capsys):
+    runflow(source="""
+flow "send_slack_message" {
+    task "slack_api_call" "this" {
+        client = {}
+        api_method = "chat.postMessage"
+        channel = "#random"
+        text = "hello world"
+    }
+    task "file_write" "output" {
+        filename = "/dev/stdout"
+        content = tojson(eval(str(task.slack_api_call.this.response)))
+    }
+}
+    """, vars={})
+    out, err = capsys.readouterr()
+    assert out == '{"ok": false, "error": "not_authed"}\n'
+
+def test_slack_api_call_invalid_client2(capsys):
+    runflow(source="""
+flow "send_slack_message" {
+    task "slack_api_call" "this" {
+        client = {
+            token = "ANY"
+            some_random_argument = 1
+        }
+        api_method = "chat.postMessage"
+        channel = "#random"
+        text = "hello world"
+    }
+    task "file_write" "output" {
+        filename = "/dev/stdout"
+        content = tojson(eval(str(task.slack_api_call.this.response)))
+    }
+}
+    """, vars={})
+    out, err = capsys.readouterr()
+    assert "got an unexpected keyword argument 'some_random_argument'" in out

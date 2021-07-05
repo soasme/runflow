@@ -8,7 +8,6 @@ try:
     from slack_sdk.web.async_client import AsyncWebClient
     from slack_sdk.errors import SlackApiError
 except ImportError:
-    logger.warning("Package slack-sdk is not installed.")
     AsyncWebClient = None
     SlackApiError = Exception
 
