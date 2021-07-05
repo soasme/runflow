@@ -26,5 +26,5 @@ class SlackApiCallTask:
             api_call = getattr(self.client, self.api_method.replace(".", "_"))
             response = await api_call(**self.kwargs)
             return {"response": response}
-        except SlackApiError as err:
+        except SlackApiError as err: # pylint: disable=broad-except
             return {"response": err.response}
