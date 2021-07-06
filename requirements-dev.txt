@@ -8,3 +8,5 @@ pygit2
 isort
 black
 pytest-mock
+mypy
+typeshed
