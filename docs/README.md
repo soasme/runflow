@@ -46,6 +46,9 @@ Community Tasks:
 
 * References: [Slack API Call](tasks/slack-api-call.md) Task.
 
+## Tutorials
+
+* [Use Scikit-Learn with Runflow](tutorials/sklearn-and-runflow.md)
 
 ## Advanced Usage
 
