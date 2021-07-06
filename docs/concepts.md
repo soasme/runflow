@@ -8,7 +8,7 @@ sidebar: auto
 
 ### What is Flow?
 
-A flow is a collection of tasks organized with dependencies and relationships.
+A flow is a network of tasks that can run concurrently or in order.
 
 ### What does Flow Look Like?
 
@@ -29,8 +29,8 @@ It defines 8 tasks. All of them are connected with arrowed lines, indicating the
 
 ### What is Flow for?
 
-In Runflow, task definition and flow definition are two separate of concerns.
-The flow provides the arguments for a task execution but does not care how the tasks are executed.
+In Runflow, task and flow are two separate of concerns.
+The flow does not care how the tasks are actually executed.
 
 Instead, it manages
 
@@ -45,7 +45,7 @@ Instead, it manages
 
 ### What is Task?
 
-A task is the minimal unit of execution and has to be defined within the flow.
+A task is the minimal execution unit and has to be defined within the flow.
 Each task in the flow is standalone and shouldn't interfere with each other if implemented properly.
 
 ### What does Task Look Like?
