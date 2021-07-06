@@ -36,7 +36,11 @@ Step 2, define a data flow using Runflow.
 
 ::: details Click me the view the output
 Run:
-```hcl
+```bash
+$ python3 -mvenv venv
+$ source venv/bin/activate
+$ pip install runflow
+$ python3 -mrunflow run examples/ml_example.hcl
 [2021-07-06 23:15:19,999] "task.extract.setup" is started.
 [2021-07-06 23:15:20,006] "task.extract.setup" is successful.
 [2021-07-06 23:15:20,006] "task.train_model.model2" is started.
