@@ -2,8 +2,21 @@
 
 ## Not Yet Released
 
-[Code Changes](https://github.com/soasme/runflow/compare/v0.8.0..HEAD).
+[Code Changes](https://github.com/soasme/runflow/compare/v0.8.1..HEAD).
 
+## v0.8.1, 6 Jul, 2021
+
+[Code Changes](https://github.com/soasme/runflow/compare/v0.8.0..v0.8.1).
+
+* Code Quality: Add type hints and mypy check. [#56](https://github.com/soasme/runflow/pull/56).
+* New Task Type: `slack_api_call`. [#55](https://github.com/soasme/runflow/pull/55).
+* Documentation: <https://runflow.org/concepts.html>. [#54](https://github.com/soasme/runflow/pull/54).
+* Enhancement: Add upstream task reference if the task is a FlowRunTask. [#53](https://github.com/soasme/runflow/pull/53).
+* Enhancement: Support import a flow as a new task type. [#52](https://github.com/soasme/runflow/pull/52).
+* Enhancement: Support `_timeout` for all task types. [#51](https://github.com/soasme/runflow/pull/51).
+* Bugfix: The direction of flow graph direction is wrong. [#50](https://github.com/soasme/runflow/pull/50).
+* Enhancement: Remove parameter `context` from Task.run. [#49](https://github.com/soasme/runflow/pull/49).
+* Bugfix: Can't detect implicit task dependency in hcl2 call syntax. [#48](https://github.com/soasme/runflow/pull/48).
 
 ## v0.8.0, 2 Jul, 2021
 
