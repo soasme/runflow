@@ -18,6 +18,9 @@
   <a href="https://github.com/soasme/runflow/stargazers">
     <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/soasme/runflow?color=%2360be86&label=github%20stars&style=for-the-badge">
   </a>
+  <a href="https://gitter.im/soasme/runflow">
+    <img alt="Chat on gitter.im" src="https://img.shields.io/gitter/room/soasme/runflow?color=%2360be86&style=for-the-badge">
+  </a>
 </p>
 
 
