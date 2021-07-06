@@ -9,4 +9,3 @@ isort
 black
 pytest-mock
 mypy
-typeshed
