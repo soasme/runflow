@@ -1,3 +1,5 @@
+from typing import Dict, Union, Type
+
 from .errors import RunflowReadOnlyError
 from .utils import import_module
 
@@ -42,17 +44,17 @@ class ImmutableDict(dict):
     Getitem is allowed; set/del/clear are disallowed.
     """
 
-    def __init__(self, target):
+    def __init__(self, target: Dict[str, dict]):
         super().__init__()
         self.target = target
 
-    def __getitem__(self, item):
+    def __getitem__(self, item: str):
         return self.target[item]
 
-    def __delitem__(self, key):
+    def __delitem__(self, key: str):
         raise RunflowReadOnlyError
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: str, value):
         raise RunflowReadOnlyError
 
     def clear(self):
@@ -65,12 +67,14 @@ class ImmutableDict(dict):
         yield from self.target
 
 
-_registry = {}
+_registry: Dict[str, dict] = {}
 
 registry = ImmutableDict(_registry)
 
 
-def register_task_class(name, cls, overwrite=False):
+def register_task_class(
+    name: str, cls: Union[str, Type], overwrite: bool = False
+):
     """Register a task class with a name."""
     if isinstance(cls, str):
         if name in task_implementations and not overwrite:
@@ -84,14 +88,14 @@ def register_task_class(name, cls, overwrite=False):
         raise ValueError(f"Task name {name} has been taken in the registry.")
     if not hasattr(cls, "run"):
         raise ValueError("cls is not runnable.")
-    _registry[name] = cls
+    _registry[name] = {"class": cls}
 
 
-def get_task_class(name):
+def get_task_class(name: str):
     """Get the task class by name."""
     if name not in registry:
         if name not in task_implementations:
             raise ValueError(f"Unknown task type: {name}")
         impl = import_module(task_implementations[name]["class"])
         register_task_class(name, impl)
-    return registry[name]
+    return registry[name]["class"]

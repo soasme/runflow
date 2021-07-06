@@ -14,10 +14,8 @@ from importlib.util import spec_from_loader
 
 from .core import Flow
 
+
 EXT_RUNFLOW = ".hcl"
-
-
-__all__ = []
 
 
 # pylint: disable=abstract-method

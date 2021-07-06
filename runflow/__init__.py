@@ -20,12 +20,12 @@ __all__ = [
 
 
 try:
-    from importlib.metadata import entry_points
+    from importlib.metadata import entry_points  # type: ignore
 except ImportError:  # python < 3.8
     try:
-        from importlib_metadata import entry_points
+        from importlib_metadata import entry_points  # type: ignore
     except ImportError:
-        entry_points = None
+        entry_points = None  # type: ignore
 
 from . import autoloader  # noqa
 from .cli import cli
@@ -54,7 +54,7 @@ if entry_points is not None:
     else:
         # Python 3.10+ / importlib_metadata >= 3.9.0
         _tasks = (
-            _entry_points.select(group="runflow.tasks")
+            _entry_points.select(group="runflow.tasks")  # type: ignore
             if hasattr(_entry_points, "select")
             else _entry_points.get("runflow.tasks", [])
         )

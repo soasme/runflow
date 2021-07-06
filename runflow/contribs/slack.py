@@ -8,8 +8,7 @@ try:
     from slack_sdk.web.async_client import AsyncWebClient
     from slack_sdk.errors import SlackApiError
 except ImportError:
-    AsyncWebClient = None
-    SlackApiError = Exception
+    pass
 
 
 class SlackApiCallTask:
@@ -21,13 +20,11 @@ class SlackApiCallTask:
     async def run(self):
         try:
             client = AsyncWebClient(**self.client)
-        except TypeError as err:
-            err = (
-                "Package slack-sdk is not installed"
-                if not AsyncWebClient
-                else str(err)
-            )
+        except NameError as err:
+            err = "Package slack-sdk is not installed"
             return {"response": {"ok": False, "error": err}}
+        except TypeError as err:
+            return {"response": {"ok": False, "error": str(err)}}
 
         try:
             api_call = getattr(client, self.api_method.replace(".", "_"))
