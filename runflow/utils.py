@@ -3,9 +3,10 @@
 import asyncio
 import importlib
 import sys
+from typing import Callable, Coroutine
 
 
-def run_async(coro):
+def run_async(coro: Coroutine):
     """Wrap async function as sync call."""
     if sys.version_info[0] == 3 and sys.version_info[1] < 7:
         loop = asyncio.get_event_loop()
@@ -14,7 +15,7 @@ def run_async(coro):
     asyncio.run(coro)
 
 
-async def to_thread(func, *args, **kwargs):
+async def to_thread(func: Callable, *args, **kwargs):
     """Run sync function in thread."""
     if sys.version_info[0] == 3 and sys.version_info[1] < 9:
         loop = asyncio.get_running_loop()
@@ -24,7 +25,7 @@ async def to_thread(func, *args, **kwargs):
     return await asyncio.to_thread(func, *args, **kwargs)
 
 
-def import_module(path):
+def import_module(path: str):
     """Import a path like `path.to.module:class`."""
     try:
         package_name, module_name = path.split(":")

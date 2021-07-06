@@ -22,7 +22,7 @@ import re
 import textwrap
 from datetime import datetime
 from functools import singledispatch
-from typing import Any, Dict, List, Set, Union
+from typing import Any, Dict, List, Set, Union, Tuple
 
 from dateutil.parser import parse as parse_datetime
 from lark import Discard, Transformer
@@ -45,7 +45,26 @@ HEREDOC_PATTERN = re.compile(
 INTERPOLATION = re.compile(r'\${ *((?:"(?:[^"\\]|\\.)*"|[^}"]+)+) *}')
 
 
-def parse_template(string):
+class Module(dict):
+    pass
+
+
+class StringLit(str):
+    pass
+
+
+class JoinedStr:
+    def __init__(self, elements):
+        self.elements = elements
+
+    def __repr__(self):
+        return "<JoinedStr>"
+
+    def __eq__(self, o):
+        return isinstance(o, JoinedStr) and o.elements == self.elements
+
+
+def parse_template(string: str) -> Union[StringLit, JoinedStr]:
     result = []
     previous = 0
 
@@ -66,25 +85,6 @@ def parse_template(string):
         result.append(StringLit(string[previous:]))
 
     return JoinedStr(result)
-
-
-class Module(dict):
-    pass
-
-
-class StringLit(str):
-    pass
-
-
-class JoinedStr:
-    def __init__(self, elements):
-        self.elements = elements
-
-    def __repr__(self):
-        return "<JoinedStr>"
-
-    def __eq__(self, o):
-        return isinstance(o, JoinedStr) and o.elements == self.elements
 
 
 class Attribute(dict):
@@ -194,18 +194,18 @@ class GetAttr:
 
 
 @singledispatch
-def extract_attr_chain(ast, chain):
+def extract_attr_chain(ast: Any, chain):
     chain.append(ast)
 
 
 @extract_attr_chain.register
-def _(ast: GetAttr, chain):
+def _extract_attr_chain_from_get_attr(ast: GetAttr, chain):
     extract_attr_chain(ast.expr, chain)
     chain.append(ast.attr)
 
 
 @extract_attr_chain.register
-def _(ast: GetIndex, chain):
+def _extract_attr_chain_from_get_index(ast: GetIndex, chain):
     extract_attr_chain(ast.expr, chain)
     chain.append(ast.index)
 
@@ -372,10 +372,10 @@ class AstTransformer(Transformer):
     def eval(self, args: List) -> Dict:
         return args[0]
 
-    def quoted_template_expr(self, args: Any):
+    def quoted_template_expr(self, args: Any) -> Union[StringLit, JoinedStr]:
         return parse_template(args[0])
 
-    def string_lit(self, args: Any):
+    def string_lit(self, args: Any) -> StringLit:
         return StringLit(args[0])
 
     # pylint: disable=invalid-name
@@ -388,10 +388,10 @@ class AstTransformer(Transformer):
             raise RuntimeError("Invalid Heredoc token: %s" % args[0])
         return match.group(2)
 
-    def heredoc_template(self, args: List) -> str:
+    def heredoc_template(self, args: List) -> Union[StringLit, JoinedStr]:
         return parse_template(self._heredoc_template(args))
 
-    def heredoc_template_trim(self, args: List) -> str:
+    def heredoc_template_trim(self, args: List) -> Union[StringLit, JoinedStr]:
         return parse_template(textwrap.dedent(self._heredoc_template(args)))
 
     def float_lit(self, args: List) -> float:
@@ -438,7 +438,7 @@ class AstTransformer(Transformer):
         result: Dict[str, Any] = {}
         for arg in args:
             result = arg.merge_to(result)
-        return result
+        return Module(result)
 
     def to_string_dollar(self, value: Any) -> Any:
         if isinstance(
@@ -480,13 +480,13 @@ class AstTransformer(Transformer):
     def attr_splat_expr_term(self, args: List) -> Splat:
         return Splat(args[0], args[1])
 
-    def attr_splat(self, args: List):
+    def attr_splat(self, args: List) -> List:
         return args
 
     def full_splat_expr_term(self, args: List) -> Splat:
         return Splat(args[0], args[1])
 
-    def full_splat(self, args: List):
+    def full_splat(self, args: List) -> List:
         return args
 
     def tuple(self, args: List) -> List:
@@ -515,10 +515,10 @@ class AstTransformer(Transformer):
         func_args, func_kwargs = args[1]
         return Call(func_name, func_args, func_kwargs)
 
-    def kwarg(self, args: List):
+    def kwarg(self, args: List) -> Kwargs:
         return Kwargs()
 
-    def arguments(self, args: List) -> List:
+    def arguments(self, args: List) -> Tuple[List, List]:
         if args and isinstance(args[-1], Kwargs):
             return (args[:-2], args[-2])
         return (args, [])
@@ -529,7 +529,7 @@ class AstTransformer(Transformer):
             return args[0]
         return Conditional(args[0], args[1], args[2])
 
-    def binary_operator(self, args: List):
+    def binary_operator(self, args: List) -> str:
         return str(args[0])
 
     def binary_op(self, args: List):
@@ -556,7 +556,7 @@ class AstTransformer(Transformer):
     binary_factor_op = binary_op
     binary_factor_operator = binary_operator
 
-    def for_intro(self, args: List):
+    def for_intro(self, args: List) -> List:
         args = strip_new_line_tokens(args)
 
         if len(args) == 5:
@@ -571,21 +571,21 @@ class AstTransformer(Transformer):
         args = strip_new_line_tokens(args)
         return args[-1]
 
-    def for_tuple_expr(self, args: List):
+    def for_tuple_expr(self, args: List) -> ListExpr:
         args = strip_new_line_tokens(args)
         element_id, array = args[1]
         element = args[2]
         condition = args[3] if len(args) > 4 else None
         return ListExpr(element_id, array, element, condition)
 
-    def for_object_expr(self, args: List):
+    def for_object_expr(self, args: List) -> DictExpr:
         args = strip_new_line_tokens(args)
         element_id, array = args[1]
         key, value = args[2], args[4]
         condition = args[5] if len(args) > 6 else None
         return DictExpr(element_id, array, key, value, condition)
 
-    def unary_op(self, args: List):
+    def unary_op(self, args: List) -> Union[Operation, Not]:
         if args[0] == "-":
             return Operation([0, "-", args[1]])
 
@@ -624,19 +624,19 @@ def _for_iterable(iterable, id_count=1):
 
 @_for_iterable.register(tuple)
 @_for_iterable.register(list)
-def _(iterable, id_count=1):
+def _for_iterable_list_or_tuple(iterable, id_count=1):
     for index, element in enumerate(iterable):
         yield element if id_count == 1 else (index, element)
 
 
 @_for_iterable.register(dict)
-def _(iterable, id_count=1):
+def _for_iterable_dict(iterable, id_count=1):
     for key, value in iterable.items():
         yield key if id_count == 1 else (key, value)
 
 
 @_for_iterable.register(set)
-def _(iterable, id_count=1):
+def _for_iterable_set(iterable, id_count=1):
     for element in iterable:
         yield element if id_count == 1 else (element, element)
 
@@ -647,37 +647,37 @@ def resolve_deps(value: Any, deps: Set):
 
 
 @resolve_deps.register
-def _(value: Interpolation, deps: Set):
+def _resolve_interpolation_deps(value: Interpolation, deps: Set):
     resolve_deps(value.expr, deps)
 
 
 @resolve_deps.register
-def _(value: Call, deps: Set):
+def _resolve_call_deps(value: Call, deps: Set):
     resolve_deps(value.args, deps)
     resolve_deps(value.kwargs, deps)
 
 
 @resolve_deps.register
-def _(value: Splat, deps: Set):
+def _resolve_splat_deps(value: Splat, deps: Set):
     resolve_deps(value.array, deps)
 
 
 @resolve_deps.register
-def _(value: Conditional, deps: Set):
+def _resolve_conditional_deps(value: Conditional, deps: Set):
     resolve_deps(value.predicate, deps)
     resolve_deps(value.true_expr, deps)
     resolve_deps(value.false_expr, deps)
 
 
 @resolve_deps.register
-def _(value: ListExpr, deps: Set):
+def _resolve_list_expr_deps(value: ListExpr, deps: Set):
     resolve_deps(value.array, deps)
     resolve_deps(value.element, deps)
     resolve_deps(value.condition, deps)
 
 
 @resolve_deps.register
-def _(value: DictExpr, deps: Set):
+def _resolve_dict_expr_deps(value: DictExpr, deps: Set):
     resolve_deps(value.array, deps)
     resolve_deps(value.key, deps)
     resolve_deps(value.value, deps)
@@ -685,38 +685,38 @@ def _(value: DictExpr, deps: Set):
 
 
 @resolve_deps.register
-def _(value: Not, deps: Set):
+def _resolve_not_deps(value: Not, deps: Set):
     resolve_deps(value.expr, deps)
 
 
 @resolve_deps.register
-def _(value: Operation, deps: Set):
+def _resolve_op_deps(value: Operation, deps: Set):
     for index, elem in enumerate(value.elements):
         if index % 2 == 0:
             resolve_deps(elem, deps)
 
 
 @resolve_deps.register
-def _(value: GetAttr, deps: Set):
+def _resolve_getattr_deps(value: GetAttr, deps: Set):
     task_keys = list(value.attr_chain)
     if task_keys and task_keys[0] == "task" and len(task_keys) >= 3:
         deps.add(".".join(task_keys[:3]))
 
 
 @resolve_deps.register
-def _(value: JoinedStr, deps: Set):
+def _resolve_joined_str_deps(value: JoinedStr, deps: Set):
     for element in value.elements:
         resolve_deps(element, deps)
 
 
 @resolve_deps.register
-def _(value: list, deps: Set):
+def _resolve_list_deps(value: list, deps: Set):
     for _value in value:
         resolve_deps(_value, deps)
 
 
 @resolve_deps.register
-def _(value: dict, deps: Set):
+def _resolve_dict_deps(value: dict, deps: Set):
     for _value in value.values():
         resolve_deps(_value, deps)
 
@@ -727,7 +727,7 @@ def evaluate(ast, _):
 
 
 @evaluate.register
-def _(ast: Module, env):
+def _eval_module(ast: Module, env):
     return {
         key: evaluate(attribute_or_block, env)
         for key, attribute_or_block in ast.items()
@@ -735,13 +735,13 @@ def _(ast: Module, env):
 
 
 @evaluate.register
-def _(ast: Interpolation, env):
+def _eval_interpolation(ast: Interpolation, env):
     return evaluate(ast.expr, env)
 
 
 @evaluate.register(GetIndex)
 @evaluate.register(GetAttr)
-def _(ast: Union[GetIndex, GetAttr], env):
+def _eval_getter(ast: Union[GetIndex, GetAttr], env):
     result = env
     for attr in ast.attr_chain:
         if isinstance(attr, Splat):
@@ -758,17 +758,17 @@ def _(ast: Union[GetIndex, GetAttr], env):
 
 
 @evaluate.register
-def _(ast: Identifier, env):
+def _eval_identifier(ast: Identifier, env):
     return env[ast]
 
 
 @evaluate.register
-def _(ast: StringLit, _):
+def _eval_string_lit(ast: StringLit, _):
     return ast
 
 
 @evaluate.register
-def _(ast: JoinedStr, env):
+def _eval_joined_str(ast: JoinedStr, env):
     result = []
     if len(ast.elements) == 1:
         if isinstance(ast.elements[0], StringLit):
@@ -784,12 +784,12 @@ def _(ast: JoinedStr, env):
 
 
 @evaluate.register
-def _(ast: Not, env):
+def _eval_not(ast: Not, env):
     return not evaluate(ast.expr, env)
 
 
 @evaluate.register
-def _(ast: Splat, env):
+def _eval_splat(ast: Splat, env):
     array = evaluate(ast.array, env)
 
     def extract(elem, attrs):
@@ -805,7 +805,7 @@ def _(ast: Splat, env):
 
 
 @evaluate.register
-def _(ast: ListExpr, env):
+def _eval_list_expr(ast: ListExpr, env):
     result = []
     id_count = 2 if isinstance(ast.element_id, tuple) else 1
     for elem in _for_iterable(evaluate(ast.array, env), id_count):
@@ -828,7 +828,7 @@ def _(ast: ListExpr, env):
 
 
 @evaluate.register
-def _(ast: DictExpr, env):
+def _eval_dict_expr(ast: DictExpr, env):
     result = {}
     id_count = 2 if isinstance(ast.element_id, tuple) else 1
     for elem in _for_iterable(evaluate(ast.array, env), id_count):
@@ -853,7 +853,7 @@ def _(ast: DictExpr, env):
 
 
 @evaluate.register
-def _(ast: Conditional, env):
+def _eval_conditional(ast: Conditional, env):
     cond = evaluate(ast.predicate, env)
 
     if cond:
@@ -863,12 +863,12 @@ def _(ast: Conditional, env):
 
 
 @evaluate.register
-def _(ast: Call, env):
+def _eval_call(ast: Call, env):
     func_name = str(ast.func_name)
     if ":" in func_name:
         func = import_module(func_name)
-    elif func_name in __builtins__:
-        func = __builtins__[func_name]
+    elif func_name in __builtins__:  # type: ignore
+        func = __builtins__[func_name]  # type: ignore
     elif func_name in FUNCS:
         func = FUNCS[func_name]
     elif func_name in env.get("func"):
@@ -907,7 +907,7 @@ OPERATORS = {
 
 
 @evaluate.register
-def _(ast: Operation, env):
+def _eval_op(ast: Operation, env):
     result = None
     _operator = None
     for index, elem in enumerate(ast.elements):
@@ -928,12 +928,12 @@ def _(ast: Operation, env):
 
 
 @evaluate.register
-def _(ast: list, env):
+def _eval_list(ast: list, env):
     return [evaluate(a, env) for a in ast]
 
 
 @evaluate.register
-def _(ast: dict, env):
+def _eval_dict(ast: dict, env):
     return {k: evaluate(v, env) for k, v in ast.items()}
 
 

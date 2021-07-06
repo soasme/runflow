@@ -1,8 +1,9 @@
 """Command-line interface for runflow."""
 
-import argparse
 import logging
 import sys
+from argparse import ArgumentParser, Namespace
+from typing import Dict, Any
 
 from networkx.drawing.nx_agraph import to_agraph
 
@@ -11,7 +12,7 @@ from .core import Flow
 from .run import runflow
 
 
-def cli_abort(message):
+def cli_abort(message: str):
     """Print abort message."""
     print(message, file=sys.stderr)
     sys.exit(1)
@@ -19,7 +20,7 @@ def cli_abort(message):
 
 def cli_parser():
     """Parse runflow arguments."""
-    parser = argparse.ArgumentParser(
+    parser = ArgumentParser(
         prog="runflow",
         description="Runflow - a lightweight workflow engine.",
     )
@@ -62,13 +63,13 @@ def cli_parser():
     return parser
 
 
-def cli_parser_var(var):
+def cli_parser_var(var: str):
     """Parse runflow `--var` value."""
     key, value = var.split("=")
     return key.strip(), value.strip()
 
 
-def _load_specfile(specfile):
+def _load_specfile(specfile: str):
     if specfile.endswith(".hcl"):
         return {"path": specfile}
 
@@ -78,16 +79,14 @@ def _load_specfile(specfile):
     return {"module": specfile}
 
 
-def cli_subcommand_run(args):
+def cli_subcommand_run(args: Namespace):
     """Command: `runflow run`."""
     vars = {}
     for varfile in args.varfiles or []:
         with open(varfile) as file:
-            ctx = {}
+            ctx: Dict[str, Any] = {}
             for key, value in hcl2.loads(file.read()).items():
-                eval_value = hcl2.evaluate(value, ctx)
-                ctx[key] = eval_value
-                vars[key] = eval_value
+                vars[hcl2.evaluate(key, ctx)] = hcl2.evaluate(value, ctx)
 
     for var in args.vars or []:
         try:
@@ -100,7 +99,7 @@ def cli_subcommand_run(args):
     runflow(vars=vars, **loader)
 
 
-def cli_subcommand_visualize(args):
+def cli_subcommand_visualize(args: Namespace):
     """Command: `runflow visualize`."""
     flow = Flow.load(**_load_specfile(args.specfile))
     agraph = to_agraph(flow.graph)
