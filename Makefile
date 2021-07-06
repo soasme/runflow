@@ -1,5 +1,5 @@
 .PHONY: all
-all: style lint test
+all: style type lint test
 
 test:
 	PYTHONPATH=. python3 -mpytest --cov=runflow --cov-report=term --cov-report=html tests

@@ -36,7 +36,17 @@ To test the project, run
 $ make test
 ```
 
-The default make command is equivalent to `make style lint test`:
+## Type Check
+
+To check the types, run
+
+```bash
+$ make type
+```
+
+## Make
+
+The default make command is equivalent to `make style type lint test`:
 
 ```bash
 $ make
