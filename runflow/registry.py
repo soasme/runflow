@@ -26,6 +26,9 @@ task_implementations = {
     "http_request": {
         "class": "runflow.contribs.http:HttpRequestTask",
     },
+    "smtp_send": {
+        "class": "runflow.contribs.mail:SmtpSendTask",
+    },
     "sql_exec": {
         "class": "runflow.contribs.sql:SqlExecTask",
     },
