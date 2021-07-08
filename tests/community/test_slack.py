@@ -1,8 +1,10 @@
 import pytest
 from slack_sdk.errors import SlackApiError
 
-import runflow.contribs.slack as slack_contrib
 from runflow import runflow
+
+
+pytest.importorskip('slack_sdk')
 
 
 def test_slack_api_call_invalid_token(mocker, capsys):
@@ -11,7 +13,7 @@ def test_slack_api_call_invalid_token(mocker, capsys):
 
     mock_client_class = mocker.MagicMock()
     mock_client_class.return_value.chat_postMessage = chat_postMessage
-    mocker.patch('runflow.contribs.slack.AsyncWebClient', mock_client_class)
+    mocker.patch('slack_sdk.web.async_client.AsyncWebClient', mock_client_class)
 
     runflow(source="""
 flow "send_slack_message" {
@@ -38,7 +40,7 @@ def test_slack_api_call_successful(mocker, capsys):
 
     mock_client_class = mocker.MagicMock()
     mock_client_class.return_value.chat_postMessage = chat_postMessage
-    mocker.patch('runflow.contribs.slack.AsyncWebClient', mock_client_class)
+    mocker.patch('slack_sdk.web.async_client.AsyncWebClient', mock_client_class)
 
     runflow(source="""
 flow "send_slack_message" {
