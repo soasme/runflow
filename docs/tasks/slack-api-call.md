@@ -54,7 +54,7 @@ $ runflow run examples/slack_send_message.hcl --var slack_token=${SLACK_TOKEN}
   * `channel` - (Required, str) The channel id. e.g. 'C1234567890'.
   * `text` - (Optional, str) The message you'd like to share. The text is not required when presenting blocks.
   * `blocks` - (Optional, list) A list of either dict values. Blocks are required when not presenting text. e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}]
-* `client` - (Required, map) The client settings. See [client](#Client).
+* `client` - (Required, map) The client settings.
   * `token` - (Required, str) The slack token. The corresponding app of the token should have the scope properly setup.
   * `base_url` - (Optional, str) Default to `"https://www.slack.com/api/"`.
   * `timeout` - (Optional, int) Default to 30 seconds.
