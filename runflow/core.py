@@ -10,7 +10,6 @@ from functools import reduce
 import networkx
 from decouple import config
 from tenacity import (
-    after_log,
     retry,
     stop_after_delay,
     stop_after_attempt,
@@ -145,7 +144,6 @@ class Task:
         _retry_params["stop"] = reduce(lambda a, b: a | b, stopers)
         _retry_params["wait"] = _retry.get("wait", None)
         _retry_params["reraise"] = True
-        _retry_params["after"] = after_log(logger, logging.DEBUG)
         return retry(**_retry_params)(task.run)
 
     def eval_payload(self, context):

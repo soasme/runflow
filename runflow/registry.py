@@ -37,6 +37,9 @@ task_implementations = {
     "docker_run": {
         "class": "runflow.community.docker:DockerRunTask",
     },
+    "feed_parse": {
+        "class": "runflow.community.rss:FeedParseTask",
+    },
     "pushbullet_push": {
         "class": "runflow.community.pushbullet:PushbulletPushTask",
     },

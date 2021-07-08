@@ -45,6 +45,7 @@ Core Tasks:
 Community Tasks:
 
 * References: [Docker Run](tasks/docker-run.md) Task.
+* References: [Feed Parse](tasks/feed-parse.md) Task.
 * References: [Pushbullet Push](tasks/pushbullet-push.md) Task.
 * References: [Slack API Call](tasks/slack-api-call.md) Task.
 

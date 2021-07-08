@@ -29,7 +29,6 @@
 - [ ] trigger: receive SSE events from HTTP server.
 - [ ] trigger: receive websocket events from WS server.
 - [ ] builtin: merge nested data structure.
-- [ ] task: read from RSS feeds.
 - [ ] task: validate arguments.
 - [ ] task: define task using attr.
 - [ ] task: command: cap_stdout, cap_stderr.
@@ -91,6 +90,7 @@
 - [ ] core: support task argument `_schedule`. `runflow run` just ignores it. `runflow worker` can recognize them and schedule executions.
 - [ ] core: preview all task execution statuses in ascii chars.
 - [ ] core: get all task execution statuses.
+- [x] task: read from RSS feeds. v0.9.0.
 - [x] task: send push notifications through pushbullet_push task. v0.9.0.
 - [x] task: send email through smtp_send task. v0.9.0.
 - [x] code quality: add type hints. v0.8.1.
