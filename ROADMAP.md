@@ -40,7 +40,6 @@
 - [ ] docs: call another remote flow (use http_request + flow_run) .
 - [ ] docs: a flow app following 12-factor principle.
 - [ ] task: venv.
-- [ ] task: send email.
 - [ ] task: run remote commands using SSH/paramiko.
 - [ ] task: create iCalendar event file.
 - [ ] docs: write zip/gzip archive.
@@ -92,6 +91,8 @@
 - [ ] core: support task argument `_schedule`. `runflow run` just ignores it. `runflow worker` can recognize them and schedule executions.
 - [ ] core: preview all task execution statuses in ascii chars.
 - [ ] core: get all task execution statuses.
+- [x] task: send push notifications through pushbullet_push task. v0.9.0.
+- [x] task: send email through smtp_send task. v0.9.0.
 - [x] code quality: add type hints. v0.8.1.
 - [x] community: slack. v0.8.1.
 - [x] core: add namespace in the log for tasks within a flow_run. v0.8.1.
