@@ -36,7 +36,7 @@ task_implementations = {
         "class": "runflow.contribs.sql:SqlRowTask",
     },
     "slack_api_call": {
-        "class": "runflow.contribs.slack:SlackApiCallTask",
+        "class": "runflow.community.slack:SlackApiCallTask",
     },
 }
 
