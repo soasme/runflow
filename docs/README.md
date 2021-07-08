@@ -39,6 +39,7 @@ Core Tasks:
 * References: [File Read](tasks/file-read.md) Task. Runflow supports these file systems: GitHub, FTP, SFTP, Arrow HDFS, HTTP, Zip, local Git repo, SMB, etc.
 * References: [Hcl2 Template](tasks/hcl2-template.md) Task.
 * References: [Http Request](tasks/http-request.md) Task.
+* References: [Smtp Send](tasks/smtp-send.md) Task.
 * References: [Sql Exec](tasks/sql-exec.md) Task. Runflow supports these databases: SQLite3, MySQL, PostgreSQL, MSSQL, Oracle, etc.
 * References: [Sql Row](tasks/sql-row.md) Task. Runflow supports these databases: SQLite3, MySQL, PostgreSQL, MSSQL, Oracle, etc.
 
