@@ -6,6 +6,16 @@ The task type is "sql_row".
 
 Added in v0.5.0.
 
+:::tip
+Please make sure you have the required driver package installed, such as MySQL-python or psycopg2.
+
+Say you're using `postgresql` database, you can install `psycopg2`:
+
+```bash
+$ pip install psycopg2-binary
+```
+:::
+
 ## Example Usage
 
 <<< @/examples/sqlite3_row.hcl
@@ -30,16 +40,6 @@ $ runflow run sqlite3_row.hcl --var db=/tmp/out.db
 :::
 
 ## Argument Reference
-
-:::tip
-Please make sure you have the required driver package installed, such as MySQL-python or psycopg2.
-
-Say you're using `postgresql` database, you can install `psycopg2`:
-
-```bash
-$ pip install psycopg2-binary
-```
-:::
 
 The following arguments are supported:
 

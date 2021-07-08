@@ -2,4 +2,4 @@
 ignore=hcl2_parser.py
 
 [MESSAGES CONTROL]
-disable=unused-argument,redefined-builtin,too-few-public-methods,missing-module-docstring,missing-class-docstring,missing-function-docstring,too-many-instance-attributes,too-many-arguments
+disable=unused-argument,redefined-builtin,too-few-public-methods,missing-module-docstring,missing-class-docstring,missing-function-docstring,too-many-instance-attributes,too-many-arguments,import-outside-toplevel

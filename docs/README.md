@@ -33,7 +33,6 @@ Flow:
 Core Tasks:
 
 * References: [Bash Run](tasks/bash-run.md) Task.
-* References: [Docker Run](tasks/docker-run.md) Task.
 * References: [Flow Run](tasks/flow-run.md) Task.
 * References: [File Write](tasks/file-write.md) Task. Runflow supports these file systems: GitHub, FTP, SFTP, Arrow HDFS, HTTP, Zip, local Git repo, SMB, etc.
 * References: [File Read](tasks/file-read.md) Task. Runflow supports these file systems: GitHub, FTP, SFTP, Arrow HDFS, HTTP, Zip, local Git repo, SMB, etc.
@@ -45,6 +44,8 @@ Core Tasks:
 
 Community Tasks:
 
+* References: [Docker Run](tasks/docker-run.md) Task.
+* References: [Pushbullet Push](tasks/pushbullet-push.md) Task.
 * References: [Slack API Call](tasks/slack-api-call.md) Task.
 
 ## Tutorials

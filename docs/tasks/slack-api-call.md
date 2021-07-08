@@ -6,6 +6,13 @@ sidebar: auto
 
 This task enables interacting with Slack Web API.
 
+::: tip
+This feature requires installing slack-sdk:
+```bash
+$ pip install runflow[slack]
+```
+:::
+
 ## Send Slack Message to a Channel
 
 To send a slack message to a channel,

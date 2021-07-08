@@ -5,14 +5,12 @@ from .utils import import_module
 
 
 task_implementations = {
-    "flow_run": {
-        "class": "runflow.core:FlowRunTask",
-    },
+    # Core tasks
     "bash_run": {
         "class": "runflow.contribs.bash:BashRunTask",
     },
-    "docker_run": {
-        "class": "runflow.contribs.docker:DockerRunTask",
+    "flow_run": {
+        "class": "runflow.core:FlowRunTask",
     },
     "file_read": {
         "class": "runflow.contribs.local_file:FileReadTask",
@@ -35,8 +33,15 @@ task_implementations = {
     "sql_row": {
         "class": "runflow.contribs.sql:SqlRowTask",
     },
+    # Community tasks
+    "docker_run": {
+        "class": "runflow.community.docker:DockerRunTask",
+    },
+    "pushbullet_push": {
+        "class": "runflow.community.pushbullet:PushbulletPushTask",
+    },
     "slack_api_call": {
-        "class": "runflow.contribs.slack:SlackApiCallTask",
+        "class": "runflow.community.slack:SlackApiCallTask",
     },
 }
 
