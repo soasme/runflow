@@ -5,7 +5,7 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from typing import Any, cast, List
+from typing import List
 
 
 class SmtpSendTask:
@@ -13,9 +13,9 @@ class SmtpSendTask:
 
     def __init__(
         self,
-        subject: str = '',
-        message: str = '',
-        html_message: str = '',
+        subject: str = "",
+        message: str = "",
+        html_message: str = "",
         email_from: str = None,
         email_to: str = None,
         email_to_cc: str = None,
@@ -30,7 +30,7 @@ class SmtpSendTask:
         self.email_to = email_to
         self.email_to_cc = email_to_cc
         self.email_to_bcc = email_to_bcc
-        self.attachments = self.attachments or []
+        self.attachments = attachments or []
         self.client = client or {}
 
     def run(self):
@@ -47,10 +47,10 @@ class SmtpSendTask:
             message["Bcc"] = self.email_to_bcc
 
         if self.message:
-            message.attach(MIMEType(self.message, 'plain'))
+            message.attach(MIMEText(self.message, "plain"))
 
         if self.html_message:
-            message.attach(MIMEType(self.html_message, 'html'))
+            message.attach(MIMEText(self.html_message, "html"))
 
         for attachment in self.attachments:
             part = MIMEBase("application", "octet-stream")
@@ -59,21 +59,24 @@ class SmtpSendTask:
             encoders.encode_base64(part)
             part.add_header(
                 "Content-Disposition",
-                f"attachment; filename= {os.path.basename(filepath)}",
+                f"attachment; filename= {os.path.basename(attachment)}",
             )
             message.attach(part)
 
         context = ssl.create_default_context()
-        server = smtplib.SMTP_SSL(context=context, **{
-            'host': self.client.get('host') or '',
-            'port': int(self.client.get('port') or 465),
-            'local_hostname': self.client.get('local_hostname'),
-            'timeout': self.client.get('timeout'),
-            'source_address': self.client.get('source_address'),
-        })
+        server = smtplib.SMTP_SSL(
+            context=context,
+            **{
+                "host": self.client.get("host") or "",
+                "port": int(self.client.get("port") or 465),
+                "local_hostname": self.client.get("local_hostname"),
+                "timeout": self.client.get("timeout"),
+                "source_address": self.client.get("source_address"),
+            },
+        )
 
-        username = self.client['username']
-        password = self.client['password']
+        username = self.client["username"]
+        password = self.client["password"]
         server.login(username, password)
 
         try:
