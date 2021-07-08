@@ -46,6 +46,9 @@ task_implementations = {
     "slack_api_call": {
         "class": "runflow.community.slack:SlackApiCallTask",
     },
+    "telegram_api_call": {
+        "class": "runflow.community.telegram:TelegramApiCallTask",
+    },
 }
 
 
