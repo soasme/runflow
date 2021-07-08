@@ -4,6 +4,18 @@
 
 [Code Changes](https://github.com/soasme/runflow/compare/v0.8.1..HEAD).
 
+## v0.9.0, 8 Jul, 2021
+
+[Code Changes](https://github.com/soasme/runflow/compare/v0.8.1..v0.9.0).
+
+* Bugfix: `_retry` not working for `tenacity>=8.0.0`. [#60](https://github.com/soasme/runflow/pull/60).
+* New Task Type: `telegram_api_call`. [#61](https://github.com/soasme/runflow/pull/61).
+* New Task Type: `feed_parse`. [#60](https://github.com/soasme/runflow/pull/60).
+* New Task Type: `pushbullet_push`. [#59](https://github.com/soasme/runflow/pull/59).
+* New Task Type: `smtp_send`. [#58](https://github.com/soasme/runflow/pull/58).
+* Enhancement: Support installing all extras packages via `runflow[all]`. [#59](https://github.com/soasme/runflow/pull/59).
+* Tutorial: [Use Scikit-Learn and Runflow](https://runflow.org/tutorials/sklearn-and-runflow.html).
+
 ## v0.8.1, 6 Jul, 2021
 
 [Code Changes](https://github.com/soasme/runflow/compare/v0.8.0..v0.8.1).
