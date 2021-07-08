@@ -5,7 +5,7 @@ from runflow import runflow
 pytest.importorskip('slack_sdk')
 
 
-def test_push_note(mocker):
+def test_pushbullet_push_note(mocker):
     pb = mocker.MagicMock()
     mocker.patch('pushbullet.Pushbullet', pb)
 
@@ -20,7 +20,7 @@ def test_push_note(mocker):
         channel=None,
     )
 
-def test_push_link(mocker):
+def test_pushbullet_push_link(mocker):
     pb = mocker.MagicMock()
     mocker.patch('pushbullet.Pushbullet', pb)
 
@@ -36,7 +36,7 @@ def test_push_link(mocker):
         channel=None,
     )
 
-def test_push_file(mocker):
+def test_pushbullet_push_file(mocker):
     pb = mocker.MagicMock()
     mocker.patch('pushbullet.Pushbullet', pb)
 
@@ -53,3 +53,17 @@ def test_push_file(mocker):
         email='',
         channel=None,
     )
+
+def test_pushbullet_invalid_client(mocker, capsys):
+    pb = mocker.MagicMock()
+    mocker.patch('pushbullet.Pushbullet', pb)
+    runflow(source="""
+flow "invalid_client" {
+  task "pushbullet_push" "this" {
+    client = {
+    }
+  }
+}
+    """)
+    out, err = capsys.readouterr()
+    assert 'set api_key' in err
