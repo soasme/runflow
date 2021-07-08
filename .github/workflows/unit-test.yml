@@ -34,7 +34,7 @@ jobs:
       run: |
         sudo apt-get install -y graphviz graphviz-dev
         python3 -mpip install -r requirements-dev.txt
-        python3 -mpip install -e .[docker,slack,pygraphviz]
+        python3 -mpip install -e .[docker,slack,pushbullet,pygraphviz]
 
     - name: Run Lint
       run: |
