@@ -37,6 +37,9 @@ task_implementations = {
     "docker_run": {
         "class": "runflow.community.docker:DockerRunTask",
     },
+    "pushbullet_push": {
+        "class": "runflow.community.pushbullet:PushbulletPushTask",
+    },
     "slack_api_call": {
         "class": "runflow.community.slack:SlackApiCallTask",
     },
