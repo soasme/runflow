@@ -9,3 +9,4 @@ isort
 black
 pytest-mock
 mypy
+types-python-dateutil

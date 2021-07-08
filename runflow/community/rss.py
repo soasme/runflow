@@ -2,8 +2,8 @@ import time
 import datetime
 from typing import Union, Dict, List
 
-class FeedParseTask:
 
+class FeedParseTask:
     def __init__(
         self,
         url: str,
