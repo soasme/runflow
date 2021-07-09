@@ -36,3 +36,10 @@ def import_module(path: str):
         return result
     except (AttributeError, ValueError) as err:
         raise ImportError(path) from err
+
+
+class RunflowValidators:
+    @staticmethod
+    def not_empty(instance, attribute, value):
+        if not value:
+            raise ValueError(f"{attribute} must not be empty.")
