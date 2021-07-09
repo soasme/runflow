@@ -12,7 +12,7 @@ def test_file_write(tmpdir, capsys):
             f.read().replace('"/tmp/file_write.txt"', 'var.out')
         )
 
-    runflow.runflow(flow, vars={'out': out})
+    runflow.runflow(flow, vars={'out': str(out)})
 
     assert out.read() == 'foo bar'
 

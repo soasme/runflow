@@ -31,6 +31,7 @@ flow "hello-world2" { }
         runflow.runflow(flow)
 
 def test_hello_world(tmpdir):
+    out = tmpdir / "out.txt"
     flow = """
 flow "hello-world" {
   task "bash_run" "echo" {
@@ -39,7 +40,7 @@ flow "hello-world" {
 }
     """
 
-    runflow.runflow(source=flow, vars={'out': out})
+    runflow.runflow(source=flow, vars={'out': str(out)})
     assert out.read() == 'hello world\n'
 
 def test_hello_world(tmpdir):
@@ -53,7 +54,7 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, vars={'out': out})
+    runflow.runflow(flow, vars={'out': str(out)})
 
     assert out.read() == 'hello world\n'
 
@@ -71,7 +72,7 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, vars={'out': out})
+    runflow.runflow(flow, vars={'out': str(out)})
 
     assert out.read() == 'hello world\n'
 
@@ -89,7 +90,7 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, vars={'out': out})
+    runflow.runflow(flow, vars={'out': str(out)})
 
     assert out.read() == 'hello world\n'
 
@@ -107,7 +108,7 @@ flow "hello-id-env" {
 }
     """)
 
-    runflow.runflow(flow, vars={'out': out})
+    runflow.runflow(flow, vars={'out': str(out)})
 
     assert len(out.read().strip()) == 32
 
@@ -167,7 +168,7 @@ flow "hello-world" {
     """)
 
     with pytest.raises(runflow.RunflowSyntaxError):
-        runflow.runflow(flow, vars={'out': out})
+        runflow.runflow(flow, vars={'out': str(out)})
 
 def test_implicit_depends_on_wrong_task_type(tmpdir):
     flow = tmpdir / "test.hcl"
@@ -184,7 +185,7 @@ flow "hello-world" {
     """)
 
     with pytest.raises(runflow.RunflowSyntaxError):
-        runflow.runflow(flow, vars={'out': out})
+        runflow.runflow(flow, vars={'out': str(out)})
 
 
 def test_implicit_depends_on(tmpdir):
@@ -201,7 +202,7 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, vars={'out': out})
+    runflow.runflow(flow, vars={'out': str(out)})
 
     assert out.read() == 'hello world2\n'
 
@@ -257,7 +258,7 @@ def test_implicit_depends_on_splat(tmpdir, capsys):
 flow "hello-world" {
   task "file_write" "out2" {
     filename = "/dev/stdout"
-    content = task.hcl2_template.out2.content.*.a
+    content = join(" ", [for i in task.hcl2_template.out2.content.*.a: str(i)])
   }
   task "hcl2_template" "out2" {
     source = [{a=1},{a=2}]
@@ -267,7 +268,7 @@ flow "hello-world" {
 
     runflow.runflow(flow, vars={})
     out, err = capsys.readouterr()
-    assert out == '[1, 2]\n'
+    assert out == '1 2\n'
 
 def test_implicit_depends_on_condition(tmpdir, capsys):
     flow = tmpdir / "test.hcl"
@@ -293,7 +294,7 @@ def test_implicit_depends_on_operation(tmpdir, capsys):
 flow "hello-world" {
   task "file_write" "out2" {
     filename = "/dev/stdout"
-    content = 1 + task.hcl2_template.out2.content
+    content = str(1 + task.hcl2_template.out2.content)
   }
   task "hcl2_template" "out2" {
     source = 1
@@ -311,7 +312,7 @@ def test_implicit_depends_on_list_expr(tmpdir, capsys):
 flow "hello-world" {
   task "file_write" "out2" {
     filename = "/dev/stdout"
-    content = [for x in task.hcl2_template.out2.content: x]
+    content = join(" ", [for x in task.hcl2_template.out2.content: str(x)])
   }
   task "hcl2_template" "out2" {
     source = [1,2]
@@ -321,7 +322,7 @@ flow "hello-world" {
 
     runflow.runflow(flow, vars={})
     out, err = capsys.readouterr()
-    assert out == '[1, 2]\n'
+    assert out == '1 2\n'
 
 def test_implicit_depends_on_dict_expr(tmpdir, capsys):
     flow = tmpdir / "test.hcl"
@@ -329,7 +330,7 @@ def test_implicit_depends_on_dict_expr(tmpdir, capsys):
 flow "hello-world" {
   task "file_write" "out2" {
     filename = "/dev/stdout"
-    content = {for k, v in task.hcl2_template.out2.content: k => v }
+    content = str({for k, v in task.hcl2_template.out2.content: k => v })
   }
   task "hcl2_template" "out2" {
     source = { k = 1 }
@@ -347,7 +348,7 @@ def test_implicit_depends_on_not_expr(tmpdir, capsys):
 flow "hello-world" {
   task "file_write" "out2" {
     filename = "/dev/stdout"
-    content = !task.hcl2_template.out2.content
+    content = str(!task.hcl2_template.out2.content)
   }
   task "hcl2_template" "out2" {
     source = true
@@ -552,7 +553,7 @@ flow "hello-world" {
 }
     """)
 
-    runflow.runflow(flow, vars={'content': 'hello\nworld', 'out': out})
+    runflow.runflow(flow, vars={'content': 'hello\nworld', 'out': str(out)})
     assert out.read() == 'hello\nworld\n'
 
 def test_invalid_reference_in_command(tmpdir):

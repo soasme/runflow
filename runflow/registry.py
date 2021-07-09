@@ -13,10 +13,10 @@ task_implementations = {
         "class": "runflow.core:FlowRunTask",
     },
     "file_read": {
-        "class": "runflow.contribs.local_file:FileReadTask",
+        "class": "runflow.contribs.file:FileReadTask",
     },
     "file_write": {
-        "class": "runflow.contribs.local_file:FileWriteTask",
+        "class": "runflow.contribs.file:FileWriteTask",
     },
     "hcl2_template": {
         "class": "runflow.contribs.template:Hcl2TemplateTask",

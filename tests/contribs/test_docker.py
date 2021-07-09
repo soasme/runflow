@@ -9,7 +9,7 @@ def test_docker_hello_world(tmpdir):
     out = tmpdir / "out.txt"
     with open('examples/docker-hello-world.hcl') as f:
         flow.write(f.read())
-    runflow.runflow(flow, vars={'out': out})
+    runflow.runflow(flow, vars={'out': str(out)})
     assert out.read() == 'hello world'
 
 def test_docker_env(tmpdir):
@@ -17,7 +17,7 @@ def test_docker_env(tmpdir):
     out = tmpdir / "out.txt"
     with open('examples/docker-env.hcl') as f:
         flow.write(f.read())
-    runflow.runflow(flow, vars={'out': out})
+    runflow.runflow(flow, vars={'out': str(out)})
     assert 'greeter=world' in out.read()
 
 def test_docker_entrypoint(tmpdir):
@@ -25,7 +25,7 @@ def test_docker_entrypoint(tmpdir):
     out = tmpdir / "out.txt"
     with open('examples/docker-entrypoint.hcl') as f:
         flow.write(f.read())
-    runflow.runflow(flow, vars={'out': out})
+    runflow.runflow(flow, vars={'out': str(out)})
     assert out.read() == 'runflow is awesome'
 
 def test_docker_container_failed_run(tmpdir, capsys):

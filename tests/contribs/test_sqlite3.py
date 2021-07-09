@@ -41,3 +41,51 @@ def test_sqlite3_row(tmpdir, capsys):
             {"key": "k3", "value": "v3"},
         ],
     }
+
+def test_invalid_sql_statement(capsys):
+    runflow.runflow(source="""
+flow "invalid_sql_statement" {
+  task "sql_row" "this" {
+    dsn = "sqlite:///"
+  }
+}
+    """)
+    _, err = capsys.readouterr()
+    assert 'missing 1 required keyword-only argument' in err
+
+def test_invalid_sql_statement2(capsys):
+    runflow.runflow(source="""
+flow "invalid_sql_statement" {
+  task "sql_row" "this" {
+    dsn = "sqlite:///"
+    sql {}
+    sql {}
+  }
+}
+    """)
+    _, err = capsys.readouterr()
+    assert 'require one sql block' in err
+
+def test_invalid_sql_statement3(capsys):
+    runflow.runflow(source="""
+flow "invalid_sql_statement" {
+  task "sql_row" "this" {
+    dsn = "sqlite:///"
+    sql {}
+  }
+}
+    """)
+    _, err = capsys.readouterr()
+    assert 'no sql.statement' in err
+
+def test_invalid_sql_statement4(capsys):
+    runflow.runflow(source="""
+flow "invalid_sql_statement" {
+  task "sql_exec" "this" {
+    dsn = "sqlite:///"
+    sql {}
+  }
+}
+    """)
+    _, err = capsys.readouterr()
+    assert 'no sql.statement' in err
