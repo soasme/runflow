@@ -16,3 +16,6 @@ type:
 
 hcl2:
 	python3 -mlark.tools.standalone runflow/hcl2.lark -s eval -s module > runflow/hcl2_parser.py
+
+references:
+	rm -rf docs/.vuepress/public/references && pdoc3 --html --output-dir docs/.vuepress/public/references runflow
