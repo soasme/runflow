@@ -8,14 +8,14 @@ import runflow
 
 def test_http_get(tmpdir, capsys):
     out = tmpdir / "out.txt"
-    runflow.runflow(path="examples/http_get.hcl", vars={'out': out})
+    runflow.runflow(path="examples/http_get.hcl", vars={'out': str(out)})
     data = json.loads(out.read())
     assert data['name'] == 'runflow'
 
 
 def test_http_post(tmpdir, capsys):
     out = tmpdir / "out.txt"
-    runflow.runflow(path="examples/http_post.hcl", vars={'out': out})
+    runflow.runflow(path="examples/http_post.hcl", vars={'out': str(out)})
     assert '<h1 align="center">' in out.read()
 
 
