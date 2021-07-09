@@ -9,6 +9,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
+    - name: Build Runflow References
+      run: |
+        python3 -mpip install pdoc3
+        make references
+
     - name: vuepress-deploy
       uses: jenkey2011/vuepress-deploy@master
       env:
