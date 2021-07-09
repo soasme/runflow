@@ -1,5 +1,7 @@
 """
-runflow - a tool to define an run your workflows.
+Runflow is a tool to define an run your workflows.
+
+Please read more on [runflow.org](https://runflow.org).
 """
 __all__ = [
     "Flow",
