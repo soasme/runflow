@@ -10,3 +10,4 @@ black
 pytest-mock
 mypy
 types-python-dateutil
+pdoc3
