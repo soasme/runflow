@@ -9,10 +9,16 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
     - name: Build Runflow References
       run: |
-        python3 -mpip install -e '.[all]'
+        sudo apt-get install -y graphviz graphviz-dev
         python3 -mpip install -r requirements-dev.txt
+        python3 -mpip install -e '.[all]'
         make references
 
     - name: vuepress-deploy
