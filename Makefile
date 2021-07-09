@@ -16,3 +16,6 @@ type:
 
 hcl2:
 	python3 -mlark.tools.standalone runflow/hcl2.lark -s eval -s module > runflow/hcl2_parser.py
+
+references:
+	rm -rf docs/references && pdoc3 --output-dir docs/references runflow
