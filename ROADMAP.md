@@ -11,7 +11,6 @@
 - [ ] community: s3.
 - [ ] community: dynamodb.
 - [ ] community: lambda.
-- [ ] community: papermill.
 - [ ] community: cloudwatch.
 - [ ] community: redis.
 - [ ] community: prometheus.
@@ -42,13 +41,11 @@
 - [ ] docs: write zip/gzip archive.
 - [ ] task: hmac/hash/sign a string using cryptography.
 - [ ] docs: datetime processing: update supported `todatetime` string formats.
-- [ ] tutorial: handle ML workflow like d6tflow.
 - [ ] ci: publish server containers to docker hub.
 - [ ] core: save pickled task result.
 - [ ] jupyter notebook extension: hcl2.
 - [ ] tutorial: debug: inspect data with a notebook.
 - [ ] core: add docstring for all modules.
-- [ ] docs: generate module references using pdoc.
 - [ ] docs: internal - technical overview.
 - [ ] task: docker_run: provide some general flows for various programming languages.
 - [ ] core: file_read can parse file content from various file formats, such as json, csv, etc.
@@ -75,10 +72,10 @@
 - [ ] builtin: xml data extraction like huginn using xpath.
 - [ ] docs: make flow spec v1.0 specification.
 - [ ] hcl2: support task argument `_foreach` to map an array of inputs to a task.
-- [ ] cli: `runflow register`: register a flow and extra resources (pycode, dep flows, etc)to db.
-- [ ] core: preview all task execution statuses in ascii chars.
-- [ ] core: get all task execution statuses.
+- [x] community: papermill. v0.10.0
 - [x] hcl2: variable `required = true`. if not provided, abort. v0.10.0.
+- [x] docs: generate module references using pdoc. v0.10.0.
+- [x] tutorial: handle ML workflow using sklearn.
 - [x] community: telegram. v0.9.0
 - [x] community: read from RSS feeds. v0.9.0.
 - [x] community: send push notifications through pushbullet_push task. v0.9.0.
