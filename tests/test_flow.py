@@ -833,3 +833,14 @@ def test_flow_as_task(capsys):
     runflow.runflow(path="examples/flow_as_task.hcl", vars={'globals': 42})
     out, err = capsys.readouterr()
     assert out == "42\n42\n42\n42\n42\n"
+
+
+def test_flow_missing_var(capsys):
+    with pytest.raises(NameError):
+        runflow.runflow(source="""
+flow "missing_var" {
+    variable "xyz" {
+        required = true
+    }
+}
+        """, vars={})

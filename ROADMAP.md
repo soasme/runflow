@@ -20,7 +20,6 @@
 - [ ] community: discord.
 - [ ] community: reddit.
 - [ ] community: hackernews.
-- [ ] worker: expose metrics.
 - [ ] send logging to s3.
 - [ ] trigger: receive email through IMAP server.
 - [ ] trigger: receive webhook requests through HTTP server.
@@ -44,13 +43,7 @@
 - [ ] task: hmac/hash/sign a string using cryptography.
 - [ ] docs: datetime processing: update supported `todatetime` string formats.
 - [ ] tutorial: handle ML workflow like d6tflow.
-- [ ] server: support loading flow from remote services.
-- [ ] server: provide openapi spec for worker.
-- [ ] server: crud for job.
-- [ ] server: provide example docker-compose yaml file.
-- [ ] server: provide example k8s helm charts yaml files.
 - [ ] ci: publish server containers to docker hub.
-- [ ] server: write a technical overview of overall server design - components:ui+api+worker,db.backend_authentication:ldap,saml,oauth2,internal_user_database.authentication:internal_user_database,api_token.internal:pg,SKIP LOCKED.
 - [ ] core: save pickled task result.
 - [ ] jupyter notebook extension: hcl2.
 - [ ] tutorial: debug: inspect data with a notebook.
@@ -58,7 +51,6 @@
 - [ ] docs: generate module references using pdoc.
 - [ ] docs: internal - technical overview.
 - [ ] task: docker_run: provide some general flows for various programming languages.
-- [ ] hcl2: variable `required = true`. if not provided, cli will prompt for a value.
 - [ ] core: file_read can parse file content from various file formats, such as json, csv, etc.
 - [ ] cli: json.loads envvar if it's not a string.
 - [ ] hcl2: variable type constraints.
@@ -83,12 +75,10 @@
 - [ ] builtin: xml data extraction like huginn using xpath.
 - [ ] docs: make flow spec v1.0 specification.
 - [ ] hcl2: support task argument `_foreach` to map an array of inputs to a task.
-- [ ] cli: `runflow worker` can download flow package and put it in tmpdir for execution.
 - [ ] cli: `runflow register`: register a flow and extra resources (pycode, dep flows, etc)to db.
-- [ ] cli: `runflow worker`: pull flow schedules from db and schedule executions locally.
-- [ ] core: support task argument `_schedule`. `runflow run` just ignores it. `runflow worker` can recognize them and schedule executions.
 - [ ] core: preview all task execution statuses in ascii chars.
 - [ ] core: get all task execution statuses.
+- [x] hcl2: variable `required = true`. if not provided, abort. v0.10.0.
 - [x] community: telegram. v0.9.0
 - [x] community: read from RSS feeds. v0.9.0.
 - [x] community: send push notifications through pushbullet_push task. v0.9.0.
