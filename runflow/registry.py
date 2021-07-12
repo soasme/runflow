@@ -40,6 +40,9 @@ task_implementations = {
     "feed_parse": {
         "class": "runflow.community.rss:FeedParseTask",
     },
+    "papermill_execute": {
+        "class": "runflow.community.papermill:PapermillExecuteTask",
+    },
     "pushbullet_push": {
         "class": "runflow.community.pushbullet:PushbulletPushTask",
     },
