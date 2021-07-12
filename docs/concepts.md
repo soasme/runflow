@@ -111,7 +111,7 @@ A variable is a key-value pair. At runtime, Runflow maintains an environment sto
 
 In this example,
 
-* Block `variable "greeter" {}` declares a variable named `greeter`.
+* Block `variable "greeter" {}` declares a variable named `greeter` and must not be None.
 * Block `task "bash_run" "echo" {}` has a variable reference `${var.greeter}`, which interpolates the command string dynamically at runtime.
 
 <<< @/examples/hello-vars.hcl

@@ -414,6 +414,9 @@ class Flow:
             var_value = config(
                 f"RUNFLOW_VAR_{var_name}", default=None
             ) or var_value_spec.get("default", None)
+            var_required = var_value_spec.get("required")
+            if var_required and var_value is None:
+                raise NameError(f"{var_name} is required but not provided.")
             self.set_default_var(var_name, var_value)
 
     # pylint: disable=no-self-use
