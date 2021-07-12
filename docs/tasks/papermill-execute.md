@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # Papermill Execute Task
 
 This task populates a `.ipynb` file with outputs for each cell.
@@ -13,12 +17,13 @@ This task populates a `.ipynb` file with outputs for each cell.
 Run:
 ```bash
 $ runflow run examples/papermill_example.hcl
-[2021-07-12 16:09:53,175] "task.papermill_execute.this" is started.
-[2021-07-12 16:09:53,176] Input Notebook:  /tmp/sysexit0.ipynb
-[2021-07-12 16:09:53,176] Output Notebook: /tmp/sysexit0-out.ipynb
-Executing:   0%|                            | 0/3 [00:00<?, ?cell/s][2021-07-12 16:09:56,562] Executing notebook with kernel: python3
-Executing:  67%|████████████████████▋       | 2/3 [00:03<00:01,  1.95s/cell]
-[2021-07-12 16:09:57,104] "task.papermill_execute.this" is successful.
+[2021-07-12 17:45:01,075] "task.papermill_execute.this" is started.
+[2021-07-12 17:45:01,076] Input Notebook:  examples/sysexit0.ipynb
+[2021-07-12 17:45:01,076] Output Notebook: /tmp/sysexit0-out.ipynb
+Executing:   0%|                    | 0/3 [00:00<?, ?cell/s]
+[2021-07-12 17:45:02,494] Executing notebook with kernel: python3
+Executing:  67%|█████████████▎      | 2/3 [00:01<00:00,  1.30cell/s]
+[2021-07-12 17:45:02,649] "task.papermill_execute.this" is successful.
 ```
 :::
 
