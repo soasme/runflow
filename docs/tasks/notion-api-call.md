@@ -48,11 +48,34 @@ $ runflow run examples/notion_update_title.hcl
 ```
 :::
 
+## Example Usage: Append Block Children
+
+This example appends an H2 element "Runflow is awesome" to the page.
+
+* Set `client.auth` with a Notion Integration Token.
+* Set `api_method` to `blocks.children.update`.
+* Set `block_id` to the ID of the page. In case you're struggling with find the ID of the page, copy the page url, and you will have something like `https://www.notion.so/soasme/Runflow-Test-ee5b6cd7a7a340d79ae5ae28c52b67ea`. Turn the last bit of information `ee5b6cd7a7a340d79ae5ae28c52b67ea` into 8-4-4-4-12 form, e.g. `ee5b6cd7-a7a3-40d7-9ae5-ae28c52b67ea`.
+* Set `children`. It's strongly recommended you read the Notion documentation [Working with page content](https://developers.notion.com/docs/working-with-page-content) first. You will have a basic understanding of properties then.
+
+<<< @/examples/notion_update_blocks.hcl
+
+::: details Click me to view the run output
+Run
+```bash
+$ read -s RUNFLOW_VAR_notion_token
+**********
+$ export RUNFLOW_VAR_notion_token
+runflow run examples/notion_update_blocks.hcl
+[2021-07-12 22:53:32,327] "task.notion_api_call.update_blocks" is started.
+[2021-07-12 22:53:33,315] "task.notion_api_call.update_blocks" is successful.
+```
+:::
+
 ## Arguments Reference
 
 * `api_method` - (Required, str) The API methods. Choices include
-  * `"blocks.append"`
-  * `"blocks.list"`
+  * `"blocks.children.append"`
+  * `"blocks.children.list"`
   * `"databases.list"`
   * `"databases.query"`
   * `"databases.retrieve"`
