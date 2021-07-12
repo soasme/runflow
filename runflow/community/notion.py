@@ -2,7 +2,6 @@
 
 import inspect
 
-import attr
 from notion_client import AsyncClient
 
 
