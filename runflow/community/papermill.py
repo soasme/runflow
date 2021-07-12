@@ -1,10 +1,12 @@
-import attr
+"""
+This module wraps `papermill` library as a task type.
+"""
+
 from pathlib import Path
 from typing import Union, Optional
 
+import attr
 from papermill import execute_notebook
-
-from runflow.utils import RunflowValidators
 
 
 @attr.s(
@@ -13,69 +15,56 @@ from runflow.utils import RunflowValidators
     frozen=True,
 )
 class PapermillExecuteTask:
+    """This class implements task type `papermill_exuecte`."""
 
     input_path: Union[str, Path] = attr.ib(
-        validator=[
-            attr.validators.instance_of((str, Path)),
-            RunflowValidators.not_empty,
-        ],
+        validator=attr.validators.instance_of((str, Path)),
     )
     output_path: Union[str, Path] = attr.ib(
-        validator=[
-            attr.validators.instance_of((str, Path)),
-            RunflowValidators.not_empty,
-        ],
+        validator=attr.validators.instance_of((str, Path)),
     )
     parameters: dict = attr.ib(
         validator=attr.validators.instance_of(dict),
         factory=dict,
     )
-    engine_name: str = attr.ib(
+    engine_name: Optional[str] = attr.ib(
         validator=attr.validators.optional(attr.validators.instance_of(str)),
         default=None,
     )
     request_save_on_cell_execute: bool = attr.ib(
         validator=attr.validators.instance_of(bool),
         default=True,
-    ),
+    )
     prepare_only: bool = attr.ib(
         validator=attr.validators.instance_of(bool),
         default=False,
     )
     kernel_name: Optional[str] = attr.ib(
-        validator=attr.validators.optional(
-            attr.validators.instance_of(str)
-        ),
+        validator=attr.validators.optional(attr.validators.instance_of(str)),
         default=None,
     )
     language: Optional[str] = attr.ib(
-        validator=attr.validators.optional(
-            attr.validators.instance_of(str)
-        ),
+        validator=attr.validators.optional(attr.validators.instance_of(str)),
         default=None,
     )
     progress_bar: bool = attr.ib(
-        validator= attr.validators.instance_of(bool),
+        validator=attr.validators.instance_of(bool),
         default=True,
     )
     log_output: bool = attr.ib(
         validator=attr.validators.instance_of(bool),
         default=False,
     )
-    stdout_file: str = attr.ib(
-        validator=attr.validators.optional(
-            attr.validators.instance_of(str)
-        ),
+    stdout_file: Optional[str] = attr.ib(
+        validator=attr.validators.optional(attr.validators.instance_of(str)),
         default=None,
     )
-    stderr_file: str = attr.ib(
-        validator=attr.validators.optional(
-            attr.validators.instance_of(str)
-        ),
+    stderr_file: Optional[str] = attr.ib(
+        validator=attr.validators.optional(attr.validators.instance_of(str)),
         default=None,
     )
     start_timeout: int = attr.ib(
-        validator=attr.validators.instance_of((int, float, )),
+        validator=attr.validators.instance_of((int, float)),
         default=60,
     )
     report_mode: bool = attr.ib(
@@ -84,7 +73,7 @@ class PapermillExecuteTask:
     )
     cwd: Optional[Union[str, Path]] = attr.ib(
         validator=attr.validators.optional(
-            attr.validators.instance_of((str, Path, ))
+            attr.validators.instance_of((str, Path))
         ),
         default=None,
     )
@@ -112,4 +101,4 @@ class PapermillExecuteTask:
             cwd=self.cwd,
             **self.engine_config,
         )
-        return {'notebook': notebook}
+        return {"notebook": notebook}
