@@ -6,6 +6,15 @@ sidebar: auto
 
 This task populates a `.ipynb` file with outputs for each cell.
 
+Added since v0.10.0.
+
+::: tip
+This feature requires installing jupyterlab and papermill:
+```bash
+$ pip install runflow[papermill]
+```
+:::
+
 ## Example Usage
 
 * Set task type to `papermill_execute`.
