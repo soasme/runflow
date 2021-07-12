@@ -63,14 +63,14 @@ Alternatives: Airflow, Prefect, Oozie, Azkaban.
 
 First, prepare a Python environment:
 
-```
+```bash
 $ python3 -mvenv env
 $ source venv/bin/activate
 ```
 
 Run `pip install runflow` to install the latest version from [PyPI](https://pypi.org/project/runflow/).
 
-```
+```bash
 $ pip install runflow
 ```
 
@@ -80,13 +80,13 @@ To install the HEAD, run `pip install git+https://github.com/soasme/runflow.git`
 
 Next, write a flow spec. Let’s create a file "example.hcl":
 
-```
+```bash
 $ mkdir myrunflow
 $ cd myrunflow
 $ vi example.hcl
 ```
 
-```
+```hcl
 # File: example.hcl
 
 flow "example" {
@@ -104,7 +104,7 @@ flow "example" {
 
 At last, let’s run it.
 
-```
+```bash
 $ runflow run example.hcl
 Hello World!
 
