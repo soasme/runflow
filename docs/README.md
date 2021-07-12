@@ -51,6 +51,10 @@ Community Tasks:
 * References: [Slack API Call](tasks/slack-api-call.md) Task.
 * References: [Telegram API Call](tasks/telegram-api-call.md) Task.
 
+Python API References:
+
+* References: [Python API](https://runflow.org/references/runflow/index.html).
+
 ## Tutorials
 
 * [Use Scikit-Learn with Runflow](tutorials/sklearn-and-runflow.md)
