@@ -49,6 +49,9 @@ task_implementations = {
     "pushbullet_push": {
         "class": "runflow.community.pushbullet:PushbulletPushTask",
     },
+    "qrcode_generate": {
+        "class": "runflow.community.qrcode:QrcodeGenerateTask",
+    },
     "slack_api_call": {
         "class": "runflow.community.slack:SlackApiCallTask",
     },
