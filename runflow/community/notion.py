@@ -16,7 +16,7 @@ class NotionApiCallTask:
         try:
             for attribute in self.api_method.split("."):
                 method = getattr(method, attribute)
-        except (ValueError, ) as err:
+        except (ValueError,) as err:
             raise ValueError(
                 f"{self.api_method} is not a valid api method"
             ) from err
