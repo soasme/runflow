@@ -1,7 +1,5 @@
 """This module performs api call to notion.so service."""
 
-import inspect
-
 from notion_client import AsyncClient
 
 
