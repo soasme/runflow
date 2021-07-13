@@ -2,7 +2,18 @@
 
 ## Not Yet Released
 
-[Code Changes](https://github.com/soasme/runflow/compare/v0.8.1..HEAD).
+[Code Changes](https://github.com/soasme/runflow/compare/v0.10.0..HEAD).
+
+## v0.10.0, 13 Jul, 2021
+
+[Code Changes](https://github.com/soasme/runflow/compare/v0.9.0..v0.10.0).
+
+* New Task Type: `qrcode_generate`. [#67](https://github.com/soasme/runflow/pull/67).
+* New Task Type: `notion_api_call`. [#66](https://github.com/soasme/runflow/pull/66).
+* New Task Type: `papermill_execute`. [#65](https://github.com/soasme/runflow/pull/65).
+* Enhancement: New variable field `required`. [#64](https://github.com/soasme/runflow/pull/64).
+* Documentation: Generated [Python API References](https://runflow.org/references/runflow/index.html) using `pdoc3`. [#63](https://github.com/soasme/runflow/pull/63).
+* Enhancement: Validate payloads for core tasks using `attrs`. [#62](https://github.com/soasme/runflow/pull/62).
 
 ## v0.9.0, 8 Jul, 2021
 
