@@ -60,6 +60,7 @@ Python API References:
 ## Tutorials
 
 * [Use Scikit-Learn with Runflow](tutorials/sklearn-and-runflow.md)
+* [Generate WiFi Credential QRCode Card](tutorials/gen-wifi-password-qrcode.md)
 
 ## Advanced Usage
 

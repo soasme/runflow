@@ -70,3 +70,7 @@ After running the flow, it should generate such an image:
 ## Attributes Reference
 
 * `image` - A PIL image instance.
+
+## References
+
+* [Generate WiFi Credential QRCode Card](tutorials/gen-wifi-password-qrcode.md)
