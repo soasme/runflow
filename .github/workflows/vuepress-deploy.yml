@@ -18,7 +18,8 @@ jobs:
       run: |
         sudo apt-get install -y graphviz graphviz-dev
         python3 -mpip install -r requirements-dev.txt
-        python3 -mpip install -e '.[all]'
+        # https://github.com/pypa/pip/issues/9215
+        python3 -mpip install --use-deprecated=legacy-resolver -e .[all]
         make references
 
     - name: vuepress-deploy

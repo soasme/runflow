@@ -18,7 +18,6 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python3 -mpip install -r requirements.txt
         python3 -mpip install -r requirements-dev.txt
 
     - name: Build Package

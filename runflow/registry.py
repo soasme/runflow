@@ -40,6 +40,9 @@ task_implementations = {
     "feed_parse": {
         "class": "runflow.community.rss:FeedParseTask",
     },
+    "notion_api_call": {
+        "class": "runflow.community.notion:NotionApiCallTask",
+    },
     "papermill_execute": {
         "class": "runflow.community.papermill:PapermillExecuteTask",
     },
