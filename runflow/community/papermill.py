@@ -6,7 +6,6 @@ from pathlib import Path
 from typing import Union, Optional
 
 import attr
-from papermill import execute_notebook
 
 
 @attr.s(
@@ -83,6 +82,11 @@ class PapermillExecuteTask:
     )
 
     def run(self):
+        try:
+            from papermill import execute_notebook
+        except ImportError as err:
+            raise ImportError("Please install runflow[papermill]") from err
+
         notebook = execute_notebook(
             input_path=self.input_path,
             output_path=self.output_path,
