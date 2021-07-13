@@ -49,6 +49,7 @@ Community Tasks:
 * References: [Notion API Call](tasks/notion-api-call.md) Task.
 * References: [Papermill Execute](tasks/papermill-execute.md) Task.
 * References: [Pushbullet Push](tasks/pushbullet-push.md) Task.
+* References: [QRCode Generate](tasks/qrcode-generate.md) Task.
 * References: [Slack API Call](tasks/slack-api-call.md) Task.
 * References: [Telegram API Call](tasks/telegram-api-call.md) Task.
 
@@ -59,6 +60,7 @@ Python API References:
 ## Tutorials
 
 * [Use Scikit-Learn with Runflow](tutorials/sklearn-and-runflow.md)
+* [Generate WiFi Credential QRCode Card](tutorials/gen-wifi-password-qrcode.md)
 
 ## Advanced Usage
 
