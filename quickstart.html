@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Quickstart | Runflow</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="Run your workflows">
+    
+    <link rel="preload" href="/assets/css/0.styles.243a64a4.css" as="style"><link rel="preload" href="/assets/js/app.79d5ac02.js" as="script"><link rel="preload" href="/assets/js/2.7f12b63b.js" as="script"><link rel="preload" href="/assets/js/19.9cd34070.js" as="script"><link rel="prefetch" href="/assets/js/10.f95d244f.js"><link rel="prefetch" href="/assets/js/11.c75ec0fd.js"><link rel="prefetch" href="/assets/js/12.2c602931.js"><link rel="prefetch" href="/assets/js/13.9ba68227.js"><link rel="prefetch" href="/assets/js/14.6d8315f0.js"><link rel="prefetch" href="/assets/js/15.4d125b28.js"><link rel="prefetch" href="/assets/js/16.b6fd1422.js"><link rel="prefetch" href="/assets/js/17.89122a7f.js"><link rel="prefetch" href="/assets/js/18.06c7790b.js"><link rel="prefetch" href="/assets/js/20.b70bcaf3.js"><link rel="prefetch" href="/assets/js/21.b1c80e1d.js"><link rel="prefetch" href="/assets/js/22.99310355.js"><link rel="prefetch" href="/assets/js/23.a63b32d7.js"><link rel="prefetch" href="/assets/js/24.48d9c18d.js"><link rel="prefetch" href="/assets/js/25.c5136b4d.js"><link rel="prefetch" href="/assets/js/26.c1e1604d.js"><link rel="prefetch" href="/assets/js/27.88dba30b.js"><link rel="prefetch" href="/assets/js/28.7093e852.js"><link rel="prefetch" href="/assets/js/29.8858e0a4.js"><link rel="prefetch" href="/assets/js/3.f510e364.js"><link rel="prefetch" href="/assets/js/30.eb1fec25.js"><link rel="prefetch" href="/assets/js/31.134d1659.js"><link rel="prefetch" href="/assets/js/32.f4c78093.js"><link rel="prefetch" href="/assets/js/33.ec03c0f2.js"><link rel="prefetch" href="/assets/js/34.de3fee6f.js"><link rel="prefetch" href="/assets/js/35.7f58b001.js"><link rel="prefetch" href="/assets/js/36.65c7bb7a.js"><link rel="prefetch" href="/assets/js/37.00e45377.js"><link rel="prefetch" href="/assets/js/38.47e69f9f.js"><link rel="prefetch" href="/assets/js/4.ba3164ba.js"><link rel="prefetch" href="/assets/js/5.75a3592b.js"><link rel="prefetch" href="/assets/js/6.0377ba0c.js"><link rel="prefetch" href="/assets/js/7.9975fe78.js"><link rel="prefetch" href="/assets/js/8.3cc08b70.js"><link rel="prefetch" href="/assets/js/9.b14e4c67.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.243a64a4.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Runflow</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"> <a href="https://github.com/soasme/runflow" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"> <a href="https://github.com/soasme/runflow" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Quickstart</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/quickstart.html#a-minimal-flow" class="sidebar-link">A Minimal Flow</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/quickstart.html#flow-variables" class="sidebar-link">Flow Variables</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/quickstart.html#task-dependency" class="sidebar-link">Task Dependency</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/quickstart.html#implicit-task-dependency" class="sidebar-link">Implicit Task Dependency</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/quickstart.html#conditional-trigger" class="sidebar-link">Conditional Trigger</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/quickstart.html#retry" class="sidebar-link">Retry</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/quickstart.html#timeout" class="sidebar-link">Timeout</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/quickstart.html#import-another-flow" class="sidebar-link">Import Another Flow</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/quickstart.html#next-to-read" class="sidebar-link">Next to Read</a><ul class="sidebar-sub-headers"></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="quickstart"><a href="#quickstart" class="header-anchor">#</a> Quickstart</h1> <p>Assume you have followed <a href="/installation.html">Installation</a> to set your project up and
+installed Runflow.</p> <h2 id="a-minimal-flow"><a href="#a-minimal-flow" class="header-anchor">#</a> A Minimal Flow</h2> <p>A minimal flow looks something like this:</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: hello.hcl</span>
+
+<span class="token comment"># Define a flow naming as &quot;hello&quot;.</span>
+<span class="token comment"># There can only be only one flow declaration per flow file.</span>
+flow <span class="token string">&quot;hello&quot;</span> <span class="token punctuation">{</span>
+
+  <span class="token comment"># The task defines what should be done.</span>
+  <span class="token comment"># In this example, we run a bash command `echo`.</span>
+  task <span class="token string">&quot;bash_run&quot;</span> <span class="token string">&quot;echo&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">command</span> <span class="token punctuation">=</span> <span class="token string">&quot;echo 'hello world'&quot;</span>
+  <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</code></pre></div><p>Save it as <code>hello.hcl</code> or something similar.</p> <p>Let's break down the code.</p> <ol><li>First we define a <code>flow</code> block with the name <code>&quot;hello-world&quot;</code>.</li> <li>Next we define a task with the run type <code>&quot;bash_run&quot;</code> and the name <code>&quot;echo&quot;</code>.</li> <li>We then let the task <code>&quot;echo&quot;</code> do the actual work: <code>echo 'hello world'</code>.</li></ol> <p>To run the flow, use the <code>runflow</code> command or <code>python3 -m runflow</code>.</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ runflow run hello.hcl
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-06 <span class="token number">11</span>:51:04,151<span class="token punctuation">]</span> Task <span class="token string">&quot;echo&quot;</span> is started.
+hello world
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-06 <span class="token number">11</span>:51:04,158<span class="token punctuation">]</span> Task <span class="token string">&quot;echo&quot;</span> is successful.
+</code></pre></div><h2 id="flow-variables"><a href="#flow-variables" class="header-anchor">#</a> Flow Variables</h2> <p>The flow can accept some dynamic variables:</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: hello_vars.hcl</span>
+flow <span class="token string">&quot;hello_vars&quot;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">variable<span class="token type variable"> &quot;greeter&quot; </span></span><span class="token punctuation">{</span>
+    <span class="token property">default</span> <span class="token punctuation">=</span> <span class="token string">&quot;world&quot;</span>
+    <span class="token property">required</span> <span class="token punctuation">=</span> <span class="token boolean">true</span>
+  <span class="token punctuation">}</span>
+  task <span class="token string">&quot;bash_run&quot;</span> <span class="token string">&quot;echo&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">command</span> <span class="token punctuation">=</span> <span class="token string">&quot;echo 'hello <span class="token interpolation"><span class="token punctuation">$</span><span class="token punctuation">{</span><span class="token keyword">var</span><span class="token punctuation">.</span><span class="token type variable">greeter</span><span class="token punctuation">}</span></span>'&quot;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Save it as <code>hello-vars.hcl</code> or something similar.</p> <p>Comparing to <code>hello.hcl</code>:</p> <ol><li>First we introduced a <code>variable</code> block with the name <code>greeter</code>.</li> <li>Next we say the variable has a default value <code>&quot;world&quot;</code>.</li> <li>We then let the task <code>&quot;echo&quot;</code> say hello to the greeter: <code>echo 'hello ${var.greeter}'</code>.
+The syntax <code>${var.REPLACE_THIS_WITH_A_VARIABLE_NAME}</code> makes sure the content will be
+dynamically interpolated during the task run.</li></ol> <p>To run the flow with the default variables:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ runflow run hello-vars.hcl
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-13 <span class="token number">14</span>:36:10,486<span class="token punctuation">]</span> <span class="token string">&quot;task.bash_run.echo&quot;</span> is started.
+hello world
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-13 <span class="token number">14</span>:36:10,496<span class="token punctuation">]</span> <span class="token string">&quot;task.bash_run.echo&quot;</span> is successful.
+</code></pre></div><p>To provide the task run with a different variable, use <code>--var</code>:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ runflow run hello-vars.hcl --var <span class="token assign-left variable">greeter</span><span class="token operator">=</span>runflow
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-13 <span class="token number">14</span>:36:27,477<span class="token punctuation">]</span> <span class="token string">&quot;task.bash_run.echo&quot;</span> is started.
+hello runflow2
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-13 <span class="token number">14</span>:36:27,489<span class="token punctuation">]</span> <span class="token string">&quot;task.bash_run.echo&quot;</span> is successful.
+</code></pre></div><p>Runflow variables can be managed using Environment Variables. The naming convention is <code>RUNFLOW_VAR_{varname}</code>.
+In this case:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ <span class="token builtin class-name">export</span> <span class="token assign-left variable">RUNFLOW_VAR_greeter</span><span class="token operator">=</span>runflow
+$ runflow run hello-vars.hcl
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-13 <span class="token number">14</span>:35:54,076<span class="token punctuation">]</span> <span class="token string">&quot;task.bash_run.echo&quot;</span> is started.
+hello runflow
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-13 <span class="token number">14</span>:35:54,086<span class="token punctuation">]</span> <span class="token string">&quot;task.bash_run.echo&quot;</span> is successful.
+</code></pre></div><p>If both Environment Variables and <code>--var</code> are provided, <code>--var</code> takes precedence.</p> <h2 id="task-dependency"><a href="#task-dependency" class="header-anchor">#</a> Task Dependency</h2> <p>The flow can have multiple tasks, each may depending on another.</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: hello-deps.rf</span>
+flow <span class="token string">&quot;hello-deps&quot;</span> <span class="token punctuation">{</span>
+  task <span class="token string">&quot;bash_run&quot;</span> <span class="token string">&quot;echo&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">command</span> <span class="token punctuation">=</span> <span class="token string">&quot;echo 'hello <span class="token interpolation"><span class="token punctuation">$</span><span class="token punctuation">{</span>task<span class="token punctuation">.</span>bash_run<span class="token punctuation">.</span>greeter<span class="token punctuation">.</span>stdout<span class="token punctuation">}</span></span>'&quot;</span>
+    <span class="token property">_depends_on</span> <span class="token punctuation">=</span> <span class="token punctuation">[</span>
+      task.bash_run.greeter
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;bash_run&quot;</span> <span class="token string">&quot;greeter&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">command</span> <span class="token punctuation">=</span> <span class="token string">&quot;xxd -l16 -ps /dev/urandom&quot;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre></div><p>Save it as <code>hello-deps.hcl</code> or something similar.</p> <p>Comparing it to <code>hello-vars.hcl</code>:</p> <ol><li>First we replace <code>greeter</code> to a task with command <code>xxd -l16 -ps /dev/urandom</code>. If you're curious what this would do, try it on your console - it will display some random alphabet digits.</li> <li>Next we replace <code>${var.greeter}</code> to <code>${task.bash_run.greeter.stdout}</code>. It chains the greeter command's stdout to the <code>echo</code> command.</li> <li>At last we add a <code>_depends_on</code> parameter, which explicitly declares the <code>echo</code> command depends on <code>task.bash_run.greeter</code>. It makes sure <code>echo</code> command only run after <code>greeter</code> is successfully run.</li></ol> <p>Let's run it with <code>runflow run</code>:</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token punctuation">[</span><span class="token number">2021</span>-06-06 <span class="token number">15</span>:31:06,080<span class="token punctuation">]</span> Task <span class="token string">&quot;greeter&quot;</span> is started.
+aff8e7f9b236ef1f436c9f5ce4b9d532
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-06 <span class="token number">15</span>:31:06,090<span class="token punctuation">]</span> Task <span class="token string">&quot;greeter&quot;</span> is successful.
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-06 <span class="token number">15</span>:31:06,092<span class="token punctuation">]</span> Task <span class="token string">&quot;echo&quot;</span> is started.
+hello aff8e7f9b236ef1f436c9f5ce4b9d532
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-06 <span class="token number">15</span>:31:06,098<span class="token punctuation">]</span> Task <span class="token string">&quot;echo&quot;</span> is successful.
+</code></pre></div><p>As your can see in the output above, despite of <code>greeter</code> being declared beneath <code>echo</code> block, it gets executed first.</p> <div class="custom-block tip"><p class="custom-block-title">TIP</p> <p>Any argument starts with an underscore (<code>_</code>) is used by Runflow, not by the task.</p></div> <h2 id="implicit-task-dependency"><a href="#implicit-task-dependency" class="header-anchor">#</a> Implicit Task Dependency</h2> <p>To make your life easier, Runflow is smart enough to detect the implicit task dependencies if task references are used in other tasks.</p> <p>For example, <code>hello-deps.hcl</code> does not need <code>_depends_on</code> block at all, because the template variable <code>${task.bash_run.greeter.stdout}</code> makes it very clear that task &quot;echo&quot; relies on task &quot;greeter&quot;.</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: hello-implicit-deps.hcl</span>
+flow <span class="token string">&quot;hello-implicit-deps&quot;</span> <span class="token punctuation">{</span>
+  task <span class="token string">&quot;bash_run&quot;</span> <span class="token string">&quot;echo&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">command</span> <span class="token punctuation">=</span> <span class="token string">&quot;echo 'hello <span class="token interpolation"><span class="token punctuation">$</span><span class="token punctuation">{</span>task<span class="token punctuation">.</span>bash_run<span class="token punctuation">.</span>greeter<span class="token punctuation">.</span>stdout<span class="token punctuation">}</span></span>'&quot;</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;bash_run&quot;</span> <span class="token string">&quot;greeter&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">command</span> <span class="token punctuation">=</span> <span class="token string">&quot;xxd -l16 -ps /dev/urandom&quot;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Let's run it with <code>runflow run</code>:</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token punctuation">[</span><span class="token number">2021</span>-06-07 <span class="token number">16</span>:11:56,782<span class="token punctuation">]</span> Task <span class="token string">&quot;greeter&quot;</span> is started.
+bbd43baa501af05103cdd1ea2e6d9ffa
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-07 <span class="token number">16</span>:11:56,798<span class="token punctuation">]</span> Task <span class="token string">&quot;greeter&quot;</span> is successful.
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-07 <span class="token number">16</span>:11:56,800<span class="token punctuation">]</span> Task <span class="token string">&quot;echo&quot;</span> is started.
+hello bbd43baa501af05103cdd1ea2e6d9ffa
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-07 <span class="token number">16</span>:11:56,806<span class="token punctuation">]</span> Task <span class="token string">&quot;echo&quot;</span> is successful.
+</code></pre></div><h2 id="conditional-trigger"><a href="#conditional-trigger" class="header-anchor">#</a> Conditional Trigger</h2> <p>The values in task argument <code>_depends_on</code> can be not just task references but also any values that can be tested with bool.</p> <p>If any of the values in task argument <code>_depends_on</code> is falsy, then the task will be canceled.</p> <p>For example, the flow below only output <code>pyproject.toml</code> only when version is greater than or equal to &quot;0.6.0&quot;.</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code>flow <span class="token string">&quot;conditional_trigger&quot;</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">variable<span class="token type variable"> &quot;version&quot; </span></span><span class="token punctuation">{</span>
+    <span class="token property">default</span> <span class="token punctuation">=</span> <span class="token string">&quot;0.6.0&quot;</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;file_read&quot;</span> <span class="token string">&quot;read&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;pyproject.toml&quot;</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;file_write&quot;</span> <span class="token string">&quot;echo&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;/dev/stdout&quot;</span>
+    <span class="token property">content</span> <span class="token punctuation">=</span> task.file_read.read.content
+
+    <span class="token property">_depends_on</span> <span class="token punctuation">=</span> <span class="token punctuation">[</span>
+      var.version &gt;<span class="token punctuation">=</span> <span class="token string">&quot;0.6.0&quot;</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run (passed):</p> <div class="language- extra-class"><pre class="language-text"><code>$ runflow run examples/conditional_trigger.hcl  --var version=0.1.0
+[2021-06-28 17:18:14,226] &quot;task.file_read.read&quot; is started.
+[2021-06-28 17:18:14,227] &quot;task.file_read.read&quot; is successful.
+[2021-06-28 17:18:14,227] &quot;task.file_write.echo&quot; is started.
+[build-system]
+requires = [
+    &quot;setuptools&gt;=42&quot;,
+    &quot;wheel&quot;
+]
+build-backend = &quot;setuptools.build_meta&quot;
+[2021-06-28 17:18:14,227] &quot;task.file_write.echo&quot; is successful.
+</code></pre></div><p>Run (canceled):</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ runflow run examples/conditional_trigger.hcl  --var <span class="token assign-left variable">version</span><span class="token operator">=</span><span class="token number">0.1</span>.0
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-28 <span class="token number">17</span>:15:58,011<span class="token punctuation">]</span> <span class="token string">&quot;task.file_read.read&quot;</span> is started.
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-28 <span class="token number">17</span>:15:58,012<span class="token punctuation">]</span> <span class="token string">&quot;task.file_read.read&quot;</span> is successful.
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-28 <span class="token number">17</span>:15:58,012<span class="token punctuation">]</span> <span class="token string">&quot;task.file_write.echo&quot;</span> is canceled due to falsy deps.
+</code></pre></div></details> <h2 id="retry"><a href="#retry" class="header-anchor">#</a> Retry</h2> <p>A task can have an optional argument <code>_retry</code> to control the retry behavior in case of execution failure.</p> <p>To stop the retry after several attempts or several seconds, use <code>_retry.stop_after</code>. The value of <code>stop_after</code> is a string in form of <code>M seconds</code>, or <code>N times</code>, or <code>M seconds | N times</code> (either M seconds or N times).</p> <p>To control the waiting periods between each retry, use <code>_retry.wait</code>. The value of <code>wait</code> should be like function calls below:</p> <ul><li><code>wait_fixed(N)</code>: wait fixed amount of seconds.</li> <li><code>wait_random(M, N)</code>: wait random amount of seconds.</li> <li><code>wait_fixed(N) + wait_random(M, N)</code>: wait fixed amount of seconds plus some jitter seconds.</li> <li><code>wait_exponential(M, N, O)</code>: wait 2 ^ x * N seconds between each retry starting with N seconds, then up to O seconds, then O seconds afterwards.</li> <li><code>wait_chain([wait_fixed(N), wait_random(M, N), ...])</code>: chain various wait behavior for each retry.</li></ul> <p>Example usage:</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code>flow <span class="token string">&quot;retry&quot;</span> <span class="token punctuation">{</span>
+  task <span class="token string">&quot;http_request&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">method</span> <span class="token punctuation">=</span> <span class="token string">&quot;GET&quot;</span>
+    <span class="token property">url</span> <span class="token punctuation">=</span> <span class="token string">&quot;http://localhost:8000&quot;</span>
+    <span class="token property">_retry</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+      <span class="token property">stop_after</span> <span class="token punctuation">=</span> <span class="token string">&quot;10 seconds&quot;</span>
+      <span class="token property">wait</span> <span class="token punctuation">=</span> wait_fixed(<span class="token number">3</span>)
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ runflow run examples/retry.hcl
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-02 <span class="token number">11</span>:40:10,640<span class="token punctuation">]</span> <span class="token string">&quot;task.http_request.this&quot;</span> is started.
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-02 <span class="token number">11</span>:40:22,793<span class="token punctuation">]</span> <span class="token string">&quot;task.http_request.this&quot;</span> is failed.
+<span class="token punctuation">..</span>. <span class="token punctuation">(</span>truncated<span class="token punctuation">)</span>
+httpx.ConnectError: All connection attempts failed
+</code></pre></div></details> <h2 id="timeout"><a href="#timeout" class="header-anchor">#</a> Timeout</h2> <p>A task can have an optional argument <code>_timeout</code> to control the maximum execution time. The task will wait until the execution is actually canceled, so the total wait time may exceed the <code>_timeout</code>.</p> <p>The value should be a number.</p> <p>Example usage:</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code>flow <span class="token string">&quot;timeout&quot;</span> <span class="token punctuation">{</span>
+  task <span class="token string">&quot;http_request&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">method</span> <span class="token punctuation">=</span> <span class="token string">&quot;GET&quot;</span>
+    <span class="token property">url</span> <span class="token punctuation">=</span> <span class="token string">&quot;http://github.com&quot;</span>
+    <span class="token property">_timeout</span> <span class="token punctuation">=</span> <span class="token number">0.01</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ runflow run examples/timeout.hcl
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">11</span>:18:30,344<span class="token punctuation">]</span> <span class="token string">&quot;task.http_request.this&quot;</span> is started.
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">11</span>:18:30,404<span class="token punctuation">]</span> <span class="token string">&quot;task.http_request.this&quot;</span> is failed.
+<span class="token punctuation">..</span>. <span class="token punctuation">(</span>truncated<span class="token punctuation">)</span>
+asyncio.exceptions.TimeoutError
+</code></pre></div></details> <p>Some task types support fine tuning timeouts.
+For example, <code>http_request</code> can set argument <code>timeout</code> to a map.
+For those task types don't have timeout arguments, the generic <code>_timeout</code> should be used.</p> <h2 id="import-another-flow"><a href="#import-another-flow" class="header-anchor">#</a> Import Another Flow</h2> <p>If you want to use a flow as part of a new flow, the best way is to import it.</p> <p>Say we have a flow <code>examples/template.hcl</code>:</p> <details class="custom-block details"><summary>Click me to view the flow `examples/template.hcl`</summary> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: template.hcl</span>
+flow <span class="token string">&quot;template&quot;</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">variable<span class="token type variable"> &quot;global&quot; </span></span><span class="token punctuation">{</span>
+    <span class="token property">default</span> <span class="token punctuation">=</span> <span class="token string">&quot;global&quot;</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;hcl2_template&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token comment"># Set the source for the template.</span>
+    <span class="token comment"># You can interpolate variable via `${...}` syntax.</span>
+    <span class="token property">source</span> <span class="token punctuation">=</span> <span class="token heredoc string">&lt;&lt;EOT
+${ answer }
+${ final.answer }
+${ var.global }
+${ 40 + 2 }
+${ sum([20, 20, 2]) }
+EOT</span>
+
+    <span class="token comment"># Set the context for the template rendering.</span>
+    <span class="token comment"># It will be merged with global context.</span>
+    <span class="token property">context</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+      <span class="token property">answer</span> <span class="token punctuation">=</span> <span class="token number">42</span>
+      <span class="token property">final</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+        <span class="token property">answer</span> <span class="token punctuation">=</span> <span class="token number">42</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;file_write&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;/dev/stdout&quot;</span>
+    <span class="token property">content</span> <span class="token punctuation">=</span> task.hcl2_template.this.content
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre></div></details> <p>Now, we can import it using <code>import.tasks</code>. The import string for the <code>.hcl</code> file should be a valid Python import string ending with <code>:flow</code>. The key for the import string will be the task type.</p> <p>For example, the flow below registers <code>examples.template:flow</code> as task type <code>custom_flow_run</code>. The payloads of the task body becomes the variables for the reused flow:</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code>flow <span class="token string">&quot;flow_as_task&quot;</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">import</span> <span class="token punctuation">{</span>
+    <span class="token property">tasks</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+      <span class="token property">custom_flow_run</span> <span class="token punctuation">=</span> <span class="token string">&quot;examples.template:flow&quot;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;custom_flow_run&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">global</span> <span class="token punctuation">=</span> <span class="token number">42</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><details class="custom-block details"><summary>Click me to view the output</summary> <div class="language-bash extra-class"><pre class="language-bash"><code>$ runflow run examples/flow_as_task.hcl
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">15</span>:57:24,513<span class="token punctuation">]</span> <span class="token string">&quot;task.custom_flow_run.this&quot;</span> is started.
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">15</span>:57:24,513<span class="token punctuation">]</span> <span class="token string">&quot;task.custom_flow_run.this &gt; task.hcl2_template.this&quot;</span> is started.
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">15</span>:57:24,513<span class="token punctuation">]</span> <span class="token string">&quot;task.custom_flow_run.this &gt; task.hcl2_template.this&quot;</span> is successful.
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">15</span>:57:24,514<span class="token punctuation">]</span> <span class="token string">&quot;task.custom_flow_run.this &gt; task.file_write.this&quot;</span> is started.
+<span class="token number">42</span>
+<span class="token number">42</span>
+<span class="token number">42</span>
+<span class="token number">42</span>
+<span class="token number">42</span>
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">15</span>:57:24,517<span class="token punctuation">]</span> <span class="token string">&quot;task.custom_flow_run.this &gt; task.file_write.this&quot;</span> is successful.
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">15</span>:57:24,517<span class="token punctuation">]</span> <span class="token string">&quot;task.custom_flow_run.this&quot;</span> is successful.
+</code></pre></div></details> <h2 id="next-to-read"><a href="#next-to-read" class="header-anchor">#</a> Next to Read</h2> <ul><li><a href="/concepts.html">Concepts</a></li></ul></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.79d5ac02.js" defer></script><script src="/assets/js/2.7f12b63b.js" defer></script><script src="/assets/js/19.9cd34070.js" defer></script>
+  </body>
+</html>

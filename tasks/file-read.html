@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>File Read Task | Runflow</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="Run your workflows">
+    
+    <link rel="preload" href="/assets/css/0.styles.243a64a4.css" as="style"><link rel="preload" href="/assets/js/app.79d5ac02.js" as="script"><link rel="preload" href="/assets/js/2.7f12b63b.js" as="script"><link rel="preload" href="/assets/js/23.a63b32d7.js" as="script"><link rel="prefetch" href="/assets/js/10.f95d244f.js"><link rel="prefetch" href="/assets/js/11.c75ec0fd.js"><link rel="prefetch" href="/assets/js/12.2c602931.js"><link rel="prefetch" href="/assets/js/13.9ba68227.js"><link rel="prefetch" href="/assets/js/14.6d8315f0.js"><link rel="prefetch" href="/assets/js/15.4d125b28.js"><link rel="prefetch" href="/assets/js/16.b6fd1422.js"><link rel="prefetch" href="/assets/js/17.89122a7f.js"><link rel="prefetch" href="/assets/js/18.06c7790b.js"><link rel="prefetch" href="/assets/js/19.9cd34070.js"><link rel="prefetch" href="/assets/js/20.b70bcaf3.js"><link rel="prefetch" href="/assets/js/21.b1c80e1d.js"><link rel="prefetch" href="/assets/js/22.99310355.js"><link rel="prefetch" href="/assets/js/24.48d9c18d.js"><link rel="prefetch" href="/assets/js/25.c5136b4d.js"><link rel="prefetch" href="/assets/js/26.c1e1604d.js"><link rel="prefetch" href="/assets/js/27.88dba30b.js"><link rel="prefetch" href="/assets/js/28.7093e852.js"><link rel="prefetch" href="/assets/js/29.8858e0a4.js"><link rel="prefetch" href="/assets/js/3.f510e364.js"><link rel="prefetch" href="/assets/js/30.eb1fec25.js"><link rel="prefetch" href="/assets/js/31.134d1659.js"><link rel="prefetch" href="/assets/js/32.f4c78093.js"><link rel="prefetch" href="/assets/js/33.ec03c0f2.js"><link rel="prefetch" href="/assets/js/34.de3fee6f.js"><link rel="prefetch" href="/assets/js/35.7f58b001.js"><link rel="prefetch" href="/assets/js/36.65c7bb7a.js"><link rel="prefetch" href="/assets/js/37.00e45377.js"><link rel="prefetch" href="/assets/js/38.47e69f9f.js"><link rel="prefetch" href="/assets/js/4.ba3164ba.js"><link rel="prefetch" href="/assets/js/5.75a3592b.js"><link rel="prefetch" href="/assets/js/6.0377ba0c.js"><link rel="prefetch" href="/assets/js/7.9975fe78.js"><link rel="prefetch" href="/assets/js/8.3cc08b70.js"><link rel="prefetch" href="/assets/js/9.b14e4c67.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.243a64a4.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Runflow</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"> <a href="https://github.com/soasme/runflow" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"> <a href="https://github.com/soasme/runflow" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>File Read Task</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tasks/file-read.html#example-usage" class="sidebar-link">Example Usage</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/tasks/file-read.html#read-base64-encoded-content" class="sidebar-link">Read Base64-Encoded Content</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/tasks/file-read.html#file-not-found" class="sidebar-link">File Not Found</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/tasks/file-read.html#argument-reference" class="sidebar-link">Argument Reference</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/tasks/file-read.html#local-filesystem" class="sidebar-link">Local FileSystem</a></li><li class="sidebar-sub-header"><a href="/tasks/file-read.html#ftp-filesystem" class="sidebar-link">FTP FileSystem</a></li><li class="sidebar-sub-header"><a href="/tasks/file-read.html#github-filesystem" class="sidebar-link">GitHub FileSystem</a></li><li class="sidebar-sub-header"><a href="/tasks/file-read.html#git-filesystem" class="sidebar-link">Git FileSystem</a></li><li class="sidebar-sub-header"><a href="/tasks/file-read.html#zip-filesystem" class="sidebar-link">Zip FileSystem</a></li></ul></li><li><a href="/tasks/file-read.html#attributes-reference" class="sidebar-link">Attributes Reference</a><ul class="sidebar-sub-headers"></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="file-read-task"><a href="#file-read-task" class="header-anchor">#</a> File Read Task</h1> <p>File Read task enables reading content from a file.</p> <p>Added in v0.3.0.</p> <p>Runflow supports various file systems by setting an optional <code>fs</code> attribute,
+such as GitHub, FTP, SFTP, Arrow HDFS, HTTP, Zip, local Git repo, SMB, etc.
+Check more information <a href="https://filesystem-spec.readthedocs.io/en/latest/api.html#built-in-implementations" target="_blank" rel="noopener noreferrer">here<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>.</p> <p>Added in v0.5.1.</p> <h2 id="example-usage"><a href="#example-usage" class="header-anchor">#</a> Example Usage</h2> <p>Set <code>filename</code> to the path to the file.</p> <p>You can use <code>task.file_read.TASK_NAME.content</code> in another task.</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: file_read.hcl</span>
+flow <span class="token string">&quot;file_read&quot;</span> <span class="token punctuation">{</span>
+  task <span class="token string">&quot;file_read&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;pyproject.toml&quot;</span>
+  <span class="token punctuation">}</span>
+  task <span class="token string">&quot;bash_run&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">command</span> <span class="token punctuation">=</span> <span class="token string">&quot;echo <span class="token interpolation"><span class="token punctuation">$</span><span class="token punctuation">{</span><span class="token function">tojson</span><span class="token punctuation">(</span>task<span class="token punctuation">.</span>file_read<span class="token punctuation">.</span>this<span class="token punctuation">.</span>content<span class="token punctuation">)</span><span class="token punctuation">}</span></span>&quot;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run:</p> <div class="language- extra-class"><pre class="language-text"><code>$ runflow run file_read.hcl
+[2021-06-12 19:40:56,276] Task &quot;this&quot; is started.
+[2021-06-12 19:40:56,279] Task &quot;this&quot; is successful.
+[2021-06-12 19:40:56,281] Task &quot;this&quot; is started.
+&quot;[build-system]
+requires = [
+    \&quot;setuptools\u003e=42\&quot;,
+    \&quot;wheel\&quot;
+]
+build-backend = \&quot;setuptools.build_meta\&quot;
+&quot;
+[2021-06-12 19:40:56,292] Task &quot;this&quot; is successful.
+</code></pre></div></details> <h2 id="read-base64-encoded-content"><a href="#read-base64-encoded-content" class="header-anchor">#</a> Read Base64-Encoded Content</h2> <p>You can use <code>b64content</code> to get the base64-encoded content.</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: file_read_b64.hcl</span>
+flow <span class="token string">&quot;file_read_b64&quot;</span> <span class="token punctuation">{</span>
+  task <span class="token string">&quot;file_read&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;pyproject.toml&quot;</span>
+  <span class="token punctuation">}</span>
+  task <span class="token string">&quot;bash_run&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">command</span> <span class="token punctuation">=</span> <span class="token string">&quot;echo <span class="token interpolation"><span class="token punctuation">$</span><span class="token punctuation">{</span>task<span class="token punctuation">.</span>file_read<span class="token punctuation">.</span>this<span class="token punctuation">.</span>b64content<span class="token punctuation">}</span></span>&quot;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run:</p> <div class="language- extra-class"><pre class="language-text"><code>$ runflow run file_read_b64.hcl
+[2021-07-02 14:38:57,059] &quot;task.file_read.this&quot; is started.
+[2021-07-02 14:38:57,060] &quot;task.file_read.this&quot; is successful.
+[2021-07-02 14:38:57,060] &quot;task.bash_run.this&quot; is started.
+bW2J1aWxkLXN5c3RlbV0KcmVxdWlyZXMgPSBbCiAgICAic2V0dXB0b29scz49NDIiLAogICAgIndoZWVsIgpdCmJ1aWxkLWJhY2tlbmQgPSAic2V0dXB0b29scy5idWlsZF9tZXRhIgo=
+[2021-07-02 14:38:57,069] &quot;task.bash_run.this&quot; is successful.
+</code></pre></div></details> <h2 id="file-not-found"><a href="#file-not-found" class="header-anchor">#</a> File Not Found</h2> <p>If <code>filename</code> is not a file or not found, an error occurs.</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: file_read.hcl</span>
+flow <span class="token string">&quot;file_read&quot;</span> <span class="token punctuation">{</span>
+  task <span class="token string">&quot;file_read&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;__nonexist__.toml&quot;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run:</p> <div class="language- extra-class"><pre class="language-text"><code>$ runflow run file_read_failed.hcl
+[2021-06-12 19:41:37,131] Task &quot;this&quot; is started.
+[2021-06-12 19:41:37,132] Task &quot;this&quot; is failed.
+Traceback (most recent call last):
+... (truncated)
+FileNotFoundError: [Errno 2] No such file or directory: '__nonexist__.toml'
+</code></pre></div></details> <h2 id="argument-reference"><a href="#argument-reference" class="header-anchor">#</a> Argument Reference</h2> <p>The following arguments are supported:</p> <ul><li><code>filename</code> - (Required, str) The path to file to read.</li> <li><code>fs</code> - (Optional, map) The file system that contains the file to read. If not set, local filesystem is used. Please check the filesystem for the arguments to set in the map:
+<ul><li><a href="#local-filesystem">Local FileSystem</a></li> <li><a href="#ftp-filesystem">FTP FileSystem</a></li> <li><a href="#git-filesystem">Git FileSystem</a></li> <li><a href="#github-filesystem">GitHub FileSystem</a></li> <li><a href="#zip-filesystem">Zip FileSystem</a></li> <li>More documentations for the other filesystems are on the way. 😄</li></ul></li></ul> <h3 id="local-filesystem"><a href="#local-filesystem" class="header-anchor">#</a> Local FileSystem</h3> <p>This filesystem allows reading content from a local file.
+If <code>fs</code> is not given, this filesystem is used by default.</p> <ul><li><code>protocol</code> - (Required, str) <code>&quot;local&quot;</code>.</li> <li><code>auto_mkdir</code> - (Optional, bool) Whether to auto create the parent directories (if not exist) when opening a file.</li></ul> <p>Example usage:</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: file_read.hcl</span>
+flow <span class="token string">&quot;file_read&quot;</span> <span class="token punctuation">{</span>
+  task <span class="token string">&quot;file_read&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;pyproject.toml&quot;</span>
+  <span class="token punctuation">}</span>
+  task <span class="token string">&quot;bash_run&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">command</span> <span class="token punctuation">=</span> <span class="token string">&quot;echo <span class="token interpolation"><span class="token punctuation">$</span><span class="token punctuation">{</span><span class="token function">tojson</span><span class="token punctuation">(</span>task<span class="token punctuation">.</span>file_read<span class="token punctuation">.</span>this<span class="token punctuation">.</span>content<span class="token punctuation">)</span><span class="token punctuation">}</span></span>&quot;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run:</p> <div class="language- extra-class"><pre class="language-text"><code>$ runflow run file_read.hcl
+[2021-06-12 19:40:56,276] Task &quot;this&quot; is started.
+[2021-06-12 19:40:56,279] Task &quot;this&quot; is successful.
+[2021-06-12 19:40:56,281] Task &quot;this&quot; is started.
+&quot;[build-system]
+requires = [
+    \&quot;setuptools\u003e=42\&quot;,
+    \&quot;wheel\&quot;
+]
+build-backend = \&quot;setuptools.build_meta\&quot;
+&quot;
+[2021-06-12 19:40:56,292] Task &quot;this&quot; is successful.
+</code></pre></div></details> <h3 id="ftp-filesystem"><a href="#ftp-filesystem" class="header-anchor">#</a> FTP FileSystem</h3> <p>This filesystem allows reading content from an FTP server.</p> <ul><li><code>protocol</code> - (Required, str) <code>&quot;ftp&quot;</code>.</li> <li><code>host</code> - (Required, str) The FTP host to connect.</li> <li><code>port</code> - (Required, int) The FTP port to connect.</li> <li><code>username</code> - (Optional, str) The username for authentication.</li> <li><code>password</code> - (Optional, str) The password for authentication.</li> <li><code>acct</code> - (Optional, str) The &quot;account&quot; string for authentication. Some servers may need an additional &quot;account&quot; string for authentication.</li> <li><code>block_size</code> - (Optional, int) The read-ahead or write buffer size.</li> <li><code>tempdir</code> - (Optional, str) The directory on the FTP remote host to put temporary files on a transaction.</li> <li><code>timeout</code> - (Optional, int) Timeout on an FTP connection in seconds.</li></ul> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: file_read_from_ftp.hcl</span>
+flow <span class="token string">&quot;file_read_from_ftp&quot;</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">variable<span class="token type variable"> &quot;ftp_host&quot; </span></span><span class="token punctuation">{</span> <span class="token property">default</span> <span class="token punctuation">=</span> <span class="token string">&quot;&quot;</span> <span class="token punctuation">}</span>
+  <span class="token keyword">variable<span class="token type variable"> &quot;ftp_port&quot; </span></span><span class="token punctuation">{</span> <span class="token property">default</span> <span class="token punctuation">=</span> <span class="token number">21</span> <span class="token punctuation">}</span>
+  <span class="token keyword">variable<span class="token type variable"> &quot;ftp_username&quot; </span></span><span class="token punctuation">{</span> <span class="token property">default</span> <span class="token punctuation">=</span> <span class="token string">&quot;anon&quot;</span> <span class="token punctuation">}</span>
+  <span class="token keyword">variable<span class="token type variable"> &quot;ftp_password&quot; </span></span><span class="token punctuation">{</span> <span class="token property">default</span> <span class="token punctuation">=</span> <span class="token string">&quot;&quot;</span> <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;file_read&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;index.md&quot;</span>
+
+    <span class="token property">fs</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+      <span class="token comment"># Set fs.protocol to &quot;ftp&quot;</span>
+      <span class="token property">protocol</span> <span class="token punctuation">=</span> <span class="token string">&quot;ftp&quot;</span>
+
+      <span class="token comment"># set arguments for ftp connection</span>
+      <span class="token property">host</span> <span class="token punctuation">=</span> var.ftp_host
+      <span class="token property">port</span> <span class="token punctuation">=</span> var.ftp_port
+
+      <span class="token comment"># set arguments for authentication</span>
+      <span class="token property">username</span> <span class="token punctuation">=</span> var.ftp_username
+      <span class="token property">password</span> <span class="token punctuation">=</span> var.ftp_password
+
+      <span class="token comment"># set timeout</span>
+      <span class="token property">timeout</span> <span class="token punctuation">=</span> <span class="token number">10</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment"># Output to the console</span>
+  task <span class="token string">&quot;file_write&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;/dev/stdout&quot;</span>
+    <span class="token property">content</span> <span class="token punctuation">=</span> task.file_read.this.content
+  <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="github-filesystem"><a href="#github-filesystem" class="header-anchor">#</a> GitHub FileSystem</h3> <p>This filesystem allows reading content from GitHub <code>org/repo</code>.</p> <ul><li><code>protocol</code> - (Required, str) <code>&quot;github&quot;</code>.</li> <li><code>org</code> - (Required, str) The GitHub organization.</li> <li><code>repo</code> - (Required, str) The GitHub repository.</li> <li><code>sha</code> - (Optional, str) The Git SHA, such as git commit hash<code>d2f4db</code>, git tag <code>v0.5.0</code>, git branch <code>main</code>, etc.</li> <li><code>username</code> - (Optional, str) The username for authorization.</li> <li><code>token</code> - (Optional, str) The token for authorization. For accessing private repos, you must provide a token. The token can be made at <a href="https://github.com/settings/tokens" target="_blank" rel="noopener noreferrer">https://github.com/settings/tokens<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>.</li></ul> <p>Example usage:</p> <p>This flow reads the content of file
+<a href="https://github.com/soasme/runflow/blob/v0.5.0/requirements-dev.txt" target="_blank" rel="noopener noreferrer"><code>&quot;requirements-dev.txt&quot;</code><span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>
+from GitHub repo <a href="https://github.com/soasme/runflow" target="_blank" rel="noopener noreferrer">soasme/runflow<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> with tag <code>v0.5.0</code>
+and outputs to the console.</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: file_read_from_github.hcl</span>
+flow <span class="token string">&quot;file_read_from_github&quot;</span> <span class="token punctuation">{</span>
+
+  task <span class="token string">&quot;file_read&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;requirements-dev.txt&quot;</span>
+
+    <span class="token property">fs</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+      <span class="token comment"># Set fs.protocol to &quot;github&quot;</span>
+      <span class="token property">protocol</span> <span class="token punctuation">=</span> <span class="token string">&quot;github&quot;</span>
+
+      <span class="token comment"># Set fs.org to the github organization</span>
+      <span class="token property">org</span> <span class="token punctuation">=</span> <span class="token string">&quot;soasme&quot;</span>
+
+      <span class="token comment"># Set fs.repo to the github repository</span>
+      <span class="token property">repo</span> <span class="token punctuation">=</span> <span class="token string">&quot;runflow&quot;</span>
+
+      <span class="token comment"># Set fs.sha to a valid Git sha, such as hash, tag, branch, HEAD, etc.</span>
+      <span class="token comment"># This is optional.</span>
+      <span class="token property">sha</span> <span class="token punctuation">=</span> <span class="token string">&quot;v0.5.0&quot;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment"># Output to the console</span>
+  task <span class="token string">&quot;file_write&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;/dev/stdout&quot;</span>
+    <span class="token property">content</span> <span class="token punctuation">=</span> task.file_read.this.content
+  <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run:</p> <div class="language- extra-class"><pre class="language-text"><code>$ runflow run examples/file_read_from_github.hcl
+[2021-06-22 16:09:07,594] &quot;task.file_read.this&quot; is started.
+[2021-06-22 16:09:08,069] &quot;task.file_read.this&quot; is successful.
+[2021-06-22 16:09:08,070] &quot;task.file_write.this&quot; is started.
+build
+twine
+pytest
+pytest-cov
+[2021-06-22 16:09:08,071] &quot;task.file_write.this&quot; is successful.
+</code></pre></div></details> <h3 id="git-filesystem"><a href="#git-filesystem" class="header-anchor">#</a> Git FileSystem</h3> <p>This filesystem allows reading content from a local Git repo.
+The main difference between it and <a href="#local-filesystem">Local FileSystem</a> is it
+allows grabbing file content tracked in Git history.</p> <ul><li><code>protocol</code> - (Required, str) <code>&quot;git&quot;</code>.</li> <li><code>path</code> - (Optional, str) The path to the local Git repo. Defaults to current directory if not given.</li> <li><code>ref</code> - (Optional, str) The Git SHA, such as git commit hash<code>d2f4db</code>, git tag <code>v0.5.0</code>, git branch <code>main</code>, etc. Defaults to the current tree.</li></ul> <div class="custom-block tip"><p class="custom-block-title">TIP</p> <p>The functionality requires installing package <code>pygit2</code>.</p></div> <p>For example, this flow reads &quot;requirements-dev.txt&quot; from the git repo.</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: file_read_from_git.hcl</span>
+flow <span class="token string">&quot;file_read_from_git&quot;</span> <span class="token punctuation">{</span>
+
+  task <span class="token string">&quot;file_read&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;requirements-dev.txt&quot;</span>
+
+    <span class="token property">fs</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+      <span class="token comment"># Set fs.protocol to &quot;git&quot;</span>
+      <span class="token property">protocol</span> <span class="token punctuation">=</span> <span class="token string">&quot;git&quot;</span>
+
+      <span class="token comment"># Set fs.path to the path to the git repo.</span>
+      <span class="token property">path</span> <span class="token punctuation">=</span> <span class="token string">&quot;.&quot;</span>
+
+      <span class="token comment"># Set fs.ref to a valid Git sha, such as hash, tag, branch, HEAD, etc.</span>
+      <span class="token comment"># This is optional.</span>
+      <span class="token property">ref</span> <span class="token punctuation">=</span> <span class="token string">&quot;26551afd8&quot;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;file_write&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;/dev/stdout&quot;</span>
+    <span class="token property">content</span> <span class="token punctuation">=</span> task.file_read.this.content
+  <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ pip <span class="token function">install</span> pygit2
+
+$ runflow run examples/file_read_from_git.hcl
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-22 <span class="token number">16</span>:15:01,124<span class="token punctuation">]</span> <span class="token string">&quot;task.file_read.this&quot;</span> is started.
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-22 <span class="token number">16</span>:15:01,127<span class="token punctuation">]</span> <span class="token string">&quot;task.file_read.this&quot;</span> is successful.
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-22 <span class="token number">16</span>:15:01,128<span class="token punctuation">]</span> <span class="token string">&quot;task.file_write.this&quot;</span> is started.
+build
+twine
+pytest
+pytest-cov
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-22 <span class="token number">16</span>:15:01,129<span class="token punctuation">]</span> <span class="token string">&quot;task.file_write.this&quot;</span> is successful.
+</code></pre></div></details> <h3 id="zip-filesystem"><a href="#zip-filesystem" class="header-anchor">#</a> Zip FileSystem</h3> <p>This filesystem allows reading content from a zip archive.</p> <ul><li><code>protocol</code> - (Required, str) <code>&quot;zip&quot;</code>.</li> <li><code>fo</code> - (Required, str) The file object that contains zip.</li> <li><code>mode</code> - (Optional, str) The file open mode. Defaults to <code>&quot;r&quot;</code>. Currently, only <code>&quot;r&quot;</code> is accepted.</li></ul> <p>For example, this flow read the content of file &quot;hello.hcl&quot; in zip archive &quot;hello.hcl.zip&quot;.</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: file_read_from_zip.hcl</span>
+flow <span class="token string">&quot;file_read_from_zip&quot;</span> <span class="token punctuation">{</span>
+
+  task <span class="token string">&quot;file_read&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;hello.hcl&quot;</span>
+
+    <span class="token property">fs</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+      <span class="token comment"># Set fs.protocol to &quot;zip&quot;</span>
+      <span class="token property">protocol</span> <span class="token punctuation">=</span> <span class="token string">&quot;zip&quot;</span>
+
+      <span class="token comment"># The file object that contains zip.</span>
+      <span class="token property">fo</span> <span class="token punctuation">=</span> <span class="token string">&quot;examples/hello.hcl.zip&quot;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment"># Output to the console</span>
+  task <span class="token string">&quot;file_write&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;/dev/stdout&quot;</span>
+    <span class="token property">content</span> <span class="token punctuation">=</span> task.file_read.this.content
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ runflow run examples/file_read_from_zip.hcl
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-22 <span class="token number">21</span>:28:15,591<span class="token punctuation">]</span> <span class="token string">&quot;task.file_read.this&quot;</span> is started.
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-22 <span class="token number">21</span>:28:15,592<span class="token punctuation">]</span> <span class="token string">&quot;task.file_read.this&quot;</span> is successful.
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-22 <span class="token number">21</span>:28:15,592<span class="token punctuation">]</span> <span class="token string">&quot;task.file_write.this&quot;</span> is started.
+<span class="token comment"># File: hello_world.hcl</span>
+
+<span class="token comment"># This declares a flow as &quot;hello_world&quot;.</span>
+<span class="token comment"># There can only be only one flow declaration per flow file.</span>
+flow <span class="token string">&quot;hello_world&quot;</span> <span class="token punctuation">{</span>
+
+  <span class="token comment"># A task defines what should be done on the host.</span>
+  <span class="token comment"># In this example, we use &quot;task_run&quot; to run an echo command.</span>
+  task <span class="token string">&quot;bash_run&quot;</span> <span class="token string">&quot;echo&quot;</span> <span class="token punctuation">{</span>
+    <span class="token builtin class-name">command</span> <span class="token operator">=</span> <span class="token string">&quot;echo 'hello world'&quot;</span>
+  <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-22 <span class="token number">21</span>:28:15,592<span class="token punctuation">]</span> <span class="token string">&quot;task.file_write.this&quot;</span> is successful.
+</code></pre></div></details> <h2 id="attributes-reference"><a href="#attributes-reference" class="header-anchor">#</a> Attributes Reference</h2> <p>The following attributes are supported:</p> <ul><li><code>content</code> - The file content.</li> <li><code>b64content</code> - The file content encoded in base64 format.</li></ul></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.79d5ac02.js" defer></script><script src="/assets/js/2.7f12b63b.js" defer></script><script src="/assets/js/23.a63b32d7.js" defer></script>
+  </body>
+</html>

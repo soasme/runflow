@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Flow Run Task | Runflow</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="Run your workflows">
+    
+    <link rel="preload" href="/assets/css/0.styles.243a64a4.css" as="style"><link rel="preload" href="/assets/js/app.79d5ac02.js" as="script"><link rel="preload" href="/assets/js/2.7f12b63b.js" as="script"><link rel="preload" href="/assets/js/25.c5136b4d.js" as="script"><link rel="prefetch" href="/assets/js/10.f95d244f.js"><link rel="prefetch" href="/assets/js/11.c75ec0fd.js"><link rel="prefetch" href="/assets/js/12.2c602931.js"><link rel="prefetch" href="/assets/js/13.9ba68227.js"><link rel="prefetch" href="/assets/js/14.6d8315f0.js"><link rel="prefetch" href="/assets/js/15.4d125b28.js"><link rel="prefetch" href="/assets/js/16.b6fd1422.js"><link rel="prefetch" href="/assets/js/17.89122a7f.js"><link rel="prefetch" href="/assets/js/18.06c7790b.js"><link rel="prefetch" href="/assets/js/19.9cd34070.js"><link rel="prefetch" href="/assets/js/20.b70bcaf3.js"><link rel="prefetch" href="/assets/js/21.b1c80e1d.js"><link rel="prefetch" href="/assets/js/22.99310355.js"><link rel="prefetch" href="/assets/js/23.a63b32d7.js"><link rel="prefetch" href="/assets/js/24.48d9c18d.js"><link rel="prefetch" href="/assets/js/26.c1e1604d.js"><link rel="prefetch" href="/assets/js/27.88dba30b.js"><link rel="prefetch" href="/assets/js/28.7093e852.js"><link rel="prefetch" href="/assets/js/29.8858e0a4.js"><link rel="prefetch" href="/assets/js/3.f510e364.js"><link rel="prefetch" href="/assets/js/30.eb1fec25.js"><link rel="prefetch" href="/assets/js/31.134d1659.js"><link rel="prefetch" href="/assets/js/32.f4c78093.js"><link rel="prefetch" href="/assets/js/33.ec03c0f2.js"><link rel="prefetch" href="/assets/js/34.de3fee6f.js"><link rel="prefetch" href="/assets/js/35.7f58b001.js"><link rel="prefetch" href="/assets/js/36.65c7bb7a.js"><link rel="prefetch" href="/assets/js/37.00e45377.js"><link rel="prefetch" href="/assets/js/38.47e69f9f.js"><link rel="prefetch" href="/assets/js/4.ba3164ba.js"><link rel="prefetch" href="/assets/js/5.75a3592b.js"><link rel="prefetch" href="/assets/js/6.0377ba0c.js"><link rel="prefetch" href="/assets/js/7.9975fe78.js"><link rel="prefetch" href="/assets/js/8.3cc08b70.js"><link rel="prefetch" href="/assets/js/9.b14e4c67.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.243a64a4.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Runflow</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"> <a href="https://github.com/soasme/runflow" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"> <a href="https://github.com/soasme/runflow" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Flow Run Task</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tasks/flow-run.html#example-usage-path" class="sidebar-link">Example Usage (Path)</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/tasks/flow-run.html#example-usage-module" class="sidebar-link">Example Usage (Module)</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/tasks/flow-run.html#set-flow-variables" class="sidebar-link">Set Flow Variables</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/tasks/flow-run.html#export-flow-context" class="sidebar-link">Export Flow Context</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/tasks/flow-run.html#argument-reference" class="sidebar-link">Argument Reference</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/tasks/flow-run.html#attributes-reference" class="sidebar-link">Attributes Reference</a><ul class="sidebar-sub-headers"></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="flow-run-task"><a href="#flow-run-task" class="header-anchor">#</a> Flow Run Task</h1> <p>Flow Run task enables running another Flow spec as a task.</p> <h2 id="example-usage-path"><a href="#example-usage-path" class="header-anchor">#</a> Example Usage (Path)</h2> <p>Assume you have a flow spec already, you can use &quot;flow_run&quot; task to trigger the flow run.</p> <p>You can set <code>path</code> to specify which flow spec to run.</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: flow_example</span>
+flow <span class="token string">&quot;flow_example&quot;</span> <span class="token punctuation">{</span>
+  task <span class="token string">&quot;flow_run&quot;</span> <span class="token string">&quot;echo&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">path</span> <span class="token punctuation">=</span> <span class="token string">&quot;./examples/hello.hcl&quot;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ runflow run examples/flow_by_path.hcl
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">17</span>:01:58,735<span class="token punctuation">]</span> <span class="token string">&quot;task.flow_run.echo&quot;</span> is started.
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">17</span>:01:58,737<span class="token punctuation">]</span> <span class="token string">&quot;task.flow_run.echo &gt; task.bash_run.echo&quot;</span> is started.
+hello world
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">17</span>:01:58,745<span class="token punctuation">]</span> <span class="token string">&quot;task.flow_run.echo &gt; task.bash_run.echo&quot;</span> is successful.
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">17</span>:01:58,746<span class="token punctuation">]</span> <span class="token string">&quot;task.flow_run.echo&quot;</span> is successful.
+</code></pre></div></details> <h2 id="example-usage-module"><a href="#example-usage-module" class="header-anchor">#</a> Example Usage (Module)</h2> <p>You can set <code>module</code> to specify which flow spec to run.</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: flow_by_module.hcl</span>
+flow <span class="token string">&quot;flow_by_module&quot;</span> <span class="token punctuation">{</span>
+  task <span class="token string">&quot;flow_run&quot;</span> <span class="token string">&quot;echo&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">module</span> <span class="token punctuation">=</span> <span class="token string">&quot;examples.hello:flow&quot;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ runflow run examples/flow_by_module.hcl
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">17</span>:02:37,230<span class="token punctuation">]</span> <span class="token string">&quot;task.flow_run.echo&quot;</span> is started.
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">17</span>:02:37,235<span class="token punctuation">]</span> <span class="token string">&quot;task.flow_run.echo &gt; task.bash_run.echo&quot;</span> is started.
+hello world
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">17</span>:02:37,244<span class="token punctuation">]</span> <span class="token string">&quot;task.flow_run.echo &gt; task.bash_run.echo&quot;</span> is successful.
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">17</span>:02:37,244<span class="token punctuation">]</span> <span class="token string">&quot;task.flow_run.echo&quot;</span> is successful.
+</code></pre></div></details> <h2 id="set-flow-variables"><a href="#set-flow-variables" class="header-anchor">#</a> Set Flow Variables</h2> <p>If the dependent flow requires variables, you can set <code>vars</code>. It's a key-value mapping.</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: subflow_vars.hcl</span>
+flow <span class="token string">&quot;subflow_vars&quot;</span> <span class="token punctuation">{</span>
+  task <span class="token string">&quot;flow_run&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">path</span> <span class="token punctuation">=</span> <span class="token string">&quot;./examples/hello-vars.hcl&quot;</span>
+    <span class="token property">vars</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+      <span class="token property">greeter</span> <span class="token punctuation">=</span> <span class="token string">&quot;世界&quot;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ runflow run examples/subflow_vars.hcl
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">17</span>:02:53,064<span class="token punctuation">]</span> <span class="token string">&quot;task.flow_run.this&quot;</span> is started.
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">17</span>:02:53,068<span class="token punctuation">]</span> <span class="token string">&quot;task.flow_run.this &gt; task.bash_run.echo&quot;</span> is started.
+hello 世界
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">17</span>:02:53,078<span class="token punctuation">]</span> <span class="token string">&quot;task.flow_run.this &gt; task.bash_run.echo&quot;</span> is successful.
+<span class="token punctuation">[</span><span class="token number">2021</span>-07-04 <span class="token number">17</span>:02:53,078<span class="token punctuation">]</span> <span class="token string">&quot;task.flow_run.this&quot;</span> is successful.
+</code></pre></div></details> <h2 id="export-flow-context"><a href="#export-flow-context" class="header-anchor">#</a> Export Flow Context</h2> <p>You can set an optional argument <code>export</code> to bring the values in the inner
+flow run context to the outer flow context.</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: flow_exports</span>
+flow <span class="token string">&quot;flow_exports&quot;</span> <span class="token punctuation">{</span>
+
+  task <span class="token string">&quot;flow_run&quot;</span> <span class="token string">&quot;echo&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">path</span> <span class="token punctuation">=</span> <span class="token string">&quot;./examples/hello.hcl&quot;</span>
+
+    <span class="token comment"># You can set as many custom fields in `export` block,</span>
+    <span class="token comment"># as long as the values in block are valid variable references</span>
+    <span class="token comment"># in the flow `./examples/hello.hcl`.</span>
+    <span class="token keyword">export</span> <span class="token punctuation">{</span>
+
+      <span class="token comment"># In this example, since `task &quot;bash_run&quot; &quot;echo&quot; {...}`</span>
+      <span class="token comment"># has attribute `stdout`, you can export the stdout value</span>
+      <span class="token comment"># and bind it to any field name, like `custom_field`.</span>
+      <span class="token property">custom_field</span> <span class="token punctuation">=</span> <span class="token string">&quot;task.bash_run.echo.stdout&quot;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;file_write&quot;</span> <span class="token string">&quot;re-echo&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;/dev/stdout&quot;</span>
+
+    <span class="token comment"># Now we can use `task.flow_run.echo.custom_field` data.</span>
+    <span class="token property">content</span> <span class="token punctuation">=</span> task.flow_run.echo.custom_field
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run:</p> <div class="language- extra-class"><pre class="language-text"><code>$ runflow run examples/flow_exports.hcl
+[2021-07-04 17:03:11,601] &quot;task.flow_run.echo&quot; is started.
+[2021-07-04 17:03:11,603] &quot;task.flow_run.echo &gt; task.bash_run.echo&quot; is started.
+hello world
+[2021-07-04 17:03:11,613] &quot;task.flow_run.echo &gt; task.bash_run.echo&quot; is successful.
+[2021-07-04 17:03:11,614] &quot;task.flow_run.echo&quot; is successful.
+[2021-07-04 17:03:11,614] &quot;task.file_write.re-echo&quot; is started.
+hello world
+[2021-07-04 17:03:11,617] &quot;task.file_write.re-echo&quot; is successful.
+</code></pre></div></details> <h2 id="argument-reference"><a href="#argument-reference" class="header-anchor">#</a> Argument Reference</h2> <p>The following arguments are supported:</p> <ul><li><code>path</code> - (Optional, str) The path to the <code>&quot;.hcl&quot;</code> file.</li> <li><code>module</code> - (Optional, str) The import module to the <code>&quot;.hcl&quot;</code> module.</li> <li><code>source</code> - (Optional, str) The source of Runflow spec.</li> <li><code>vars</code> - (Optional, map) The variables for running a flow.</li> <li><code>export</code> - (Optional, block) The exported variables. The key will be used as task attribute name, and the value should be a valid reference in the inner flow run.</li></ul> <h2 id="attributes-reference"><a href="#attributes-reference" class="header-anchor">#</a> Attributes Reference</h2> <p>The following attributes are supported:</p> <ul><li>Any key specified in argument <code>exports</code> can be used.</li></ul></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.79d5ac02.js" defer></script><script src="/assets/js/2.7f12b63b.js" defer></script><script src="/assets/js/25.c5136b4d.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Sql Exec Task | Runflow</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="Run your workflows">
+    
+    <link rel="preload" href="/assets/css/0.styles.243a64a4.css" as="style"><link rel="preload" href="/assets/js/app.79d5ac02.js" as="script"><link rel="preload" href="/assets/js/2.7f12b63b.js" as="script"><link rel="preload" href="/assets/js/34.de3fee6f.js" as="script"><link rel="prefetch" href="/assets/js/10.f95d244f.js"><link rel="prefetch" href="/assets/js/11.c75ec0fd.js"><link rel="prefetch" href="/assets/js/12.2c602931.js"><link rel="prefetch" href="/assets/js/13.9ba68227.js"><link rel="prefetch" href="/assets/js/14.6d8315f0.js"><link rel="prefetch" href="/assets/js/15.4d125b28.js"><link rel="prefetch" href="/assets/js/16.b6fd1422.js"><link rel="prefetch" href="/assets/js/17.89122a7f.js"><link rel="prefetch" href="/assets/js/18.06c7790b.js"><link rel="prefetch" href="/assets/js/19.9cd34070.js"><link rel="prefetch" href="/assets/js/20.b70bcaf3.js"><link rel="prefetch" href="/assets/js/21.b1c80e1d.js"><link rel="prefetch" href="/assets/js/22.99310355.js"><link rel="prefetch" href="/assets/js/23.a63b32d7.js"><link rel="prefetch" href="/assets/js/24.48d9c18d.js"><link rel="prefetch" href="/assets/js/25.c5136b4d.js"><link rel="prefetch" href="/assets/js/26.c1e1604d.js"><link rel="prefetch" href="/assets/js/27.88dba30b.js"><link rel="prefetch" href="/assets/js/28.7093e852.js"><link rel="prefetch" href="/assets/js/29.8858e0a4.js"><link rel="prefetch" href="/assets/js/3.f510e364.js"><link rel="prefetch" href="/assets/js/30.eb1fec25.js"><link rel="prefetch" href="/assets/js/31.134d1659.js"><link rel="prefetch" href="/assets/js/32.f4c78093.js"><link rel="prefetch" href="/assets/js/33.ec03c0f2.js"><link rel="prefetch" href="/assets/js/35.7f58b001.js"><link rel="prefetch" href="/assets/js/36.65c7bb7a.js"><link rel="prefetch" href="/assets/js/37.00e45377.js"><link rel="prefetch" href="/assets/js/38.47e69f9f.js"><link rel="prefetch" href="/assets/js/4.ba3164ba.js"><link rel="prefetch" href="/assets/js/5.75a3592b.js"><link rel="prefetch" href="/assets/js/6.0377ba0c.js"><link rel="prefetch" href="/assets/js/7.9975fe78.js"><link rel="prefetch" href="/assets/js/8.3cc08b70.js"><link rel="prefetch" href="/assets/js/9.b14e4c67.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.243a64a4.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Runflow</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"> <a href="https://github.com/soasme/runflow" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"> <a href="https://github.com/soasme/runflow" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Sql Exec Task</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tasks/sql-exec.html#example-usage" class="sidebar-link">Example Usage</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/tasks/sql-exec.html#argument-reference" class="sidebar-link">Argument Reference</a><ul class="sidebar-sub-headers"></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="sql-exec-task"><a href="#sql-exec-task" class="header-anchor">#</a> Sql Exec Task</h1> <p>Sql Exec Task enables executing sql statements on a sql database, such as sqlite3, MySQL, PostgreSQL, MSSQL, etc.</p> <p>The task type is &quot;sql_exec&quot;.</p> <p>Added in v0.5.0.</p> <div class="custom-block tip"><p class="custom-block-title">TIP</p> <p>Please make sure you have the required driver package installed, such as MySQL-python or psycopg2.</p> <p>Say you're using <code>postgresql</code> database, you can install <code>psycopg2</code>:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ pip <span class="token function">install</span> psycopg2-binary
+</code></pre></div></div> <h2 id="example-usage"><a href="#example-usage" class="header-anchor">#</a> Example Usage</h2> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: sqlite3_exec.hcl</span>
+flow <span class="token string">&quot;sqlite3_exec&quot;</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">variable<span class="token type variable"> &quot;db&quot; </span></span><span class="token punctuation">{</span>
+    <span class="token property">default</span> <span class="token punctuation">=</span> <span class="token string">&quot;sqlite:///:memory:&quot;</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;sql_exec&quot;</span> <span class="token string">&quot;create_table&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">dsn</span> <span class="token punctuation">=</span> var.db
+    <span class="token keyword">sql</span> <span class="token punctuation">{</span>
+      <span class="token property">statement</span> <span class="token punctuation">=</span> <span class="token heredoc string">&lt;&lt;-EOT
+        CREATE TABLE IF NOT EXISTS kvdb (
+            key string PRIMARY KEY,
+            value string
+        );
+      EOT</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;sql_exec&quot;</span> <span class="token string">&quot;insert_many&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">dsn</span> <span class="token punctuation">=</span> var.db
+    <span class="token keyword">sql</span> <span class="token punctuation">{</span>
+      <span class="token property">statement</span> <span class="token punctuation">=</span> <span class="token string">&quot;INSERT OR IGNORE INTO kvdb (key,value) VALUES (:key, :value);&quot;</span>
+      <span class="token property">parameters</span> <span class="token punctuation">=</span>  <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+          <span class="token property">key</span> <span class="token punctuation">=</span> <span class="token string">&quot;k1&quot;</span>
+          <span class="token property">value</span> <span class="token punctuation">=</span> <span class="token string">&quot;v1&quot;</span>
+        <span class="token punctuation">}</span>,
+        <span class="token punctuation">{</span>
+          <span class="token property">key</span> <span class="token punctuation">=</span> <span class="token string">&quot;k2&quot;</span>
+          <span class="token property">value</span> <span class="token punctuation">=</span> <span class="token string">&quot;v2&quot;</span>
+        <span class="token punctuation">}</span>,
+      <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">sql</span> <span class="token punctuation">{</span>
+      <span class="token property">statement</span> <span class="token punctuation">=</span> <span class="token string">&quot;INSERT OR IGNORE INTO kvdb (key,value) VALUES (:key, :value);&quot;</span>
+      <span class="token property">parameters</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+        <span class="token property">key</span> <span class="token punctuation">=</span> <span class="token string">&quot;k3&quot;</span>
+        <span class="token property">value</span> <span class="token punctuation">=</span> <span class="token string">&quot;v3&quot;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token property">_depends_on</span> <span class="token punctuation">=</span> <span class="token punctuation">[</span>
+      task.sql_exec.create_table,
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run:</p> <div class="language- extra-class"><pre class="language-text"><code>$ runflow run sqlite3_exec.hcl --var db=/tmp/out.db
+[2021-06-12 23:02:04,386] &quot;task.sqlite3_exec.create_table&quot; is started.
+[2021-06-12 23:02:04,390] &quot;task.sqlite3_exec.create_table&quot; is successful.
+[2021-06-12 23:02:04,392] &quot;task.sqlite3_exec.insert_many&quot; is started.
+[2021-06-12 23:02:04,393] &quot;task.sqlite3_exec.insert_many&quot; is successful.
+[2021-06-12 23:02:04,394] &quot;task.sqlite3_exec.insert_one&quot; is started.
+[2021-06-12 23:02:04,396] &quot;task.sqlite3_exec.insert_one&quot; is successful.
+
+$ sqlite3 /tmp/out.db
+SQLite version 3.32.3 2020-06-18 14:16:19
+Enter &quot;.help&quot; for usage hints.
+sqlite&gt; select * from kvdb;
+k1|v1
+k2|v2
+k3|v3
+</code></pre></div></details> <h2 id="argument-reference"><a href="#argument-reference" class="header-anchor">#</a> Argument Reference</h2> <p>The following arguments are supported:</p> <ul><li><p><code>dsn</code> - (Required, str) The DSN is a string of URL, which provides</p> <ul><li>What kind of database are we communicating with?</li> <li>What DBAPI are we using?</li> <li>How do we locate the database?</li></ul> <p>Some examples include</p> <ul><li><code>sqlite:///:memory:</code>,</li> <li><code>sqlite:////tmp/test.db</code>,</li> <li><code>sqlite+pysqlite:////tmp/test.db</code>,</li> <li><code>mysql://${var.mysql_user}:${var.mysql_pass}@${var.mysql_host}/${var.mysql_db}</code>,</li> <li><code>postgresql://scott:tiger@localhost/mydatabase</code>,</li> <li><code>postgresql+psycopg2://scott:tiger@localhost/mydatabase</code>,</li> <li><code>mssql+pymssql://scott:tiger@hostname:port/dbname</code>.</li></ul> <p>Please see more examples <a href="https://docs.sqlalchemy.org/en/14/core/engines.html" target="_blank" rel="noopener noreferrer">here<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>.</p></li> <li><p><code>sql</code> - (Required, block) There can be multiple sql blocks in a task.</p> <ul><li><code>statement</code> - (Required, str) The sql statement to execute.</li> <li><code>parameters</code> - (Optional, list/map).
+<ul><li>It can be a key-value pairs.</li> <li>It can be a array of key-value pairs.</li></ul></li></ul></li></ul></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.79d5ac02.js" defer></script><script src="/assets/js/2.7f12b63b.js" defer></script><script src="/assets/js/34.de3fee6f.js" defer></script>
+  </body>
+</html>

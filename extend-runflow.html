@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Extend Runflow | Runflow</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="Run your workflows">
+    
+    <link rel="preload" href="/assets/css/0.styles.243a64a4.css" as="style"><link rel="preload" href="/assets/js/app.79d5ac02.js" as="script"><link rel="preload" href="/assets/js/2.7f12b63b.js" as="script"><link rel="preload" href="/assets/js/13.9ba68227.js" as="script"><link rel="prefetch" href="/assets/js/10.f95d244f.js"><link rel="prefetch" href="/assets/js/11.c75ec0fd.js"><link rel="prefetch" href="/assets/js/12.2c602931.js"><link rel="prefetch" href="/assets/js/14.6d8315f0.js"><link rel="prefetch" href="/assets/js/15.4d125b28.js"><link rel="prefetch" href="/assets/js/16.b6fd1422.js"><link rel="prefetch" href="/assets/js/17.89122a7f.js"><link rel="prefetch" href="/assets/js/18.06c7790b.js"><link rel="prefetch" href="/assets/js/19.9cd34070.js"><link rel="prefetch" href="/assets/js/20.b70bcaf3.js"><link rel="prefetch" href="/assets/js/21.b1c80e1d.js"><link rel="prefetch" href="/assets/js/22.99310355.js"><link rel="prefetch" href="/assets/js/23.a63b32d7.js"><link rel="prefetch" href="/assets/js/24.48d9c18d.js"><link rel="prefetch" href="/assets/js/25.c5136b4d.js"><link rel="prefetch" href="/assets/js/26.c1e1604d.js"><link rel="prefetch" href="/assets/js/27.88dba30b.js"><link rel="prefetch" href="/assets/js/28.7093e852.js"><link rel="prefetch" href="/assets/js/29.8858e0a4.js"><link rel="prefetch" href="/assets/js/3.f510e364.js"><link rel="prefetch" href="/assets/js/30.eb1fec25.js"><link rel="prefetch" href="/assets/js/31.134d1659.js"><link rel="prefetch" href="/assets/js/32.f4c78093.js"><link rel="prefetch" href="/assets/js/33.ec03c0f2.js"><link rel="prefetch" href="/assets/js/34.de3fee6f.js"><link rel="prefetch" href="/assets/js/35.7f58b001.js"><link rel="prefetch" href="/assets/js/36.65c7bb7a.js"><link rel="prefetch" href="/assets/js/37.00e45377.js"><link rel="prefetch" href="/assets/js/38.47e69f9f.js"><link rel="prefetch" href="/assets/js/4.ba3164ba.js"><link rel="prefetch" href="/assets/js/5.75a3592b.js"><link rel="prefetch" href="/assets/js/6.0377ba0c.js"><link rel="prefetch" href="/assets/js/7.9975fe78.js"><link rel="prefetch" href="/assets/js/8.3cc08b70.js"><link rel="prefetch" href="/assets/js/9.b14e4c67.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.243a64a4.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Runflow</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"> <a href="https://github.com/soasme/runflow" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"> <a href="https://github.com/soasme/runflow" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Extend Runflow</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/extend-runflow.html#import-flow" class="sidebar-link">Import Flow</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/extend-runflow.html#import-task-and-function" class="sidebar-link">Import Task and Function</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/extend-runflow.html#install-as-python-package" class="sidebar-link">Install as Python Package</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/extend-runflow.html#request-to-include-your-implementation" class="sidebar-link">Request to Include Your Implementation</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/extend-runflow.html#which-approach-should-i-use" class="sidebar-link">Which Approach Should I Use?</a><ul class="sidebar-sub-headers"></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="extend-runflow"><a href="#extend-runflow" class="header-anchor">#</a> Extend Runflow</h1> <p>It's impossible Runflow can provide all kinds of tasks you need.
+When that happens, you can develop your own task and let Runflow
+load it before a task run.</p> <p>You will need to write some Python code and hook it up in a Runflow spec.</p> <h2 id="import-flow"><a href="#import-flow" class="header-anchor">#</a> Import Flow</h2> <p>If you want to use a flow as part of a new flow, the best way is to import the flow directly.</p> <p>Say we have a flow <code>examples/template.hcl</code>:</p> <details class="custom-block details"><summary>Click me to view the flow `examples/template.hcl`</summary> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: template.hcl</span>
+flow <span class="token string">&quot;template&quot;</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">variable<span class="token type variable"> &quot;global&quot; </span></span><span class="token punctuation">{</span>
+    <span class="token property">default</span> <span class="token punctuation">=</span> <span class="token string">&quot;global&quot;</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;hcl2_template&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token comment"># Set the source for the template.</span>
+    <span class="token comment"># You can interpolate variable via `${...}` syntax.</span>
+    <span class="token property">source</span> <span class="token punctuation">=</span> <span class="token heredoc string">&lt;&lt;EOT
+${ answer }
+${ final.answer }
+${ var.global }
+${ 40 + 2 }
+${ sum([20, 20, 2]) }
+EOT</span>
+
+    <span class="token comment"># Set the context for the template rendering.</span>
+    <span class="token comment"># It will be merged with global context.</span>
+    <span class="token property">context</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+      <span class="token property">answer</span> <span class="token punctuation">=</span> <span class="token number">42</span>
+      <span class="token property">final</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+        <span class="token property">answer</span> <span class="token punctuation">=</span> <span class="token number">42</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;file_write&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;/dev/stdout&quot;</span>
+    <span class="token property">content</span> <span class="token punctuation">=</span> task.hcl2_template.this.content
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre></div></details> <p>Now, we can import it using <code>import.tasks</code>. The import string for the <code>.hcl</code> file should be a valid Python import string ending with <code>:flow</code>. The key for the import string will be the task type.</p> <p>For example, the flow below registers <code>examples.template:flow</code> as task type <code>custom_flow_run</code>. The payloads of the task body becomes the variables for the reused flow:</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code>flow <span class="token string">&quot;flow_as_task&quot;</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">import</span> <span class="token punctuation">{</span>
+    <span class="token property">tasks</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+      <span class="token property">custom_flow_run</span> <span class="token punctuation">=</span> <span class="token string">&quot;examples.template:flow&quot;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;custom_flow_run&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">global</span> <span class="token punctuation">=</span> <span class="token number">42</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><details class="custom-block details"><summary>Click me to view the output</summary> <div class="language-bash extra-class"><pre class="language-bash"><code>$ runflow run examples/flow_as_task.hcl
+</code></pre></div></details> <h2 id="import-task-and-function"><a href="#import-task-and-function" class="header-anchor">#</a> Import Task and Function</h2> <p>You can import a custom Task class. The Task class must accept task payload as keyword arguments.</p> <p>It must has <code>def run(self)</code> or <code>async def run(self)</code> method, which performs the actual task work.</p> <p>The example below shows how to write something into a file.</p> <div class="language-py extra-class"><pre class="language-py"><code><span class="token comment"># File: examples/extensions.py</span>
+
+<span class="token keyword">class</span> <span class="token class-name">GuessIceCreamTask</span><span class="token punctuation">:</span>
+
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">,</span> output<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>name <span class="token operator">=</span> name
+        self<span class="token punctuation">.</span>output <span class="token operator">=</span> output
+
+    <span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">run</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>output<span class="token punctuation">,</span> <span class="token string">'w'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+            f<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f&quot;Bingo, it is </span><span class="token interpolation"><span class="token punctuation">{</span>self<span class="token punctuation">.</span>name<span class="token punctuation">}</span></span><span class="token string">&quot;</span></span><span class="token punctuation">)</span>
+</code></pre></div><p>To load it in the Runflow spec, use <code>import.tasks</code>.</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: custom_task_type.hcl</span>
+flow <span class="token string">&quot;custom_task_type&quot;</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">import</span> <span class="token punctuation">{</span>
+    <span class="token comment"># `import.tasks` is a map.</span>
+    <span class="token comment"># The map key will become the task type used later.</span>
+    <span class="token comment"># The map value is the import string of task implementation.</span>
+    <span class="token property">tasks</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+      <span class="token property">guess_ice_cream</span> <span class="token punctuation">=</span> <span class="token string">&quot;examples.extensions:GuessIceCreamTask&quot;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment"># `import.functions` is a map.</span>
+    <span class="token comment"># The map key will become the function name used later.</span>
+    <span class="token comment"># The map value is the import string of function.</span>
+    <span class="token property">functions</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+      <span class="token property">randint</span> <span class="token punctuation">=</span> <span class="token string">&quot;random:randint&quot;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">variable<span class="token type variable"> &quot;out&quot; </span></span><span class="token punctuation">{</span>
+    <span class="token property">default</span> <span class="token punctuation">=</span> <span class="token string">&quot;&quot;</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;guess_ice_cream&quot;</span> <span class="token string">&quot;echo&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">name</span> <span class="token punctuation">=</span> <span class="token string">&quot;<span class="token interpolation"><span class="token punctuation">$</span><span class="token punctuation">{</span><span class="token function">upper</span><span class="token punctuation">(</span><span class="token string">&quot;vanilla&quot;</span><span class="token punctuation">)</span><span class="token punctuation">}</span></span>-<span class="token interpolation"><span class="token punctuation">$</span><span class="token punctuation">{</span><span class="token function">randint</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">}</span></span>&quot;</span>
+    <span class="token property">output</span> <span class="token punctuation">=</span> var.out
+  <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run:</p> <div class="language- extra-class"><pre class="language-text"><code>$ runflow run custom_task_type.hcl --var out=/tmp/out.txt
+[2021-06-13 15:48:35,397] &quot;task.guess_ice_cream.echo&quot; is started.
+[2021-06-13 15:48:35,398] &quot;task.guess_ice_cream.echo&quot; is successful.
+
+$ cat /tmp/out.txt
+Bingo, it is VANILLA-95
+</code></pre></div></details> <p>Tips:</p> <ul><li>The Python code for the task must be in sys.path.</li></ul> <h2 id="install-as-python-package"><a href="#install-as-python-package" class="header-anchor">#</a> Install as Python Package</h2> <p>The other approach to register a new task class is through
+the <code>entry_points</code> facility provided by
+<a href="https://setuptools.readthedocs.io/en/latest/" target="_blank" rel="noopener noreferrer">setuptools<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>.</p> <p>Let's demonstrate it through an example.</p> <p>Create a new directory for your package:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ <span class="token function">mkdir</span> /tmp/runflow_vanilla_example
+$ <span class="token builtin class-name">cd</span> /tmp/runflow_vanilla_example
+</code></pre></div><ul><li>Create virtual env.</li> <li>Install <code>build</code> for building your package.</li> <li>Install <code>runflow</code>.</li></ul> <div class="language-bash extra-class"><pre class="language-bash"><code>$ python3 -mvenv venv
+$ <span class="token builtin class-name">source</span> venv/bin/activate
+$ pip <span class="token function">install</span> -U build runflow
+</code></pre></div><p>Create some Python files:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>├── src
+│   └── runflow_vanilla_example
+│       ├── __init__.py
+│       └── tasks.py
+├── pyproject.toml
+└── setup.cfg
+</code></pre></div><p>Implement your Task class in <code>src/runflow_vanilla_example/tasks.py</code>:</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">class</span> <span class="token class-name">GuessIceCreamTask</span><span class="token punctuation">:</span>
+
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">,</span> output<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>name <span class="token operator">=</span> name
+        self<span class="token punctuation">.</span>output <span class="token operator">=</span> output
+
+    <span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">run</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>output<span class="token punctuation">,</span> <span class="token string">'w'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+            f<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f&quot;Bingo, it is </span><span class="token interpolation"><span class="token punctuation">{</span>self<span class="token punctuation">.</span>name<span class="token punctuation">}</span></span><span class="token string">&quot;</span></span><span class="token punctuation">)</span>
+</code></pre></div><p>Export it in <code>src/runflow_vanilla_example/__init__.py</code>:</p> <div class="language-python extra-class"><pre class="language-python"><code><span class="token keyword">from</span> <span class="token punctuation">.</span>tasks <span class="token keyword">import</span> GuessIceCreamTask
+</code></pre></div><p>Create a new file <code>setup.cfg</code> as required by setuptools:</p> <ul><li>Define the metadata for the package.</li> <li>Define how to find the package source. In this example, we tell setuptool to find
+the package source in the directory <code>src/</code> and include all <code>runflow_vanilla_example</code> source.</li></ul> <div class="language-toml extra-class"><pre class="language-toml"><code><span class="token punctuation">[</span><span class="token table class-name">metadata</span><span class="token punctuation">]</span>
+<span class="token key property">name</span> <span class="token punctuation">=</span> runflow_vanilla_example
+<span class="token key property">version</span> <span class="token punctuation">=</span> <span class="token number">0.1</span><span class="token punctuation">.</span><span class="token number">0</span>
+<span class="token key property">author</span> <span class="token punctuation">=</span> Anybody
+<span class="token key property">author_email</span> <span class="token punctuation">=</span> anybody@example<span class="token punctuation">.</span>org
+<span class="token key property">description</span> <span class="token punctuation">=</span> An example package that demonstrates how to register a new task type to Runflow
+
+<span class="token punctuation">[</span><span class="token table class-name">options</span><span class="token punctuation">]</span>
+<span class="token key property">package_dir</span> <span class="token punctuation">=</span>
+    <span class="token punctuation">=</span> src
+<span class="token key property">packages</span> <span class="token punctuation">=</span> find:
+
+<span class="token punctuation">[</span><span class="token table class-name">options.packages.find</span><span class="token punctuation">]</span>
+<span class="token key property">where</span> <span class="token punctuation">=</span> src
+<span class="token key property">include</span> <span class="token punctuation">=</span>
+    runflow_vanilla_example
+    runflow_vanilla_example<span class="token punctuation">.</span>*
+
+<span class="token punctuation">[</span><span class="token table class-name">options.entry_points</span><span class="token punctuation">]</span>
+    <span class="token key property">runflow.tasks</span> <span class="token punctuation">=</span>
+        <span class="token key property">guess_ice_cream</span> <span class="token punctuation">=</span> runflow_vanilla_example:GuessIceCreamTask
+</code></pre></div><p>If you look a close look at the last section, it means you register a new task type <code>guess_ice_cream</code> which
+is implemented by the class <code>GuessIceCreamTask</code> in package <code>runflow_vanilla_example</code>.</p> <p>Create a new file <code>pyproject.toml</code>:</p> <div class="language-toml extra-class"><pre class="language-toml"><code><span class="token punctuation">[</span><span class="token table class-name">build-system</span><span class="token punctuation">]</span>
+<span class="token key property">requires</span> <span class="token punctuation">=</span> <span class="token punctuation">[</span>
+    <span class="token string">&quot;setuptools&gt;=42&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;wheel&quot;</span>
+<span class="token punctuation">]</span>
+<span class="token key property">build-backend</span> <span class="token punctuation">=</span> <span class="token string">&quot;setuptools.build_meta&quot;</span>
+</code></pre></div><p>All source are prepared. Let's build:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ python -mbuild
+<span class="token punctuation">..</span>.
+adding <span class="token string">'runflow_vanilla_example/__init__.py'</span>
+adding <span class="token string">'runflow_vanilla_example/tasks.py'</span>
+adding <span class="token string">'runflow_vanilla_example-0.1.0.dist-info/METADATA'</span>
+adding <span class="token string">'runflow_vanilla_example-0.1.0.dist-info/WHEEL'</span>
+adding <span class="token string">'runflow_vanilla_example-0.1.0.dist-info/entry_points.txt'</span>
+adding <span class="token string">'runflow_vanilla_example-0.1.0.dist-info/top_level.txt'</span>
+adding <span class="token string">'runflow_vanilla_example-0.1.0.dist-info/RECORD'</span>
+removing build/bdist.macosx-10.15-x86_64/wheel
+
+$ <span class="token function">ls</span> dist/
+runflow_vanilla_example-0.1.0.tar.gz
+runflow_vanilla_example-0.1.0-py3-none-any.whl
+</code></pre></div><p>In the directory <code>dist/</code>, two new package files are created.</p> <p>We can publish the package files to <a href="https://pypi.org" target="_blank" rel="noopener noreferrer">pypi.org<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> using
+<a href="https://twine.readthedocs.io/en/latest/" target="_blank" rel="noopener noreferrer">twine<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>. The package will be
+then open to the world.</p> <p>But for now, let's skip the publish step and just install the package from a local file file to the venv.</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ python -mpip <span class="token function">install</span> runflow_vanilla_example-0.1.0-py3-none-any.whl
+</code></pre></div><p>After <code>runflow_vanilla_example</code> gets installed, Runflow is able to automatically
+pick it up and recognizes <code>guess_ice_cream</code> as a valid task type.</p> <p>Hooray!! 🎉</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: use_package.hcl</span>
+flow <span class="token string">&quot;use_package&quot;</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">variable<span class="token type variable"> &quot;out&quot; </span></span><span class="token punctuation">{</span>
+    <span class="token property">default</span> <span class="token punctuation">=</span> <span class="token string">&quot;&quot;</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;guess_ice_cream&quot;</span> <span class="token string">&quot;echo&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">name</span> <span class="token punctuation">=</span> <span class="token string">&quot;<span class="token interpolation"><span class="token punctuation">$</span><span class="token punctuation">{</span><span class="token function">upper</span><span class="token punctuation">(</span><span class="token string">&quot;vanilla&quot;</span><span class="token punctuation">)</span><span class="token punctuation">}</span></span>&quot;</span>
+    <span class="token property">output</span> <span class="token punctuation">=</span> var.out
+  <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</code></pre></div><details class="custom-block details"><summary>Click me to view the run output</summary> <p>Run:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ runflow run use_package.hcl --var <span class="token assign-left variable">out</span><span class="token operator">=</span>/tmp/out.txt
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-24 <span class="token number">23</span>:02:05,109<span class="token punctuation">]</span> <span class="token string">&quot;task.guess_ice_cream.echo&quot;</span> is started.
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-24 <span class="token number">23</span>:02:05,111<span class="token punctuation">]</span> <span class="token string">&quot;task.guess_ice_cream.echo&quot;</span> is successful.
+
+$ <span class="token function">cat</span> /tmp/out.txt
+Bingo, it is VANILLA
+</code></pre></div></details> <h2 id="request-to-include-your-implementation"><a href="#request-to-include-your-implementation" class="header-anchor">#</a> Request to Include Your Implementation</h2> <p>Alternatively, you can issue a new PR to Runflow GitHub repo and
+request to be included in <code>runflow.registry:task_implementations</code>.</p> <h2 id="which-approach-should-i-use"><a href="#which-approach-should-i-use" class="header-anchor">#</a> Which Approach Should I Use?</h2> <ol><li><p>If you're experimenting something and have <code>.hcl</code> and <code>.py</code> files
+in one project, just use <code>import</code> block.</p></li> <li><p>If you have pretty solid task implementations and have some tests,
+docs, consider package all of them and publish to PyPI.
+This is the most recommended approach.</p></li> <li><p>If you think your implementation is very fundamental and deserved
+to reside in <code>runflow</code> core library, just send out a PR and let's
+review if it works!</p></li></ol></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.79d5ac02.js" defer></script><script src="/assets/js/2.7f12b63b.js" defer></script><script src="/assets/js/13.9ba68227.js" defer></script>
+  </body>
+</html>

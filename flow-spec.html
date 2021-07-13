@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Flow Specification | Runflow</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="Run your workflows">
+    
+    <link rel="preload" href="/assets/css/0.styles.243a64a4.css" as="style"><link rel="preload" href="/assets/js/app.79d5ac02.js" as="script"><link rel="preload" href="/assets/js/2.7f12b63b.js" as="script"><link rel="preload" href="/assets/js/14.6d8315f0.js" as="script"><link rel="prefetch" href="/assets/js/10.f95d244f.js"><link rel="prefetch" href="/assets/js/11.c75ec0fd.js"><link rel="prefetch" href="/assets/js/12.2c602931.js"><link rel="prefetch" href="/assets/js/13.9ba68227.js"><link rel="prefetch" href="/assets/js/15.4d125b28.js"><link rel="prefetch" href="/assets/js/16.b6fd1422.js"><link rel="prefetch" href="/assets/js/17.89122a7f.js"><link rel="prefetch" href="/assets/js/18.06c7790b.js"><link rel="prefetch" href="/assets/js/19.9cd34070.js"><link rel="prefetch" href="/assets/js/20.b70bcaf3.js"><link rel="prefetch" href="/assets/js/21.b1c80e1d.js"><link rel="prefetch" href="/assets/js/22.99310355.js"><link rel="prefetch" href="/assets/js/23.a63b32d7.js"><link rel="prefetch" href="/assets/js/24.48d9c18d.js"><link rel="prefetch" href="/assets/js/25.c5136b4d.js"><link rel="prefetch" href="/assets/js/26.c1e1604d.js"><link rel="prefetch" href="/assets/js/27.88dba30b.js"><link rel="prefetch" href="/assets/js/28.7093e852.js"><link rel="prefetch" href="/assets/js/29.8858e0a4.js"><link rel="prefetch" href="/assets/js/3.f510e364.js"><link rel="prefetch" href="/assets/js/30.eb1fec25.js"><link rel="prefetch" href="/assets/js/31.134d1659.js"><link rel="prefetch" href="/assets/js/32.f4c78093.js"><link rel="prefetch" href="/assets/js/33.ec03c0f2.js"><link rel="prefetch" href="/assets/js/34.de3fee6f.js"><link rel="prefetch" href="/assets/js/35.7f58b001.js"><link rel="prefetch" href="/assets/js/36.65c7bb7a.js"><link rel="prefetch" href="/assets/js/37.00e45377.js"><link rel="prefetch" href="/assets/js/38.47e69f9f.js"><link rel="prefetch" href="/assets/js/4.ba3164ba.js"><link rel="prefetch" href="/assets/js/5.75a3592b.js"><link rel="prefetch" href="/assets/js/6.0377ba0c.js"><link rel="prefetch" href="/assets/js/7.9975fe78.js"><link rel="prefetch" href="/assets/js/8.3cc08b70.js"><link rel="prefetch" href="/assets/js/9.b14e4c67.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.243a64a4.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Runflow</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"> <a href="https://github.com/soasme/runflow" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"> <a href="https://github.com/soasme/runflow" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Flow Specification</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/flow-spec.html#hcl2" class="sidebar-link">HCL2</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/flow-spec.html#encoding" class="sidebar-link">Encoding</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/flow-spec.html#comments" class="sidebar-link">Comments</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/flow-spec.html#identifiers" class="sidebar-link">Identifiers</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/flow-spec.html#attributes" class="sidebar-link">Attributes</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/flow-spec.html#blocks" class="sidebar-link">Blocks</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/flow-spec.html#flow-block" class="sidebar-link">Flow Block</a></li><li class="sidebar-sub-header"><a href="/flow-spec.html#task-block" class="sidebar-link">Task Block</a></li><li class="sidebar-sub-header"><a href="/flow-spec.html#variable-block" class="sidebar-link">Variable Block</a></li><li class="sidebar-sub-header"><a href="/flow-spec.html#import-block" class="sidebar-link">Import Block</a></li></ul></li><li><a href="/flow-spec.html#expressions" class="sidebar-link">Expressions</a><ul class="sidebar-sub-headers"></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="flow-specification"><a href="#flow-specification" class="header-anchor">#</a> Flow Specification</h1> <p>The Runflow specification, or Runflow spec, defines the schema for
+workflows.  The Runflow spec is parsed and executed by Runflow
+command-line interface.</p> <p>Each Runflow spec file has the extension &quot;.hcl&quot; and should has only a
+single flow.</p> <h2 id="hcl2"><a href="#hcl2" class="header-anchor">#</a> HCL2</h2> <p>In Runflow, one can concisely chain up task executions without loosing
+code readability.  Thanks for the
+<a href="https://github.com/hashicorp/hcl" target="_blank" rel="noopener noreferrer">Hashicorp Configuration Language - HCL<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>
+language.</p> <p>The full HCL2 syntax is defined
+<a href="https://github.com/hashicorp/hcl/blob/main/hclsyntax/spec.md" target="_blank" rel="noopener noreferrer">here<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>.</p> <p>All Runflow specs are valid HCL2 files, but not every HCL2 file is valid
+Runflow spec.  Based on the HCL2 syntax, we standardize the way how
+attributes and blocks are grouped together and make no change to the
+semantic of HCL2.</p> <p>// If you are curious what is HCL1 and why not HCL1, HCL1 is superseded
+by more advanced HCL2 and we will not support HCL1 at all.</p> <p>A minimal Runflow spec looks like this:</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: hello.hcl</span>
+
+<span class="token comment"># Define a flow naming as &quot;hello&quot;.</span>
+<span class="token comment"># There can only be only one flow declaration per flow file.</span>
+flow <span class="token string">&quot;hello&quot;</span> <span class="token punctuation">{</span>
+
+  <span class="token comment"># The task defines what should be done.</span>
+  <span class="token comment"># In this example, we run a bash command `echo`.</span>
+  task <span class="token string">&quot;bash_run&quot;</span> <span class="token string">&quot;echo&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">command</span> <span class="token punctuation">=</span> <span class="token string">&quot;echo 'hello world'&quot;</span>
+  <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</code></pre></div><p>The HCL2 syntax consists of only a few basic elements, merely a little
+more than <a href="http://json.org/" target="_blank" rel="noopener noreferrer">JSON<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>. Here lists some:</p> <ul><li><code>Blocks</code> groups attributes and the other blocks.
+In this example, we have flow block and task block.</li> <li><code>Attributes</code> associate a value with a name.
+In this example, <code>command</code> is an attribute.</li> <li><code>Expressions</code> represent a value, either a constant or referencing
+other values.
+In this example, <code>&quot;echo 'hello world'&quot;</code> is an expression of type string.</li></ul> <h2 id="encoding"><a href="#encoding" class="header-anchor">#</a> Encoding</h2> <p>Runflow spec should be UTF-8 encoded.</p> <h2 id="comments"><a href="#comments" class="header-anchor">#</a> Comments</h2> <p>Runlow spec supports two types of comments:</p> <ul><li><code>#</code> followed by any characters until the end of line.</li> <li><code>//</code> followed by any characters until the end of line.</li></ul> <p>We do prefer to use <code>#</code>-style comment at all cases for code consistency.</p> <h2 id="identifiers"><a href="#identifiers" class="header-anchor">#</a> Identifiers</h2> <p>An identifier is a sequence of alphabets, digits, underscores (<code>_</code>) and
+hyphens (<code>-</code>), with the first character not being a digit. Identifiers
+appear in attribute names, block type names, input variables, etc.</p> <h2 id="attributes"><a href="#attributes" class="header-anchor">#</a> Attributes</h2> <p>An attribute associate a value with a name.</p> <div class="language- extra-class"><pre class="language-text"><code>command = &quot;echo 'hello world'&quot;
+</code></pre></div><p>The left-hand side of '=' is the attribute name; the right-hand side
+of '=' is the attribute value.</p> <p>To know what attribute name should be used and what kinds of attribute
+values should be associated, please refer to the specific block section.</p> <h2 id="blocks"><a href="#blocks" class="header-anchor">#</a> Blocks</h2> <p>A block groups attributes and the other blocks.</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: hello-env.hcl</span>
+flow <span class="token string">&quot;hello-env&quot;</span> <span class="token punctuation">{</span>
+  task <span class="token string">&quot;bash_run&quot;</span> <span class="token string">&quot;echo&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">command</span> <span class="token punctuation">=</span> <span class="token string">&quot;echo hello $GREETER&quot;</span>
+    <span class="token property">env</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;GREETER&quot;</span> <span class="token punctuation">=</span> <span class="token string">&quot;world&quot;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>A block has a type (<code>flow</code> and <code>task</code> in this example).
+Each block type requires some fixed number of labels (1 for <code>flow</code>,
+2 for <code>task</code> in this example).
+Some block type may not require any labels.
+All block types must have body enclosed by <code>{</code> and <code>}</code>.
+Inside the block body, there may be zero or more attributes or blocks.</p> <h3 id="flow-block"><a href="#flow-block" class="header-anchor">#</a> Flow Block</h3> <p>The flow block is a block with type <code>flow</code>. It's the only top-level
+block type that Runflow spec supports.</p> <p>The flow block requires one label as the name for the flow.</p> <p>Inside the flow block body, available attributes and blocks include:</p> <ul><li>Task block.</li> <li>Variable block.</li> <li>Import block.</li></ul> <h3 id="task-block"><a href="#task-block" class="header-anchor">#</a> Task Block</h3> <p>The task block is a block with type <code>task</code>.</p> <p>The task block requires two labels, the first one as the type of the task,
+the second one as the name of the task. For example,</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: file_read.hcl</span>
+flow <span class="token string">&quot;file_read&quot;</span> <span class="token punctuation">{</span>
+  task <span class="token string">&quot;file_read&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> <span class="token string">&quot;pyproject.toml&quot;</span>
+  <span class="token punctuation">}</span>
+  task <span class="token string">&quot;bash_run&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">command</span> <span class="token punctuation">=</span> <span class="token string">&quot;echo <span class="token interpolation"><span class="token punctuation">$</span><span class="token punctuation">{</span><span class="token function">tojson</span><span class="token punctuation">(</span>task<span class="token punctuation">.</span>file_read<span class="token punctuation">.</span>this<span class="token punctuation">.</span>content<span class="token punctuation">)</span><span class="token punctuation">}</span></span>&quot;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>The combination of the task type and task name should appear only once.
+So this is invalid:</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: invalid_task_with_same_type_and_name.hcl</span>
+<span class="token comment"># INVALID!</span>
+
+flow <span class="token string">&quot;invalid_task_with_same_type_and_name&quot;</span> <span class="token punctuation">{</span>
+  task <span class="token string">&quot;bash_run&quot;</span> <span class="token string">&quot;example&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">command</span> <span class="token punctuation">=</span> <span class="token string">&quot;echo hello world&quot;</span>
+  <span class="token punctuation">}</span>
+
+  task <span class="token string">&quot;bash_run&quot;</span> <span class="token string">&quot;example&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">command</span> <span class="token punctuation">=</span> <span class="token string">&quot;echo hello 世界&quot;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="variable-block"><a href="#variable-block" class="header-anchor">#</a> Variable Block</h3> <p>The variable block is a block with type <code>variable</code>.</p> <p>The variable block requires one label as the name of the variable.
+The Runflow spec allows referencing the value of the variable in
+an expression using <code>var.&lt;NAME&gt;</code> syntax.</p> <p>One can provide a default value optionally.</p> <p>For example,</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: hello_vars.hcl</span>
+flow <span class="token string">&quot;hello_vars&quot;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">variable<span class="token type variable"> &quot;greeter&quot; </span></span><span class="token punctuation">{</span>
+    <span class="token property">default</span> <span class="token punctuation">=</span> <span class="token string">&quot;world&quot;</span>
+    <span class="token property">required</span> <span class="token punctuation">=</span> <span class="token boolean">true</span>
+  <span class="token punctuation">}</span>
+  task <span class="token string">&quot;bash_run&quot;</span> <span class="token string">&quot;echo&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">command</span> <span class="token punctuation">=</span> <span class="token string">&quot;echo 'hello <span class="token interpolation"><span class="token punctuation">$</span><span class="token punctuation">{</span><span class="token keyword">var</span><span class="token punctuation">.</span><span class="token type variable">greeter</span><span class="token punctuation">}</span></span>'&quot;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>To provide the task run with non-default variable, use <code>--var</code>:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>$ runflow run hello-vars.hcl --var <span class="token assign-left variable">greeter</span><span class="token operator">=</span>runflow
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-13 <span class="token number">14</span>:36:27,477<span class="token punctuation">]</span> <span class="token string">&quot;task.bash_run.echo&quot;</span> is started.
+hello runflow2
+<span class="token punctuation">[</span><span class="token number">2021</span>-06-13 <span class="token number">14</span>:36:27,489<span class="token punctuation">]</span> <span class="token string">&quot;task.bash_run.echo&quot;</span> is successful.
+</code></pre></div><h3 id="import-block"><a href="#import-block" class="header-anchor">#</a> Import Block</h3> <p>The import block is a block with type <code>import</code> and requires no labels.</p> <p>The import block supports two attributes, both requiring a list of modules
+to import.</p> <ul><li>Attribute <code>tasks</code> is an array of import string of Python Task classes.
+The task class should have <code>async def run(self, context)</code> method.
+The task class name should end with <code>Task</code>.
+A new task type is available after importing the task.
+The task type name is the task class name in camel case split and
+joined by underscores (<code>_</code>).</li> <li>Attribute <code>functions</code> is an array of import string of any Python functions.</li></ul> <p>The import string is in the form of <code>path.to.module:target</code>.</p> <p>The import block is the main mechanism for the flow to interact with Python
+interpreter. You can extend the functionality of Runflow spec by providing
+customized task types and functions.</p> <p>Please read more docs <a href="/customize-task.html">here</a>.</p> <h2 id="expressions"><a href="#expressions" class="header-anchor">#</a> Expressions</h2> <p>Expressions can be simple literal values, such as</p> <ul><li><code>string</code>: <code>&quot;hello&quot;</code>;</li> <li><code>number</code>: <code>1</code>, <code>1.0</code>;</li> <li><code>bool</code>: <code>true</code>, <code>false</code> (not <code>True</code>/<code>False</code> like in Python);</li> <li><code>list</code> (or <code>tuple</code>): <code>[1, 2, 3]</code>, <code>[&quot;a&quot;, &quot;b&quot;]</code>;</li> <li><code>map</code> (or <code>object</code>): <code>{&quot;key&quot;: &quot;value&quot;}</code>;</li> <li><code>null</code>.</li></ul> <p>Expressions can be a reference. There should be a <code>variable &quot;command&quot; {}</code>
+block in the Runflow spec and a value for <code>var.command</code> provided for
+execution.</p> <div class="language- extra-class"><pre class="language-text"><code>command = var.command
+</code></pre></div><p>Expression can be a function call.
+All Python <a href="https://docs.python.org/3/library/functions.html" target="_blank" rel="noopener noreferrer">built-in<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>
+functions can be used, just name a few: <code>sum()</code>, <code>min()</code>, <code>max()</code>,
+<code>hex()</code>, etc.</p> <p>More python classes and functions can be imported.
+For example, if you have
+<a href="https://amoffat.github.io/sh/" target="_blank" rel="noopener noreferrer"><code>sh</code><span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> installed, you can
+set the value for attribute <code>content</code> with expression
+<code>ifconfig(&quot;lo0&quot;)</code>.</p> <div class="language-hcl extra-class"><pre class="language-hcl"><code><span class="token comment"># File: sh_example.hcl</span>
+flow <span class="token string">&quot;sh_example&quot;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">import</span> <span class="token punctuation">{</span>
+    <span class="token property">functions</span> <span class="token punctuation">=</span> <span class="token punctuation">[</span>
+      <span class="token string">&quot;sh:ifconfig&quot;</span>,
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">variable<span class="token type variable"> &quot;out&quot; </span></span><span class="token punctuation">{</span>
+    <span class="token property">default</span> <span class="token punctuation">=</span> <span class="token string">&quot;/tmp/out.txt&quot;</span>
+  <span class="token punctuation">}</span>
+  task <span class="token string">&quot;file_write&quot;</span> <span class="token string">&quot;this&quot;</span> <span class="token punctuation">{</span>
+    <span class="token property">filename</span> <span class="token punctuation">=</span> var.out
+    <span class="token property">content</span> <span class="token punctuation">=</span> ifconfig(<span class="token string">&quot;lo0&quot;</span>)
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Runflow execution engine provides some additional built-in functions,
+such as <code>lower()</code>, <code>upper()</code>, <code>split()</code>, etc.</p> <p>If the final argument is list and followed by <code>...</code>, the final argument is expanded as Python star args.</p> <div class="language- extra-class"><pre class="language-text"><code>str(value, [&quot;utf-8&quot;, &quot;strict&quot;]...)
+
+# equivalent to Python `str(value, *[&quot;utf-8&quot;, &quot;strict&quot;])`
+</code></pre></div><p>If the final argument is dict and followed by <code>...</code>, the final argument is expanded as Python double-star kwargs. For example:</p> <div class="language- extra-class"><pre class="language-text"><code>tojson(value, {indent=2}...)
+
+# equivalent to Python `json.dumps(value, **{&quot;indent&quot;: 2})`
+</code></pre></div><p>For a full list of available functions, see the
+<a href="/builtin-functions.html">function reference</a>.</p> <p>Expression can also be an string with interpolated expressions.
+Inside the interpolated string, you can wrap up another expression
+with <code>${</code> and <code>}</code>. This allows dynamically construct strings from
+other values.</p> <div class="language- extra-class"><pre class="language-text"><code>command = &quot;echo hello ${var.greeter}&quot;
+</code></pre></div><p>You can even have string inside the interpolated string:</p> <div class="language- extra-class"><pre class="language-text"><code>command = &quot;echo hello ${lower(&quot;WORLD&quot;)}&quot;
+</code></pre></div><p>Heredoc string expression allows multiple-line string:</p> <div class="language- extra-class"><pre class="language-text"><code>command = &lt;&lt;EOT
+echo 'a
+b
+c'
+EOT
+</code></pre></div><p>If the string literal has nothing but a single interpolated expression,
+like <code>&quot;${ var.greeter }&quot;</code>, it is equivalent to <code>var.greeter</code>.
+If you want it as a string anyway, wrap it up using <code>&quot;${ str(var.greeter) }&quot;</code>.</p> <p>Runflow spec supports For expression as well. For example:</p> <div class="language- extra-class"><pre class="language-text"><code>command = join(&quot; &quot;, concat([&quot;echo&quot;], [for s in var.list : lower(s)]))
+</code></pre></div><p>The value of <code>var.list</code> can be any Python iterables, such as tuple,
+list, object, set, etc.</p> <p>For expression can turn into a map:</p> <div class="language- extra-class"><pre class="language-text"><code>{for s in var.list : s =&gt; upper(s)}
+</code></pre></div><p>Runflow spec supports two identifiers in between <code>for</code> and <code>in</code>,
+separated by comma <code>,</code>:</p> <ul><li>For tuple and list types, the key is the zero-based index into the sequence for each element, and the value is the element value. The elements are visited in index order.</li> <li>For object and map types, the key is the string attribute name or element key, and the value is the attribute or element value. The elements are visited in the order defined by a lexicographic sort of the attribute names or keys.</li> <li>For set types, the key and value are both the element value. The elements are visited in an undefined but consistent order.</li></ul> <p>For example:</p> <div class="language- extra-class"><pre class="language-text"><code>[for k, v in var.map : len(k) + len(v)]
+</code></pre></div><p>Just right before the end character (<code>]</code>) of a for expression, an optional
+<code>if condition_expression</code> is allowed:</p> <div class="language- extra-class"><pre class="language-text"><code>[for s in var.list : upper(s) if s != &quot;&quot;]
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.79d5ac02.js" defer></script><script src="/assets/js/2.7f12b63b.js" defer></script><script src="/assets/js/14.6d8315f0.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,1379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>runflow API documentation</title>
+<meta name="description" content="Runflow is a tool to define an run your workflows …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Package <code>runflow</code></h1>
+</header>
+<section id="section-intro">
+<p>Runflow is a tool to define an run your workflows.</p>
+<p>Please read more on <a href="https://runflow.org">runflow.org</a>.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+Runflow is a tool to define an run your workflows.
+
+Please read more on [runflow.org](https://runflow.org).
+&#34;&#34;&#34;
+__all__ = [
+    &#34;Flow&#34;,
+    &#34;Task&#34;,
+    &#34;runflow&#34;,
+    &#34;runflow_async&#34;,
+    &#34;cli&#34;,
+    &#34;registry&#34;,
+    &#34;get_task_class&#34;,
+    &#34;register_task_class&#34;,
+    &#34;RunflowError&#34;,
+    &#34;RunflowSyntaxError&#34;,
+    &#34;RunflowReferenceError&#34;,
+    &#34;RunflowTaskTypeError&#34;,
+    &#34;RunflowTaskError&#34;,
+    &#34;RunflowAcyclicTasksError&#34;,
+]
+
+
+try:
+    from importlib.metadata import entry_points  # type: ignore
+except ImportError:  # python &lt; 3.8
+    try:
+        from importlib_metadata import entry_points  # type: ignore
+    except ImportError:
+        entry_points = None  # type: ignore
+
+from . import autoloader  # noqa
+from .cli import cli
+from .core import Flow, Task
+from .errors import (
+    RunflowAcyclicTasksError,
+    RunflowError,
+    RunflowReferenceError,
+    RunflowSyntaxError,
+    RunflowTaskError,
+    RunflowTaskTypeError,
+)
+from .registry import (
+    registry,
+    register_task_class,
+    get_task_class,
+)
+from .run import runflow, runflow_async
+
+
+if entry_points is not None:
+    try:
+        _entry_points = entry_points()
+    except TypeError:
+        pass  # importlib-metadata &lt; 0.8
+    else:
+        # Python 3.10+ / importlib_metadata &gt;= 3.9.0
+        _tasks = (
+            _entry_points.select(group=&#34;runflow.tasks&#34;)  # type: ignore
+            if hasattr(_entry_points, &#34;select&#34;)
+            else _entry_points.get(&#34;runflow.tasks&#34;, [])
+        )
+        for _task in _tasks:
+            register_task_class(_task.name, _task.value)
+
+
+if __name__ == &#34;__main__&#34;:
+    cli()</code></pre>
+</details>
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="runflow.autoloader" href="autoloader.html">runflow.autoloader</a></code></dt>
+<dd>
+<div class="desc"><p>Auto-load a .hcl file using Python import string …</p></div>
+</dd>
+<dt><code class="name"><a title="runflow.community" href="community/index.html">runflow.community</a></code></dt>
+<dd>
+<div class="desc"><p>runflow.community is a package of community-facing tasks.</p></div>
+</dd>
+<dt><code class="name"><a title="runflow.contribs" href="contribs/index.html">runflow.contribs</a></code></dt>
+<dd>
+<div class="desc"><p>runflow.contribs is a package for all core tasks.</p></div>
+</dd>
+<dt><code class="name"><a title="runflow.core" href="core.html">runflow.core</a></code></dt>
+<dd>
+<div class="desc"><p>Core module for runflow.</p></div>
+</dd>
+<dt><code class="name"><a title="runflow.errors" href="errors.html">runflow.errors</a></code></dt>
+<dd>
+<div class="desc"><p>Runflow errors.</p></div>
+</dd>
+<dt><code class="name"><a title="runflow.hcl2" href="hcl2.html">runflow.hcl2</a></code></dt>
+<dd>
+<div class="desc"><p>This module is a fork of amplify-education/python-hcl2 …</p></div>
+</dd>
+<dt><code class="name"><a title="runflow.hcl2_parser" href="hcl2_parser.html">runflow.hcl2_parser</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="runflow.registry" href="registry.html">runflow.registry</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="runflow.run" href="run.html">runflow.run</a></code></dt>
+<dd>
+<div class="desc"><p>Run a flow spec.</p></div>
+</dd>
+<dt><code class="name"><a title="runflow.utils" href="utils.html">runflow.utils</a></code></dt>
+<dd>
+<div class="desc"><p>Utility functions.</p></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="runflow.cli"><code class="name flex">
+<span>def <span class="ident">cli</span></span>(<span>argv=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Command: <code><a title="runflow.runflow" href="#runflow.runflow">runflow()</a></code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cli(argv=None):
+    &#34;&#34;&#34;Command: `runflow`.&#34;&#34;&#34;
+    parser = cli_parser()
+    args, _rest = parser.parse_known_args(argv)
+
+    logging_format = &#34;[%(asctime)-15s] %(message)s&#34;
+    logging.basicConfig(level=args.log_level, format=logging_format)
+
+    if args.subparser_name in SUBCOMMANDS:
+        SUBCOMMANDS[args.subparser_name](args)
+    else:
+        parser.print_help()</code></pre>
+</details>
+</dd>
+<dt id="runflow.get_task_class"><code class="name flex">
+<span>def <span class="ident">get_task_class</span></span>(<span>name: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the task class by name.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_task_class(name: str):
+    &#34;&#34;&#34;Get the task class by name.&#34;&#34;&#34;
+    if name not in registry:
+        if name not in task_implementations:
+            raise ValueError(f&#34;Unknown task type: {name}&#34;)
+        impl = import_module(task_implementations[name][&#34;class&#34;])
+        register_task_class(name, impl)
+    return registry[name][&#34;class&#34;]</code></pre>
+</details>
+</dd>
+<dt id="runflow.register_task_class"><code class="name flex">
+<span>def <span class="ident">register_task_class</span></span>(<span>name: str, cls: Union[str, Type], overwrite: bool = False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Register a task class with a name.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def register_task_class(
+    name: str, cls: Union[str, Type], overwrite: bool = False
+):
+    &#34;&#34;&#34;Register a task class with a name.&#34;&#34;&#34;
+    if isinstance(cls, str):
+        if name in task_implementations and not overwrite:
+            raise ValueError(
+                f&#34;Task name {name} has been taken in the &#34;
+                &#34;default task implementation.&#34;
+            )
+        task_implementations[name] = {&#34;class&#34;: cls}
+        return
+    if name in registry and not overwrite:
+        raise ValueError(f&#34;Task name {name} has been taken in the registry.&#34;)
+    if not hasattr(cls, &#34;run&#34;):
+        raise ValueError(&#34;cls is not runnable.&#34;)
+    _registry[name] = {&#34;class&#34;: cls}</code></pre>
+</details>
+</dd>
+<dt id="runflow.runflow"><code class="name flex">
+<span>def <span class="ident">runflow</span></span>(<span>path: str = None, source: str = None, module: str = None, flow: <a title="runflow.core.Flow" href="core.html#runflow.core.Flow">Flow</a> = None, vars: Optional[dict] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run a flow object (sync).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def runflow(
+    path: str = None,
+    source: str = None,
+    module: str = None,
+    flow: Flow = None,
+    vars: Optional[dict] = None,
+):
+    &#34;&#34;&#34;Run a flow object (sync).&#34;&#34;&#34;
+    run_async(
+        runflow_async(
+            path=path, source=source, module=module, flow=flow, vars=vars
+        )
+    )</code></pre>
+</details>
+</dd>
+<dt id="runflow.runflow_async"><code class="name flex">
+<span>async def <span class="ident">runflow_async</span></span>(<span>path: str = None, source: str = None, module: str = None, flow: <a title="runflow.core.Flow" href="core.html#runflow.core.Flow">Flow</a> = None, vars: Optional[dict] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run a flow object (async).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def runflow_async(
+    path: str = None,
+    source: str = None,
+    module: str = None,
+    flow: Flow = None,
+    vars: Optional[dict] = None,
+):
+    &#34;&#34;&#34;Run a flow object (async).&#34;&#34;&#34;
+    _flow = Flow.load(path=path, source=source, module=module, flow=flow)
+    assert _flow and isinstance(_flow, Flow)
+    await _flow.run(vars or {})</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="runflow.Flow"><code class="flex name class">
+<span>class <span class="ident">Flow</span></span>
+<span>(</span><span>name, runner_cls=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Flow object manages the flow graph and the order of task executions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Flow:
+    &#34;&#34;&#34;Flow object manages the flow graph and the order of task executions.&#34;&#34;&#34;
+
+    def __init__(self, name, runner_cls=None):
+        self.name = name
+        self.graph = networkx.DiGraph()
+        self.runner = (runner_cls or SequentialRunner)(self)
+        self.vars = {}
+        self.functions = {}
+
+    def __iter__(self):
+        &#34;&#34;&#34;Iterate through all tasks in a dependent order.&#34;&#34;&#34;
+        try:
+            yield from networkx.topological_sort(self.graph)
+        except networkx.exception.NetworkXUnfeasible as err:
+            raise RunflowAcyclicTasksError(str(err)) from err
+
+    @property
+    def exception(self):
+        return next(
+            (
+                task_result.exception
+                for task_result in self.runner.results.values()
+                if task_result.status == TaskStatus.FAILED
+            ),
+            None,
+        )
+
+    @classmethod
+    def from_spec(cls, source):
+        &#34;&#34;&#34;Load flow from a .hcl file content.&#34;&#34;&#34;
+        try:
+            flow = hcl2.loads(source)
+        except LarkError as err:
+            raise RunflowSyntaxError(str(err)) from err
+
+        assert &#34;flow&#34; in flow, &#34;Need a flow block&#34;
+        assert len(flow[&#34;flow&#34;]) == 1, &#34;Runflow spec should have only one flow&#34;
+
+        flow_spec = flow[&#34;flow&#34;][0]
+        flow_name, flow_body = next(iter(flow_spec.items()))
+        flow = cls(name=flow_name)
+        flow.load_flow_spec_body(flow_body)
+        return flow
+
+    @classmethod
+    def from_specfile(cls, path):
+        &#34;&#34;&#34;Load flow from a given file path.&#34;&#34;&#34;
+        with open(path) as file:
+            flow_spec = file.read()
+        return cls.from_spec(flow_spec)
+
+    @classmethod
+    def load(cls, path=None, source=None, module=None, flow=None):
+        if path:
+            return Flow.from_specfile(path)
+
+        if source:
+            return Flow.from_spec(source)
+
+        if module:
+            return import_module(module)
+
+        return flow
+
+    def add_task(self, task):
+        &#34;&#34;&#34;Add task to flow graph.&#34;&#34;&#34;
+        self.graph.add_node(task)
+
+    def set_dependency(self, task, depends_on):
+        &#34;&#34;&#34;Let `task` depends on `depends_on`,
+
+        e.g. `depends_on` is a predecessor edge of `task`.
+
+        &#34;&#34;&#34;
+        self.graph.add_edge(depends_on, task)
+
+    def set_default_var(self, name, value):
+        &#34;&#34;&#34;Set default value for variable.&#34;&#34;&#34;
+        self.vars[name] = value
+
+    def load_function(self, func_name, import_string):
+        &#34;&#34;&#34;Load the imported function to task func namespace.&#34;&#34;&#34;
+        function = utils.import_module(import_string)
+        self.functions[func_name] = function
+
+    # pylint: disable=no-self-use
+    def load_flow_tasks_from_spec(self, tasks_spec):
+        &#34;&#34;&#34;Load the `task` blocks.&#34;&#34;&#34;
+        for task_spec in tasks_spec:
+            for task_type in task_spec:
+                task_class = get_task_class(task_type)
+                for task_name in task_spec[task_type]:
+                    task_payload = dict(task_spec[task_type][task_name])
+                    yield Task(task_type, task_class, task_name, task_payload)
+
+    def load_task_by_task_reference(self, depends_on):
+        &#34;&#34;&#34;Find task by a reference like `task.TASK_TYPE.TASK_NAME`.&#34;&#34;&#34;
+        task_key = depends_on.split(&#34;.&#34;)
+        assert len(task_key) == 3 and task_key[0] == &#34;task&#34;
+
+        _, task_type, task_name = task_key
+
+        for task in self.graph.nodes:
+            if task.type == task_type and task.name == task_name:
+                return task
+
+        raise RunflowSyntaxError(
+            f&#34;Task depends on {task_key} &#34;
+            f&#34;but the dependent task does not exist&#34;
+        )
+
+    def load_flow_tasks_dependencies(self, task):
+        &#34;&#34;&#34;Find task dependencies.&#34;&#34;&#34;
+        deps_set = set()
+        for key, value in task.payload.items():
+            hcl2.resolve_deps(key, deps_set)
+            hcl2.resolve_deps(value, deps_set)
+
+        for dep in deps_set:
+            yield self.load_task_by_task_reference(dep)
+
+    def set_tasks_dependencies(self):
+        &#34;&#34;&#34;Walk the task graph and sort out the task dependencies.&#34;&#34;&#34;
+        for task in self.graph.nodes:
+            explicit_deps = self.load_flow_tasks_dependencies(task)
+            for dep in explicit_deps:
+                self.set_dependency(task, dep)
+
+    def load_flow_variables(self, vars_spec):
+        &#34;&#34;&#34;Load the `variable` block.&#34;&#34;&#34;
+        for var_spec in vars_spec:
+            var_name = next(iter(var_spec.keys()))
+            var_value_spec = next(iter(var_spec.values()))
+            var_value = config(
+                f&#34;RUNFLOW_VAR_{var_name}&#34;, default=None
+            ) or var_value_spec.get(&#34;default&#34;, None)
+            var_required = var_value_spec.get(&#34;required&#34;)
+            if var_required and var_value is None:
+                raise NameError(f&#34;{var_name} is required but not provided.&#34;)
+            self.set_default_var(var_name, var_value)
+
+    # pylint: disable=no-self-use
+    def load_flow_imported_tasks(self, tasks):
+        &#34;&#34;&#34;Load the `import.tasks` attribute.&#34;&#34;&#34;
+        for task_name, task_impl in tasks.items():
+            register_task_class(task_name, task_impl)
+
+    def load_flow_imported_functions(self, functions):
+        &#34;&#34;&#34;Load the `import.functions` attribute.&#34;&#34;&#34;
+        for func_name, func_import in functions.items():
+            self.load_function(func_name, func_import)
+
+    def load_flow_imports(self, imports):
+        &#34;&#34;&#34;Load the `import` block.&#34;&#34;&#34;
+        for _import in imports:
+            self.load_flow_imported_tasks(_import.get(&#34;tasks&#34;, []))
+            self.load_flow_imported_functions(_import.get(&#34;functions&#34;, {}))
+
+    def load_flow_tasks(self, tasks):
+        for task in self.load_flow_tasks_from_spec(tasks):
+            self.add_task(task)
+
+    def load_flow_spec_body(self, spec):
+        &#34;&#34;&#34;Load the body of a flow block.&#34;&#34;&#34;
+        self.load_flow_imports(spec.get(&#34;import&#34;, []))
+        self.load_flow_variables(spec.get(&#34;variable&#34;, []))
+        self.load_flow_tasks(spec.get(&#34;task&#34;, []))
+        self.set_tasks_dependencies()
+
+    def make_run_context(self, vars=None):
+        &#34;&#34;&#34;Prepare the context for a task run.&#34;&#34;&#34;
+        context = {
+            &#34;var&#34;: dict(self.vars, **dict(vars or {})),
+            &#34;task&#34;: {},
+            &#34;func&#34;: self.functions,
+        }
+        for task in self:
+            context[&#34;task&#34;].setdefault(task.type, {})
+            context[&#34;task&#34;][task.type].setdefault(task.name, {})
+        return context
+
+    def as_task(self, vars=None):
+        return FlowRunTask(flow=self, vars=vars)
+
+    async def run(self, vars=None):
+        &#34;&#34;&#34;Run a flow.&#34;&#34;&#34;
+        context = self.make_run_context(vars)
+        await self.runner.run(context)
+        return context</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="runflow.Flow.from_spec"><code class="name flex">
+<span>def <span class="ident">from_spec</span></span>(<span>source)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load flow from a .hcl file content.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def from_spec(cls, source):
+    &#34;&#34;&#34;Load flow from a .hcl file content.&#34;&#34;&#34;
+    try:
+        flow = hcl2.loads(source)
+    except LarkError as err:
+        raise RunflowSyntaxError(str(err)) from err
+
+    assert &#34;flow&#34; in flow, &#34;Need a flow block&#34;
+    assert len(flow[&#34;flow&#34;]) == 1, &#34;Runflow spec should have only one flow&#34;
+
+    flow_spec = flow[&#34;flow&#34;][0]
+    flow_name, flow_body = next(iter(flow_spec.items()))
+    flow = cls(name=flow_name)
+    flow.load_flow_spec_body(flow_body)
+    return flow</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.from_specfile"><code class="name flex">
+<span>def <span class="ident">from_specfile</span></span>(<span>path)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load flow from a given file path.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def from_specfile(cls, path):
+    &#34;&#34;&#34;Load flow from a given file path.&#34;&#34;&#34;
+    with open(path) as file:
+        flow_spec = file.read()
+    return cls.from_spec(flow_spec)</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.load"><code class="name flex">
+<span>def <span class="ident">load</span></span>(<span>path=None, source=None, module=None, flow=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def load(cls, path=None, source=None, module=None, flow=None):
+    if path:
+        return Flow.from_specfile(path)
+
+    if source:
+        return Flow.from_spec(source)
+
+    if module:
+        return import_module(module)
+
+    return flow</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="runflow.Flow.exception"><code class="name">var <span class="ident">exception</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def exception(self):
+    return next(
+        (
+            task_result.exception
+            for task_result in self.runner.results.values()
+            if task_result.status == TaskStatus.FAILED
+        ),
+        None,
+    )</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="runflow.Flow.add_task"><code class="name flex">
+<span>def <span class="ident">add_task</span></span>(<span>self, task)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add task to flow graph.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_task(self, task):
+    &#34;&#34;&#34;Add task to flow graph.&#34;&#34;&#34;
+    self.graph.add_node(task)</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.as_task"><code class="name flex">
+<span>def <span class="ident">as_task</span></span>(<span>self, vars=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def as_task(self, vars=None):
+    return FlowRunTask(flow=self, vars=vars)</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.load_flow_imported_functions"><code class="name flex">
+<span>def <span class="ident">load_flow_imported_functions</span></span>(<span>self, functions)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load the <code>import.functions</code> attribute.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_flow_imported_functions(self, functions):
+    &#34;&#34;&#34;Load the `import.functions` attribute.&#34;&#34;&#34;
+    for func_name, func_import in functions.items():
+        self.load_function(func_name, func_import)</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.load_flow_imported_tasks"><code class="name flex">
+<span>def <span class="ident">load_flow_imported_tasks</span></span>(<span>self, tasks)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load the <code>import.tasks</code> attribute.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_flow_imported_tasks(self, tasks):
+    &#34;&#34;&#34;Load the `import.tasks` attribute.&#34;&#34;&#34;
+    for task_name, task_impl in tasks.items():
+        register_task_class(task_name, task_impl)</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.load_flow_imports"><code class="name flex">
+<span>def <span class="ident">load_flow_imports</span></span>(<span>self, imports)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load the <code>import</code> block.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_flow_imports(self, imports):
+    &#34;&#34;&#34;Load the `import` block.&#34;&#34;&#34;
+    for _import in imports:
+        self.load_flow_imported_tasks(_import.get(&#34;tasks&#34;, []))
+        self.load_flow_imported_functions(_import.get(&#34;functions&#34;, {}))</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.load_flow_spec_body"><code class="name flex">
+<span>def <span class="ident">load_flow_spec_body</span></span>(<span>self, spec)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load the body of a flow block.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_flow_spec_body(self, spec):
+    &#34;&#34;&#34;Load the body of a flow block.&#34;&#34;&#34;
+    self.load_flow_imports(spec.get(&#34;import&#34;, []))
+    self.load_flow_variables(spec.get(&#34;variable&#34;, []))
+    self.load_flow_tasks(spec.get(&#34;task&#34;, []))
+    self.set_tasks_dependencies()</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.load_flow_tasks"><code class="name flex">
+<span>def <span class="ident">load_flow_tasks</span></span>(<span>self, tasks)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_flow_tasks(self, tasks):
+    for task in self.load_flow_tasks_from_spec(tasks):
+        self.add_task(task)</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.load_flow_tasks_dependencies"><code class="name flex">
+<span>def <span class="ident">load_flow_tasks_dependencies</span></span>(<span>self, task)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Find task dependencies.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_flow_tasks_dependencies(self, task):
+    &#34;&#34;&#34;Find task dependencies.&#34;&#34;&#34;
+    deps_set = set()
+    for key, value in task.payload.items():
+        hcl2.resolve_deps(key, deps_set)
+        hcl2.resolve_deps(value, deps_set)
+
+    for dep in deps_set:
+        yield self.load_task_by_task_reference(dep)</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.load_flow_tasks_from_spec"><code class="name flex">
+<span>def <span class="ident">load_flow_tasks_from_spec</span></span>(<span>self, tasks_spec)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load the <code>task</code> blocks.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_flow_tasks_from_spec(self, tasks_spec):
+    &#34;&#34;&#34;Load the `task` blocks.&#34;&#34;&#34;
+    for task_spec in tasks_spec:
+        for task_type in task_spec:
+            task_class = get_task_class(task_type)
+            for task_name in task_spec[task_type]:
+                task_payload = dict(task_spec[task_type][task_name])
+                yield Task(task_type, task_class, task_name, task_payload)</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.load_flow_variables"><code class="name flex">
+<span>def <span class="ident">load_flow_variables</span></span>(<span>self, vars_spec)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load the <code>variable</code> block.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_flow_variables(self, vars_spec):
+    &#34;&#34;&#34;Load the `variable` block.&#34;&#34;&#34;
+    for var_spec in vars_spec:
+        var_name = next(iter(var_spec.keys()))
+        var_value_spec = next(iter(var_spec.values()))
+        var_value = config(
+            f&#34;RUNFLOW_VAR_{var_name}&#34;, default=None
+        ) or var_value_spec.get(&#34;default&#34;, None)
+        var_required = var_value_spec.get(&#34;required&#34;)
+        if var_required and var_value is None:
+            raise NameError(f&#34;{var_name} is required but not provided.&#34;)
+        self.set_default_var(var_name, var_value)</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.load_function"><code class="name flex">
+<span>def <span class="ident">load_function</span></span>(<span>self, func_name, import_string)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load the imported function to task func namespace.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_function(self, func_name, import_string):
+    &#34;&#34;&#34;Load the imported function to task func namespace.&#34;&#34;&#34;
+    function = utils.import_module(import_string)
+    self.functions[func_name] = function</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.load_task_by_task_reference"><code class="name flex">
+<span>def <span class="ident">load_task_by_task_reference</span></span>(<span>self, depends_on)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Find task by a reference like <code>task.TASK_TYPE.TASK_NAME</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_task_by_task_reference(self, depends_on):
+    &#34;&#34;&#34;Find task by a reference like `task.TASK_TYPE.TASK_NAME`.&#34;&#34;&#34;
+    task_key = depends_on.split(&#34;.&#34;)
+    assert len(task_key) == 3 and task_key[0] == &#34;task&#34;
+
+    _, task_type, task_name = task_key
+
+    for task in self.graph.nodes:
+        if task.type == task_type and task.name == task_name:
+            return task
+
+    raise RunflowSyntaxError(
+        f&#34;Task depends on {task_key} &#34;
+        f&#34;but the dependent task does not exist&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.make_run_context"><code class="name flex">
+<span>def <span class="ident">make_run_context</span></span>(<span>self, vars=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Prepare the context for a task run.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def make_run_context(self, vars=None):
+    &#34;&#34;&#34;Prepare the context for a task run.&#34;&#34;&#34;
+    context = {
+        &#34;var&#34;: dict(self.vars, **dict(vars or {})),
+        &#34;task&#34;: {},
+        &#34;func&#34;: self.functions,
+    }
+    for task in self:
+        context[&#34;task&#34;].setdefault(task.type, {})
+        context[&#34;task&#34;][task.type].setdefault(task.name, {})
+    return context</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.run"><code class="name flex">
+<span>async def <span class="ident">run</span></span>(<span>self, vars=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run a flow.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def run(self, vars=None):
+    &#34;&#34;&#34;Run a flow.&#34;&#34;&#34;
+    context = self.make_run_context(vars)
+    await self.runner.run(context)
+    return context</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.set_default_var"><code class="name flex">
+<span>def <span class="ident">set_default_var</span></span>(<span>self, name, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set default value for variable.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_default_var(self, name, value):
+    &#34;&#34;&#34;Set default value for variable.&#34;&#34;&#34;
+    self.vars[name] = value</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.set_dependency"><code class="name flex">
+<span>def <span class="ident">set_dependency</span></span>(<span>self, task, depends_on)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Let <code>task</code> depends on <code>depends_on</code>,</p>
+<p>e.g. <code>depends_on</code> is a predecessor edge of <code>task</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_dependency(self, task, depends_on):
+    &#34;&#34;&#34;Let `task` depends on `depends_on`,
+
+    e.g. `depends_on` is a predecessor edge of `task`.
+
+    &#34;&#34;&#34;
+    self.graph.add_edge(depends_on, task)</code></pre>
+</details>
+</dd>
+<dt id="runflow.Flow.set_tasks_dependencies"><code class="name flex">
+<span>def <span class="ident">set_tasks_dependencies</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Walk the task graph and sort out the task dependencies.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_tasks_dependencies(self):
+    &#34;&#34;&#34;Walk the task graph and sort out the task dependencies.&#34;&#34;&#34;
+    for task in self.graph.nodes:
+        explicit_deps = self.load_flow_tasks_dependencies(task)
+        for dep in explicit_deps:
+            self.set_dependency(task, dep)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="runflow.RunflowAcyclicTasksError"><code class="flex name class">
+<span>class <span class="ident">RunflowAcyclicTasksError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The task has circular dependency.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RunflowAcyclicTasksError(RunflowError):
+    &#34;&#34;&#34;The task has circular dependency.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="runflow.errors.RunflowError" href="errors.html#runflow.errors.RunflowError">RunflowError</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="runflow.RunflowError"><code class="flex name class">
+<span>class <span class="ident">RunflowError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base Runflow error.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RunflowError(Exception):
+    &#34;&#34;&#34;Base Runflow error.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="runflow.errors.RunflowAcyclicTasksError" href="errors.html#runflow.errors.RunflowAcyclicTasksError">RunflowAcyclicTasksError</a></li>
+<li><a title="runflow.errors.RunflowReadOnlyError" href="errors.html#runflow.errors.RunflowReadOnlyError">RunflowReadOnlyError</a></li>
+<li><a title="runflow.errors.RunflowReferenceError" href="errors.html#runflow.errors.RunflowReferenceError">RunflowReferenceError</a></li>
+<li><a title="runflow.errors.RunflowSyntaxError" href="errors.html#runflow.errors.RunflowSyntaxError">RunflowSyntaxError</a></li>
+<li><a title="runflow.errors.RunflowTaskError" href="errors.html#runflow.errors.RunflowTaskError">RunflowTaskError</a></li>
+<li><a title="runflow.errors.RunflowTaskTypeError" href="errors.html#runflow.errors.RunflowTaskTypeError">RunflowTaskTypeError</a></li>
+</ul>
+</dd>
+<dt id="runflow.RunflowReferenceError"><code class="flex name class">
+<span>class <span class="ident">RunflowReferenceError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The variable is not declared in the flow spec.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RunflowReferenceError(RunflowError):
+    &#34;&#34;&#34;The variable is not declared in the flow spec.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="runflow.errors.RunflowError" href="errors.html#runflow.errors.RunflowError">RunflowError</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="runflow.RunflowSyntaxError"><code class="flex name class">
+<span>class <span class="ident">RunflowSyntaxError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The flow spec has a syntax error.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RunflowSyntaxError(RunflowError):
+    &#34;&#34;&#34;The flow spec has a syntax error.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="runflow.errors.RunflowError" href="errors.html#runflow.errors.RunflowError">RunflowError</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="runflow.RunflowTaskError"><code class="flex name class">
+<span>class <span class="ident">RunflowTaskError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The task execution is failed.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RunflowTaskError(RunflowError):
+    &#34;&#34;&#34;The task execution is failed.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="runflow.errors.RunflowError" href="errors.html#runflow.errors.RunflowError">RunflowError</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="runflow.RunflowTaskTypeError"><code class="flex name class">
+<span>class <span class="ident">RunflowTaskTypeError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The task type is not registered.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RunflowTaskTypeError(RunflowError):
+    &#34;&#34;&#34;The task type is not registered.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="runflow.errors.RunflowError" href="errors.html#runflow.errors.RunflowError">RunflowError</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="runflow.Task"><code class="flex name class">
+<span>class <span class="ident">Task</span></span>
+<span>(</span><span>type, runner, name, payload)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Task object maintains the running status.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Task:
+    &#34;&#34;&#34;Task object maintains the running status.&#34;&#34;&#34;
+
+    def __init__(self, type, runner, name, payload):
+        self.type = type
+        self.runner = runner
+        self.name = name
+        self.payload = payload
+        self.namespace = &#34;&#34;
+
+    def __repr__(self):
+        return (
+            f&#34;Task(type={self.type}, &#34;
+            f&#34;name={self.name}, &#34;
+            f&#34;payload={self.payload})&#34;
+        )
+
+    def __str__(self):
+        return (
+            f&#34;{self.namespace}{self.namespace and &#39; &gt; &#39; or &#39;&#39;}&#34;
+            f&#34;task.{self.type}.{self.name}&#34;
+        )
+
+    def __hash__(self):
+        return hash(repr(self))
+
+    def __eq__(self, o):
+        return self.type == o.type and self.name == o.name
+
+    def set_namespace(self, namespace):
+        self.namespace = namespace
+
+    def should_run(self, context):
+        return all(
+            hcl2.evaluate(depends_on, context)
+            for depends_on in self.payload.get(DEPENDS_ON_KEY, [])
+        )
+
+    def should_timeout(self, task, context):
+        if &#34;_timeout&#34; not in self.payload:
+            return None
+        _timeout = hcl2.evaluate(self.payload[&#34;_timeout&#34;], context)
+        assert isinstance(_timeout, (int, float))
+        return _timeout
+
+    def should_rerun(self, task, context):  # pylint: disable=too-many-branches
+        if &#34;_retry&#34; not in self.payload:
+            return task.run
+
+        _retry = hcl2.evaluate(self.payload.get(&#34;_retry&#34;, {}), context)
+        _retry_params = {}
+        stop_after = _retry.get(&#34;stop_after&#34;, &#34;1 times&#34;)
+        stopers = []
+        for _stop_after in stop_after.split(&#34;|&#34;):
+            _stop_after = _stop_after.strip()
+            if &#34;times&#34; in _stop_after:
+                attempts = int(_stop_after.replace(&#34;times&#34;, &#34;&#34;).strip())
+                stoper = stop_after_attempt(attempts)
+            elif &#34;seconds&#34; in _stop_after:
+                seconds = float(_stop_after.replace(&#34;seconds&#34;, &#34;&#34;).strip())
+                stoper = stop_after_delay(seconds)
+            else:
+                raise ValueError(f&#34;invalid _retry.stop_after: {_stop_after}&#34;)
+            stopers.append(stoper)
+
+        _retry_params[&#34;stop&#34;] = reduce(lambda a, b: a | b, stopers)
+        _retry_params[&#34;wait&#34;] = _retry.get(&#34;wait&#34;, None)
+        _retry_params[&#34;reraise&#34;] = True
+        return retry(**_retry_params)(task.run)
+
+    def eval_payload(self, context):
+        return hcl2.evaluate(
+            {k: v for k, v in self.payload.items() if not k.startswith(&#34;_&#34;)},
+            context,
+        )
+
+    async def run(self, context):
+        &#34;&#34;&#34;Run a task.&#34;&#34;&#34;
+        if self.type == &#34;hcl2_template&#34;:
+            context = dict(
+                context,
+                **hcl2.evaluate(self.payload.get(&#34;context&#34;, {}), context),
+            )
+
+        if not self.should_run(context):
+            logger.info(&#39;&#34;%s&#34; is canceled due to falsy deps.&#39;, str(self))
+            return TaskResult(TaskStatus.CANCELED)
+
+        _payload = self.eval_payload(context)
+        context[&#34;task&#34;][self.type][self.name].update(_payload)
+
+        task_result = TaskResult(TaskStatus.PENDING)
+
+        try:
+            logger.info(&#39;&#34;%s&#34; is started.&#39;, str(self))
+            if isinstance(self.runner, Flow):
+                task = self.runner.as_task(_payload)
+            else:
+                task = self.runner(**_payload)
+
+            if isinstance(task, FlowRunTask):
+                task.namespace = str(self)
+
+            task_run = self.should_rerun(task, context)
+            task_result.result = (
+                await asyncio.wait_for(
+                    task_run()
+                    if inspect.iscoroutinefunction(task.run)
+                    else utils.to_thread(task_run),
+                    timeout=self.should_timeout(task, context),
+                )
+                or {}
+            )
+            task_result.result.update(_payload)
+            logger.info(&#39;&#34;%s&#34; is successful.&#39;, str(self))
+        except Exception as err:  # pylint: disable=broad-except
+            task_result.exception = err
+            logger.info(&#39;&#34;%s&#34; is failed.&#39;, str(self))
+            traceback.print_exc()
+
+        return task_result</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="runflow.Task.eval_payload"><code class="name flex">
+<span>def <span class="ident">eval_payload</span></span>(<span>self, context)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def eval_payload(self, context):
+    return hcl2.evaluate(
+        {k: v for k, v in self.payload.items() if not k.startswith(&#34;_&#34;)},
+        context,
+    )</code></pre>
+</details>
+</dd>
+<dt id="runflow.Task.run"><code class="name flex">
+<span>async def <span class="ident">run</span></span>(<span>self, context)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run a task.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def run(self, context):
+    &#34;&#34;&#34;Run a task.&#34;&#34;&#34;
+    if self.type == &#34;hcl2_template&#34;:
+        context = dict(
+            context,
+            **hcl2.evaluate(self.payload.get(&#34;context&#34;, {}), context),
+        )
+
+    if not self.should_run(context):
+        logger.info(&#39;&#34;%s&#34; is canceled due to falsy deps.&#39;, str(self))
+        return TaskResult(TaskStatus.CANCELED)
+
+    _payload = self.eval_payload(context)
+    context[&#34;task&#34;][self.type][self.name].update(_payload)
+
+    task_result = TaskResult(TaskStatus.PENDING)
+
+    try:
+        logger.info(&#39;&#34;%s&#34; is started.&#39;, str(self))
+        if isinstance(self.runner, Flow):
+            task = self.runner.as_task(_payload)
+        else:
+            task = self.runner(**_payload)
+
+        if isinstance(task, FlowRunTask):
+            task.namespace = str(self)
+
+        task_run = self.should_rerun(task, context)
+        task_result.result = (
+            await asyncio.wait_for(
+                task_run()
+                if inspect.iscoroutinefunction(task.run)
+                else utils.to_thread(task_run),
+                timeout=self.should_timeout(task, context),
+            )
+            or {}
+        )
+        task_result.result.update(_payload)
+        logger.info(&#39;&#34;%s&#34; is successful.&#39;, str(self))
+    except Exception as err:  # pylint: disable=broad-except
+        task_result.exception = err
+        logger.info(&#39;&#34;%s&#34; is failed.&#39;, str(self))
+        traceback.print_exc()
+
+    return task_result</code></pre>
+</details>
+</dd>
+<dt id="runflow.Task.set_namespace"><code class="name flex">
+<span>def <span class="ident">set_namespace</span></span>(<span>self, namespace)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_namespace(self, namespace):
+    self.namespace = namespace</code></pre>
+</details>
+</dd>
+<dt id="runflow.Task.should_rerun"><code class="name flex">
+<span>def <span class="ident">should_rerun</span></span>(<span>self, task, context)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def should_rerun(self, task, context):  # pylint: disable=too-many-branches
+    if &#34;_retry&#34; not in self.payload:
+        return task.run
+
+    _retry = hcl2.evaluate(self.payload.get(&#34;_retry&#34;, {}), context)
+    _retry_params = {}
+    stop_after = _retry.get(&#34;stop_after&#34;, &#34;1 times&#34;)
+    stopers = []
+    for _stop_after in stop_after.split(&#34;|&#34;):
+        _stop_after = _stop_after.strip()
+        if &#34;times&#34; in _stop_after:
+            attempts = int(_stop_after.replace(&#34;times&#34;, &#34;&#34;).strip())
+            stoper = stop_after_attempt(attempts)
+        elif &#34;seconds&#34; in _stop_after:
+            seconds = float(_stop_after.replace(&#34;seconds&#34;, &#34;&#34;).strip())
+            stoper = stop_after_delay(seconds)
+        else:
+            raise ValueError(f&#34;invalid _retry.stop_after: {_stop_after}&#34;)
+        stopers.append(stoper)
+
+    _retry_params[&#34;stop&#34;] = reduce(lambda a, b: a | b, stopers)
+    _retry_params[&#34;wait&#34;] = _retry.get(&#34;wait&#34;, None)
+    _retry_params[&#34;reraise&#34;] = True
+    return retry(**_retry_params)(task.run)</code></pre>
+</details>
+</dd>
+<dt id="runflow.Task.should_run"><code class="name flex">
+<span>def <span class="ident">should_run</span></span>(<span>self, context)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def should_run(self, context):
+    return all(
+        hcl2.evaluate(depends_on, context)
+        for depends_on in self.payload.get(DEPENDS_ON_KEY, [])
+    )</code></pre>
+</details>
+</dd>
+<dt id="runflow.Task.should_timeout"><code class="name flex">
+<span>def <span class="ident">should_timeout</span></span>(<span>self, task, context)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def should_timeout(self, task, context):
+    if &#34;_timeout&#34; not in self.payload:
+        return None
+    _timeout = hcl2.evaluate(self.payload[&#34;_timeout&#34;], context)
+    assert isinstance(_timeout, (int, float))
+    return _timeout</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="runflow.autoloader" href="autoloader.html">runflow.autoloader</a></code></li>
+<li><code><a title="runflow.community" href="community/index.html">runflow.community</a></code></li>
+<li><code><a title="runflow.contribs" href="contribs/index.html">runflow.contribs</a></code></li>
+<li><code><a title="runflow.core" href="core.html">runflow.core</a></code></li>
+<li><code><a title="runflow.errors" href="errors.html">runflow.errors</a></code></li>
+<li><code><a title="runflow.hcl2" href="hcl2.html">runflow.hcl2</a></code></li>
+<li><code><a title="runflow.hcl2_parser" href="hcl2_parser.html">runflow.hcl2_parser</a></code></li>
+<li><code><a title="runflow.registry" href="registry.html">runflow.registry</a></code></li>
+<li><code><a title="runflow.run" href="run.html">runflow.run</a></code></li>
+<li><code><a title="runflow.utils" href="utils.html">runflow.utils</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="runflow.cli" href="#runflow.cli">cli</a></code></li>
+<li><code><a title="runflow.get_task_class" href="#runflow.get_task_class">get_task_class</a></code></li>
+<li><code><a title="runflow.register_task_class" href="#runflow.register_task_class">register_task_class</a></code></li>
+<li><code><a title="runflow.runflow" href="#runflow.runflow">runflow</a></code></li>
+<li><code><a title="runflow.runflow_async" href="#runflow.runflow_async">runflow_async</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="runflow.Flow" href="#runflow.Flow">Flow</a></code></h4>
+<ul class="">
+<li><code><a title="runflow.Flow.add_task" href="#runflow.Flow.add_task">add_task</a></code></li>
+<li><code><a title="runflow.Flow.as_task" href="#runflow.Flow.as_task">as_task</a></code></li>
+<li><code><a title="runflow.Flow.exception" href="#runflow.Flow.exception">exception</a></code></li>
+<li><code><a title="runflow.Flow.from_spec" href="#runflow.Flow.from_spec">from_spec</a></code></li>
+<li><code><a title="runflow.Flow.from_specfile" href="#runflow.Flow.from_specfile">from_specfile</a></code></li>
+<li><code><a title="runflow.Flow.load" href="#runflow.Flow.load">load</a></code></li>
+<li><code><a title="runflow.Flow.load_flow_imported_functions" href="#runflow.Flow.load_flow_imported_functions">load_flow_imported_functions</a></code></li>
+<li><code><a title="runflow.Flow.load_flow_imported_tasks" href="#runflow.Flow.load_flow_imported_tasks">load_flow_imported_tasks</a></code></li>
+<li><code><a title="runflow.Flow.load_flow_imports" href="#runflow.Flow.load_flow_imports">load_flow_imports</a></code></li>
+<li><code><a title="runflow.Flow.load_flow_spec_body" href="#runflow.Flow.load_flow_spec_body">load_flow_spec_body</a></code></li>
+<li><code><a title="runflow.Flow.load_flow_tasks" href="#runflow.Flow.load_flow_tasks">load_flow_tasks</a></code></li>
+<li><code><a title="runflow.Flow.load_flow_tasks_dependencies" href="#runflow.Flow.load_flow_tasks_dependencies">load_flow_tasks_dependencies</a></code></li>
+<li><code><a title="runflow.Flow.load_flow_tasks_from_spec" href="#runflow.Flow.load_flow_tasks_from_spec">load_flow_tasks_from_spec</a></code></li>
+<li><code><a title="runflow.Flow.load_flow_variables" href="#runflow.Flow.load_flow_variables">load_flow_variables</a></code></li>
+<li><code><a title="runflow.Flow.load_function" href="#runflow.Flow.load_function">load_function</a></code></li>
+<li><code><a title="runflow.Flow.load_task_by_task_reference" href="#runflow.Flow.load_task_by_task_reference">load_task_by_task_reference</a></code></li>
+<li><code><a title="runflow.Flow.make_run_context" href="#runflow.Flow.make_run_context">make_run_context</a></code></li>
+<li><code><a title="runflow.Flow.run" href="#runflow.Flow.run">run</a></code></li>
+<li><code><a title="runflow.Flow.set_default_var" href="#runflow.Flow.set_default_var">set_default_var</a></code></li>
+<li><code><a title="runflow.Flow.set_dependency" href="#runflow.Flow.set_dependency">set_dependency</a></code></li>
+<li><code><a title="runflow.Flow.set_tasks_dependencies" href="#runflow.Flow.set_tasks_dependencies">set_tasks_dependencies</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="runflow.RunflowAcyclicTasksError" href="#runflow.RunflowAcyclicTasksError">RunflowAcyclicTasksError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="runflow.RunflowError" href="#runflow.RunflowError">RunflowError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="runflow.RunflowReferenceError" href="#runflow.RunflowReferenceError">RunflowReferenceError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="runflow.RunflowSyntaxError" href="#runflow.RunflowSyntaxError">RunflowSyntaxError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="runflow.RunflowTaskError" href="#runflow.RunflowTaskError">RunflowTaskError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="runflow.RunflowTaskTypeError" href="#runflow.RunflowTaskTypeError">RunflowTaskTypeError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="runflow.Task" href="#runflow.Task">Task</a></code></h4>
+<ul class="two-column">
+<li><code><a title="runflow.Task.eval_payload" href="#runflow.Task.eval_payload">eval_payload</a></code></li>
+<li><code><a title="runflow.Task.run" href="#runflow.Task.run">run</a></code></li>
+<li><code><a title="runflow.Task.set_namespace" href="#runflow.Task.set_namespace">set_namespace</a></code></li>
+<li><code><a title="runflow.Task.should_rerun" href="#runflow.Task.should_rerun">should_rerun</a></code></li>
+<li><code><a title="runflow.Task.should_run" href="#runflow.Task.should_run">should_run</a></code></li>
+<li><code><a title="runflow.Task.should_timeout" href="#runflow.Task.should_timeout">should_timeout</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
