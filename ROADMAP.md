@@ -27,7 +27,6 @@
 - [ ] trigger: receive websocket events from WS server.
 - [ ] builtin: merge nested data structure.
 - [ ] task: validate arguments.
-- [ ] task: define task using attr.
 - [ ] task: command: cap_stdout, cap_stderr.
 - [ ] task: command: support sending stdin.
 - [ ] task: command: integrate pexpect.
@@ -72,6 +71,9 @@
 - [ ] builtin: xml data extraction like huginn using xpath.
 - [ ] docs: make flow spec v1.0 specification.
 - [ ] hcl2: support task argument `_foreach` to map an array of inputs to a task.
+- [x] task: qrcode. v0.10.0
+- [x] task: notion. v0.10.0
+- [x] task: define task using attr. v0.10.0
 - [x] community: papermill. v0.10.0
 - [x] hcl2: variable `required = true`. if not provided, abort. v0.10.0.
 - [x] docs: generate module references using pdoc. v0.10.0.
